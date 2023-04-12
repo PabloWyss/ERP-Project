@@ -55,5 +55,5 @@ deploy:
   script:
     - docker compose -f docker-compose.deploy.yml pull
     - docker compose -f docker-compose.deploy.yml down --remove-orphans
-#    - docker volume rm luna_team4_build
+    - docker volume rm erp-system_build
     - docker compose -f docker-compose.deploy.yml up -d
