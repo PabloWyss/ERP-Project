@@ -1,8 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from merchant.models import Merchant
-
 
 def user_directory_path(instance, filename):
     return f"users/{instance.id}/{filename}"
@@ -24,7 +22,7 @@ class User(AbstractUser):
     phone = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(unique=True)
     profile_picture = models.ImageField(upload_to=user_directory_path, null=True, blank=True)
-    merchant = models.OneToOneField(to=Merchant, on_delete=models.PROTECT, related_name='user', null=True)
+    # merchant (linked in merchant.models.py)
 
     def __str__(self):
         return self.usename
