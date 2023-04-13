@@ -1,5 +1,8 @@
 from django.db import models
 from partner.models import Partner
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 def merchant_directory_path(instance, filename):
@@ -8,6 +11,7 @@ def merchant_directory_path(instance, filename):
 
 class Merchant(models.Model):
 
+    user = models.OneToOneField(to=User, on_delete=models.PROTECT, related_name='merchant')
     name = models.CharField(max_length=50)
     address = models.CharField(max_length=50, null=True, blank=True)
     country_code = models.CharField(max_length=2, null=True, blank=True)

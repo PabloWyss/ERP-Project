@@ -10,14 +10,14 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+        ('merchant', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('registration', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='registration',
+            model_name='merchant',
             name='user',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='user_registration', to=settings.AUTH_USER_MODEL),
+            field=models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, related_name='merchant', to=settings.AUTH_USER_MODEL),
         ),
     ]
