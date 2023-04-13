@@ -3,6 +3,7 @@ from rest_framework.permissions import AllowAny
 from item.models import Item
 from item.serializers import ItemSerializer
 
+
 class ListItemView(ListAPIView):
     """
     get:
@@ -14,6 +15,7 @@ class ListItemView(ListAPIView):
     serializer_class = ItemSerializer
     queryset = Item.objects.all()
     permission_classes = [AllowAny]
+
 
 class CreateItemView(CreateAPIView):
     """
