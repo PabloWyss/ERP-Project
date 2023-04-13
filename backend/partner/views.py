@@ -1,16 +1,18 @@
-"""
-from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
+# from rest_framework.response import Response
+from rest_framework.generics import ListAPIView
 from partner.models import Partner
 from partner.serializers import PartnerSerializer
-from project.global_permissions import IsSameUser, IsSameMerchant
+from project.global_permissions import IsSameMerchant
 
 
+class ListPartnerView(ListAPIView):
+    """
+    get:
+    List all partners
 
-class CreatePartnerView(CreateAPIView):
-    queryset = Partner.objects.all()
-    permission_classes = [IsSameMerchant]
+    # subtitle
+    Lists all the partners of the merchant in alphabetical order of SKU number
+    """
+    queryset = Partner.objects.all().order_by('name')
     serializer_class = PartnerSerializer
-
-    def perform_create(self, serializer):
-        serializer.save(user.merchant=self.request.user)
-"""
+    permission_classes = [IsSameMerchant]
