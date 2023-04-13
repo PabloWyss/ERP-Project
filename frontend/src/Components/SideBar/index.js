@@ -9,15 +9,15 @@ import logo from '../../Assets/Logos/logo_white.svg';
 
 const SideBar = () => {
   return (
-    <div className="fixed left-0 top-0 h-full flex flex-col w-48 justify-between bg-green-500">
+    <div className="fixed py-10 left-0 top-0 h-full flex flex-col w-48 bg-green-500">
       <div className="flex items-center justify-center">
-        <img src={logo} alt="Invenflow Logo" className="w-8 h-8 mr-2" />
+        <img src={logo} alt="Invenflow Logo" className="w-8 h-8 mr-5" />
         <h1 className="text-white text-xl font-bold">invenflow</h1>
       </div>
-      <div>
+      <div className="mt-10">
         <NavLink to="/profile">
           {({isActive}) => (
-            <button className={`flex items-center w-full text-left mt-2 ${isActive ? 'bg-blue-500' : ''}`}>
+            <button className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-blue-500' : ''}`}>
               <ProfileIcon className="mr-2" />
               Profile
             </button>
@@ -25,7 +25,7 @@ const SideBar = () => {
         </NavLink>
         <NavLink to="/tags">
           {({isActive}) => (
-            <button className={`flex items-center w-full text-left mt-2 ${isActive ? 'bg-blue-500' : ''}`}>
+            <button className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-blue-500' : ''}`}>
               <TagsIcon className="mr-2" />
               Tags
             </button>
@@ -33,7 +33,7 @@ const SideBar = () => {
         </NavLink>
         <NavLink to="/warehouse" >
           {({isActive}) => (
-            <button className={`flex items-center w-full text-left mt-2 ${isActive ? 'bg-blue-500' : ''}`}>
+            <button className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-blue-500' : ''}`}>
               <WarehouseIcon className="mr-2" />
               Warehouse
             </button>
@@ -41,7 +41,7 @@ const SideBar = () => {
         </NavLink>
         <NavLink to="/reports" >
           {({isActive}) => (
-            <button className={`flex items-center w-full text-left mt-2 ${isActive ? 'bg-blue-500' : ''}`}>
+            <button className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-blue-500' : ''}`}>
               <ReportsIcon className="mr-2" />
               Reports
             </button>
@@ -49,7 +49,7 @@ const SideBar = () => {
         </NavLink>
         <NavLink to="/orders">
           {({isActive}) => (
-            <button className={`flex items-center w-full text-left mt-2 ${isActive ? 'bg-blue-500' : ''}`}>
+            <button className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-blue-500' : ''}`}>
               <OrdersIcon className="mr-2" />
               Orders
             </button>
@@ -57,14 +57,13 @@ const SideBar = () => {
         </NavLink>
         <NavLink to="/items">
           {({isActive}) => (
-            <button className={`flex items-center w-full text-left mt-2 ${isActive ? 'bg-blue-500' : ''}`}>
+            <button className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-blue-500' : ''}`}>
               <ItemsIcon className="mr-2" />
               Items
             </button>
           )}
         </NavLink>
       </div>
-      <div className="h-230px"></div>
     </div>
   );
 };
