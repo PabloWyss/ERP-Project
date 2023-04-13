@@ -9,7 +9,7 @@ function App() {
       <p>App Page</p>
       <p className="text-title">Title</p>
       <p className="text-section">Title</p>
-      <button className="bg-ifOrange text-white font-medium">Test Button</button>
+      <button className="bg-ifOrange text-white">Test Button</button>
       <input type="text" value={'Test'} />
       <select>
         <option>Manta</option>
