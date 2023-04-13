@@ -24,7 +24,7 @@ class User(AbstractUser):
     phone = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(unique=True)
     profile_picture = models.ImageField(upload_to=user_directory_path, null=True, blank=True)
-    merchant = models.OneToOneField(to=Merchant, on_delete=models.PROTECT, related_name='user')
+    merchant = models.OneToOneField(to=Merchant, on_delete=models.PROTECT, related_name='user', null=True)
 
     def __str__(self):
         return self.usename
