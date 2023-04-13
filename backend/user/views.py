@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Q
-from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny
 
 from user.permissions import IsSameUser
@@ -74,4 +74,3 @@ class MyUserRetrieveUpdateDeleteView(RetrieveUpdateDestroyAPIView):
         elif self.request.method == 'PATCH':
             return UserUpdateSerializer
         return UserSerializer
-
