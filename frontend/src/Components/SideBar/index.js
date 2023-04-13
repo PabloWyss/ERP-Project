@@ -6,7 +6,6 @@ import { ReactComponent as ReportsIcon } from '../../Assets/Icons/reports.svg';
 import { ReactComponent as OrdersIcon } from '../../Assets/Icons/orders.svg';
 import { ReactComponent as ItemsIcon } from '../../Assets/Icons/items.svg';
 
-
 const SideBar = () => {
   return (
     <div className="fixed left-0 top-0 h-full flex flex-col w-48 justify-between bg-green-500">
