@@ -1,7 +1,6 @@
-# from django.urls import path
-#
-# from partner.views import ListPartnerView, SearchPartnerView, RetrieveUpdateDestroyPartnerView, ListSupplierView, \
-#     SearchSupplierView, ListCustomerView, SearchCustomerView
+"""
+from django.urls import path
+# from partner.views import CreatePartnerView
 
 urlpatterns = [
     # backend/api/partners/
@@ -16,3 +15,4 @@ urlpatterns = [
     # path('customers/', ListCustomerView.as_view()),
     # path('customers/search/', SearchCustomerView.as_view()),
 ]
+"""
