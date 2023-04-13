@@ -5,12 +5,17 @@ import { ReactComponent as WarehouseIcon } from '../../Assets/Icons/warehouse.sv
 import { ReactComponent as ReportsIcon } from '../../Assets/Icons/reports.svg';
 import { ReactComponent as OrdersIcon } from '../../Assets/Icons/orders.svg';
 import { ReactComponent as ItemsIcon } from '../../Assets/Icons/items.svg';
+import logo from '../../Assets/Logos/logo_white.svg';
 
 const SideBar = () => {
   return (
     <div className="fixed left-0 top-0 h-full flex flex-col w-48 justify-between bg-green-500">
-      <div className="mt-8">
-        <NavLink to="/profile" >
+      <div className="flex items-center justify-center">
+        <img src={logo} alt="Invenflow Logo" className="w-8 h-8 mr-2" />
+        <h1 className="text-white text-xl font-bold">invenflow</h1>
+      </div>
+      <div>
+        <NavLink to="/profile">
           {({isActive}) => (
             <button className={`flex items-center w-full text-left mt-2 ${isActive ? 'bg-blue-500' : ''}`}>
               <ProfileIcon className="mr-2" />
@@ -65,5 +70,6 @@ const SideBar = () => {
 };
 
 export default SideBar;
+
 
 
