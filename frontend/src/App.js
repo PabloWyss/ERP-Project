@@ -1,22 +1,31 @@
-import React from "react";
-import "./App.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import SideBar from "./Components/SideBar";
+import Profile from "./Pages/Profile";
+import Tags from "./Pages/Tags";
+ import Warehouse from "./Pages/Warehouse";
+import Reports from "./Pages/Reports";
+ import Orders from "./Pages/Orders";
+ import Items from "./Pages/Items";
+
 
 function App() {
   return (
-    <div>
-      <p className="text-2xl font-semibold">App Page</p>
-      <p className="text-lg font-semibold">App Page</p>
-      <p>App Page</p>
-      <p className="text-title">Title</p>
-      <p className="text-section">Title</p>
-      <button className="bg-ifOrange text-white">Test Button</button>
-      <input type="text" value={'Test'} />
-      <select>
-        <option>Manta</option>
-        <option>Banta</option>
-      </select>
-    </div>
+    <Router>
+      <div className="flex">
+        <SideBar />
+        <Routes>
+          <Route path="/items" element={<Items />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/warehouse" element={<Warehouse />} />
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/tags" element={<Tags />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/" element={<Items />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
+
 
 export default App;
