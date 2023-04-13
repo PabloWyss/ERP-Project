@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-irxbz7s)133t)960h4n*6*5^&yi3s2yi*lo5b)bjg5f+5m&wo1
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'http://138.68.98.112/']
 # add name of page once we have it
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -46,6 +46,19 @@ INSTALLED_APPS = [
     'drf_yasg',
     "corsheaders",
 
+    # Own apps
+    'partner',
+    'user',
+    'registration',
+    'merchant',
+    'inventory_ledger',
+    'item',
+    'item_image',
+    'item_model_specification',
+    'item_tag',
+    'item_variant_specification',
+    'order',
+    'warehouse',
 ]
 
 MIDDLEWARE = [
@@ -148,12 +161,34 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ]
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
 }
+
+AUTH_USER_MODEL = "user.User"
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=5)
+}
+
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': True,  # Change settings to True to enable Django Login option
+    'LOGIN_URL': 'admin/',  # URL For Django Login
+    'LOGOUT_URL': 'admin/logout/',  # URL For Django Logout
+    'SECURITY_DEFINITIONS': {  # Allows usage of Access token to make requests on the docs.
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
 }
