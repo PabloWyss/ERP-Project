@@ -1,4 +1,3 @@
-from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
 from merchant.models import Merchant
 from merchant.serializers import MerchantSerializer

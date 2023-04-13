@@ -1,3 +1,4 @@
+"""
 from django.urls import path
 # from partner.views import CreatePartnerView
 
@@ -14,3 +15,4 @@ urlpatterns = [
     # path('customers/', ListCustomerView.as_view()),
     # path('customers/search/', SearchCustomerView.as_view()),
 ]
+"""
