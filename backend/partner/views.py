@@ -5,7 +5,6 @@ from partner.models import Partner
 from partner.serializers import PartnerSerializer
 
 
-
 class ListPartnerView(ListAPIView):
     """
     get:
