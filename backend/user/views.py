@@ -3,7 +3,7 @@ from django.db.models import Q
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny
 
-from user.permissions import IsSameUser
+from project.global_permissions import IsSameUser
 from user.serializers import UserSerializer, UserUpdateSerializer
 
 User = get_user_model()
