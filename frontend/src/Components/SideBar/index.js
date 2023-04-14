@@ -8,6 +8,10 @@ import { ReactComponent as ItemsIcon } from '../../Assets/Icons/items.svg';
 import logo from '../../Assets/Logos/logo_white.svg';
 
 const SideBar = () => {
+    const isLoggedIn = true;
+  if (!isLoggedIn) {
+    return null;
+  }
   return (
     <div className="fixed py-10 left-0 top-0 h-full flex flex-col w-48 bg-gradient-to-b from-gradientFrom to-gradientTo">
       <div className="flex items-center justify-center">

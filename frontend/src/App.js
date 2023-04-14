@@ -6,14 +6,16 @@ import Tags from "./Pages/Tags";
 import Reports from "./Pages/Reports";
  import Orders from "./Pages/Orders";
  import Items from "./Pages/Items";
+import Login from "./Pages/Auth/Login";
 
 
 function App() {
   return (
     <Router>
       <div className="flex">
-        <SideBar />
+          {/*<SideBar/>*/}
         <Routes>
+          <Route path="/login" element={<Login />} />
           <Route path="/items" element={<Items />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/warehouses" element={<Warehouse />} />
