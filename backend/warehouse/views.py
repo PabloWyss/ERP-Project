@@ -1,6 +1,5 @@
 from django.db.models import Q
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from warehouse.models import Warehouse
 from warehouse.serializers import WarehouseSerializer
@@ -33,6 +32,7 @@ class CreateWarehouseView(CreateAPIView):
     """
 
     serializer_class = WarehouseSerializer
+    queryset = Warehouse.objects.all()
 
     def post(self, request):
         merchant = request.user.merchant

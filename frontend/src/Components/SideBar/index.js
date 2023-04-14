@@ -15,35 +15,11 @@ const SideBar = () => {
         <h1 className="text-white text-xl font-bold">invenflow</h1>
       </div>
       <div className="mt-10">
-        <NavLink to="/profile">
+        <NavLink to="/items">
           {({isActive}) => (
-            <button className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
-              <ProfileIcon className="mr-2" />
-              Profile
-            </button>
-          )}
-        </NavLink>
-        <NavLink to="/tags">
-          {({isActive}) => (
-            <button className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
-              <TagsIcon className="mr-2" />
-              Tags
-            </button>
-          )}
-        </NavLink>
-        <NavLink to="/warehouse" >
-          {({isActive}) => (
-            <button className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
-              <WarehouseIcon className="mr-2" />
-              Warehouse
-            </button>
-          )}
-        </NavLink>
-        <NavLink to="/reports" >
-          {({isActive}) => (
-            <button className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
-              <ReportsIcon className="mr-2" />
-              Reports
+            <button className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+              <ItemsIcon className="mr-2" />
+              Items
             </button>
           )}
         </NavLink>
@@ -55,14 +31,39 @@ const SideBar = () => {
             </button>
           )}
         </NavLink>
-        <NavLink to="/items">
+        <NavLink to="/reports" >
           {({isActive}) => (
-            <button className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
-              <ItemsIcon className="mr-2" />
-              Items
+            <button className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+              <ReportsIcon className="mr-2" />
+              Reports
             </button>
           )}
         </NavLink>
+        <NavLink to="/tags">
+          {({isActive}) => (
+            <button className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+              <TagsIcon className="mr-2" />
+              Tags
+            </button>
+          )}
+        </NavLink>
+        <NavLink to="/warehouses" >
+          {({isActive}) => (
+            <button className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+              <WarehouseIcon className="mr-2" />
+              Warehouses
+            </button>
+          )}
+        </NavLink>
+        <NavLink to="/profile">
+          {({isActive}) => (
+            <button className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+              <ProfileIcon className="mr-2" />
+              Profile
+            </button>
+          )}
+        </NavLink>
+
       </div>
     </div>
   );
