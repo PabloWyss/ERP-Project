@@ -6,11 +6,6 @@ class IsSameUser(BasePermission):
         return bool(obj.user == request.user)
 
 
-class IsSameMerchant(BasePermission):
-    def has_object_permission(self, request, view, obj):
-        return bool(obj.merchants.include(request.user.merchant))
-
-
 class IsStaff(BasePermission):
     def has_permission(self, request, view):
         return bool(request.user.is_staff)

@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
-from project.global_permissions import IsSameUser, IsSameMerchant, IsStaff
+from project.global_permissions import IsSameUser, IsStaff
 from user.serializers import UserSerializer, UserUpdateSerializer
 
 User = get_user_model()
@@ -17,7 +17,6 @@ class ListUserView(ListAPIView):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsSameMerchant]
 
 
 class SearchUserView(ListAPIView):
@@ -29,7 +28,6 @@ class SearchUserView(ListAPIView):
     Searches for all the users of the merchant
     """
     serializer_class = UserSerializer
-    permission_classes = [IsSameMerchant]
 
     def get_queryset(self):
         # This view returns an item based on the url query param

@@ -1,8 +1,6 @@
 from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.permissions import BasePermission
 from rest_framework.response import Response
-
-from project.global_permissions import IsSameMerchant
 from warehouse.models import Warehouse
 from warehouse.serializers import WarehouseSerializer
 
@@ -36,7 +34,6 @@ class CreateWarehouseView(CreateAPIView):
 
     serializer_class = WarehouseSerializer
     queryset = Warehouse.objects.all()
-    permission_classes = [IsSameMerchant]
 
     def post(self, request):
         merchant = request.user.merchant
