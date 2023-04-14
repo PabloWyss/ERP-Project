@@ -1,6 +1,9 @@
 from django.db.models import Q
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
+
+from inventory_ledger.models import InventoryLedger
+from item.models import Item
 from warehouse.models import Warehouse
 from warehouse.serializers import WarehouseSerializer
 
@@ -55,10 +58,13 @@ class AssignOneItemToWarehouseView(UpdateAPIView):
     def update(self, request, *args, **kwargs):
         warehouse = Warehouse.objects.filter(merchants__id=self.kwargs['warehouse_id']).first()
         exist_item_in_warehouse = warehouse.items.filter(id=self.request.data['item_id']).exists()
+        item = Item.objects.filter(id=self.request.data['item_id']).first()
         if exist_item_in_warehouse:
             return Response({'status': 'Item already in Warehouse'})
         else:
             warehouse.items.add(self.request.data['item_id'])
+            InventoryLedger.objects.create(warehouse=warehouse, event_type='Inbound', stock_level_initial=0,
+                                           quantity_altered=1, stock_level_final=1, item=item)
             return Response({'status': 'Item added to Warehouse'})
 
 
