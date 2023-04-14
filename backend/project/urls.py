@@ -39,7 +39,7 @@ urlpatterns = [
 
     path('backend/api/orders/', include('order.urls')),
 
-    path('backend/api/partners/', include('partner.urls')),
+    # path('backend/api/partners/', include('partner.urls')),
 
     path('backend/api/users/', include('user.urls')),
 

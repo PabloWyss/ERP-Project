@@ -1,6 +1,7 @@
 from django.db import models
 
 from item.models import Item
+from merchant.models import Merchant
 
 
 class Warehouse(models.Model):
@@ -10,6 +11,7 @@ class Warehouse(models.Model):
     ]
 
     # id
+    merchants = models.ManyToManyField(to=Merchant, related_name="warehouses")
     items = models.ManyToManyField(to=Item, blank=True, related_name="warehouses")
     name = models.CharField(max_length=50)
     contact = models.CharField(max_length=50, null=True, blank=True)
