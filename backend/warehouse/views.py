@@ -51,5 +51,3 @@ class CreateWarehouseView(CreateAPIView):
             warehouse_id = Warehouse.objects.filter(name=warehouse_name).first().id
             merchant.warehouses.add(warehouse_id)
             return Response({'status': 'Warehouse Created'})
-
-
