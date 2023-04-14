@@ -5,8 +5,11 @@ from merchant.serializers import MerchantSerializer
 
 class PartnerSerializer(serializers.ModelSerializer):
 
-    merchant = MerchantSerializer(read_only=True)
+    merchants = MerchantSerializer(read_only=True, many=True)
 
     class Meta:
         model = Partner
         fields = '__all__'
+        extra_fields = {
+            'merchants': {'read_only': True}
+        }

@@ -1,10 +1,10 @@
 from django.urls import path
-from partner.views import ListPartnerView
+from partner.views import ListPartnerView, CreatePartnerView
 
 urlpatterns = [
     # backend/api/partners/
     path('', ListPartnerView.as_view()),
-    # path('new/', CreatePartnerView.as_view()),
+    path('new/', CreatePartnerView.as_view()),
     # path('search/', SearchPartnerView.as_view()),
     # path('<int:partner_id>/', RetrieveUpdateDestroyPartnerView.as_view()),
 

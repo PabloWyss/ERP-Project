@@ -1,9 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.permissions import AllowAny
-
-from project.global_permissions import IsSameUser
+from project.global_permissions import IsSameUser, IsSameMerchant, IsStaff
 from user.serializers import UserSerializer, UserUpdateSerializer
 
 User = get_user_model()
@@ -15,23 +13,23 @@ class ListUserView(ListAPIView):
     List all users
 
     # subtitle
-    Lists all the users of the Merchant
+    Lists all the users of the merchant (currently, all users are returned)
     """
-    serializer_class = UserSerializer
     queryset = User.objects.all()
-    permission_classes = [AllowAny]
+    serializer_class = UserSerializer
+    permission_classes = [IsSameMerchant]
 
 
 class SearchUserView(ListAPIView):
     """
     get:
-    Search for User
+    Search for specific user
 
     # subtitle
-    Searches for all users of Merchant
+    Searches for all the users of the merchant
     """
-    permission_classes = [AllowAny]
     serializer_class = UserSerializer
+    permission_classes = [IsSameMerchant]
 
     def get_queryset(self):
         # This view returns an item based on the url query param
@@ -47,18 +45,12 @@ class SearchUserView(ListAPIView):
 
 class RetrieveUpdateDestroyUserView(RetrieveUpdateDestroyAPIView):
     """
-    get:
-    Edit and delete functionalities only allowed to authenticated user and company's staff
-
-    # subtitle
-    - List the details of a specific user
-    - Edit the details of a specific user
-    - Delete an existing user
+    Note: This view is not linked to any path yet
     """
     queryset = User.objects.all()
-    permission_classes = [IsSameUser]
     serializer_class = UserSerializer
     lookup_url_kwarg = 'user_id'
+    permission_classes = [IsStaff]
 
 
 class MyUserRetrieveUpdateDeleteView(RetrieveUpdateDestroyAPIView):
