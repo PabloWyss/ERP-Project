@@ -47,6 +47,7 @@ class CreateWarehouseView(CreateAPIView):
             merchant.warehouses.add(serializer.data['id'])
             return Response({'status': 'Warehouse Created'})
 
+
 class AssignOneItemToWarehouseView(UpdateAPIView):
     serializer_class = WarehouseSerializer
     lookup_url_kwarg = 'warehouse_id'
@@ -74,6 +75,7 @@ class AssignManyItemToWarehouseView(UpdateAPIView):
                 warehouse.items.add(item)
         return Response({'status': 'Items added to Warehouse'})
 
+
 class SearchWarehouseView(ListAPIView):
     """
     get:
@@ -94,6 +96,7 @@ class SearchWarehouseView(ListAPIView):
                 Q(name__icontains=search_value)
             )
         return queryset
+
 
 class RetrieveUpdateDestroyWarehouseView(RetrieveUpdateDestroyAPIView):
     serializer_class = WarehouseSerializer
