@@ -1,6 +1,8 @@
 from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
+
+from merchant.models import MerchantPartnerRelationship
 from partner.models import Partner
 from partner.serializers import PartnerSerializer
 
@@ -33,6 +35,8 @@ class CreatePartnerView(CreateAPIView):
     def post(self, request, *args, **kwargs):
         merchant = request.user.merchant
         partner_name = request.data['name']
+        is_supplier = request.data['is_supplier']
+        is_customer = request.data['is_customer']
         partner_exists = merchant.partners.filter(name=partner_name).exists()
         if partner_exists:
             return Response({'status': 'Partner already exists'})
@@ -41,6 +45,9 @@ class CreatePartnerView(CreateAPIView):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             merchant.partners.add(serializer.data['id'])
+            partner = Partner.objects.filter(name=partner_name).get()
+            MerchantPartnerRelationship.objects.create(merchant=merchant, partner=partner, is_supplier=is_supplier,
+                                                       is_customer=is_customer)
             return Response({'status': 'Partner successfully created'})
 
 
@@ -72,6 +79,7 @@ class RetrieveUpdateDestroyPartnerView(RetrieveUpdateDestroyAPIView):
     """
     t.b.d.
     """
+
     def get_queryset(self):
         merchant = self.request.user.merchant
         return Partner.objects.filter(merchants__id=merchant.id)

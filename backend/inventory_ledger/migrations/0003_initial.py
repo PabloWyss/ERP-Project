@@ -9,14 +9,14 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('inventory_ledger', '0001_initial'),
-        ('item', '0001_initial'),
+        ('inventory_ledger', '0002_initial'),
+        ('warehouse', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='inventoryledger',
-            name='item',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='inventory_ledgers', to='item.item'),
+            name='warehouse',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='inventory_ledgers', to='warehouse.warehouse'),
         ),
     ]

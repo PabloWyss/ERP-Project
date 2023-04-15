@@ -11,8 +11,6 @@ class Partner(models.Model):
     phone = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(unique=True)
     # orders (linked in order.models.py)
-    is_supplier = models.BooleanField(default=True)
-    is_customer = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.id} - Review {self.name}'

@@ -1,7 +1,10 @@
 from django.db.models import Q
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
-from warehouse.models import Warehouse
+
+from inventory_ledger.models import InventoryLedger
+from item.models import Item
+from warehouse.models import Warehouse, WarehouseItemInventory
 from warehouse.serializers import WarehouseSerializer
 
 
@@ -48,17 +51,49 @@ class CreateWarehouseView(CreateAPIView):
             return Response({'status': 'Warehouse Created'})
 
 
-class AssignOneItemToWarehouseView(UpdateAPIView):
+class InboundItemToWarehouseView(UpdateAPIView):
     serializer_class = WarehouseSerializer
     lookup_url_kwarg = 'warehouse_id'
 
     def update(self, request, *args, **kwargs):
-        warehouse = Warehouse.objects.filter(merchants__id=self.kwargs['warehouse_id']).first()
+        warehouse = Warehouse.objects.filter(
+            Q(merchants__id=request.user.merchant.id) & Q(id=self.kwargs['warehouse_id'])).first()
         exist_item_in_warehouse = warehouse.items.filter(id=self.request.data['item_id']).exists()
+        item = Item.objects.filter(id=self.request.data['item_id']).first()
         if exist_item_in_warehouse:
-            return Response({'status': 'Item already in Warehouse'})
+            quantity_altered = self.request.data['quantity']
+            if quantity_altered > 0:
+                action = 'Inbound'
+            else:
+                action = 'Outbound'
+            current_stock_level = WarehouseItemInventory.objects.filter(
+                item_id=self.request.data['item_id'],
+                warehouse_id=self.kwargs['warehouse_id']).get().stock_level_current
+            if current_stock_level + quantity_altered < 0:
+                return Response({'status': 'Not enough stock in warehouse'})
+            else:
+                InventoryLedger.objects.create(warehouse=warehouse, event_type=action,
+                                               stock_level_initial=current_stock_level,
+                                               quantity_altered=self.request.data['quantity'],
+                                               stock_level_final=current_stock_level + self.request.data['quantity'],
+                                               item=item)
+
+                warehouse_inventory_instance = WarehouseItemInventory.objects.filter(warehouse=warehouse,
+                                                                                     item=item).get()
+                if current_stock_level + quantity_altered == 0:
+                    warehouse_inventory_instance.delete()
+                    return Response({'status': 'Item removed from warehouse'})
+                else:
+                    warehouse_inventory_instance.stock_level_current = current_stock_level + self.request.data[
+                        'quantity']
+                    warehouse_inventory_instance.save()
+                    return Response({'status': 'Stock level updated'})
         else:
-            warehouse.items.add(self.request.data['item_id'])
+            WarehouseItemInventory.objects.create(warehouse=warehouse, item=item,
+                                                  stock_level_current=self.request.data['quantity'])
+            InventoryLedger.objects.create(warehouse=warehouse, event_type='Inbound', stock_level_initial=0,
+                                           quantity_altered=self.request.data['quantity'],
+                                           stock_level_final=self.request.data['quantity'], item=item)
             return Response({'status': 'Item added to Warehouse'})
 
 
