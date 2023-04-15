@@ -42,7 +42,6 @@ class ItemVariantSpecification(models.Model):
     size = models.CharField(choices=SIZES, max_length=50)
     purchase_price_net_eur = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
     sale_price_net_eur = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
-    stock_level_current = models.IntegerField(validators=[MinValueValidator(0)], blank=True, null=True)
     stock_level_minimum = models.IntegerField(validators=[MinValueValidator(0)], blank=True, null=True)
     stock_level_reorder = models.IntegerField(validators=[MinValueValidator(0)], blank=True, null=True)
     item_changes = models.CharField(max_length=150)

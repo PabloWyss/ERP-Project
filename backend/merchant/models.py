@@ -19,8 +19,16 @@ class Merchant(models.Model):
     email = models.EmailField(unique=True)
     profile_picture = models.ImageField(upload_to=merchant_directory_path, null=True, blank=True)
     # items (linked in item.models.py)
-    partners = models.ManyToManyField(to=Partner, blank=True, related_name="merchants")
+    partners = models.ManyToManyField(to=Partner, through='MerchantPartnerRelationship', related_name='merchants')
     # orders (linked in order.models.py)
 
     def __str__(self):
         return self.name
+
+
+class MerchantPartnerRelationship(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    merchant = models.ForeignKey(to=Merchant, on_delete=models.PROTECT)
+    partner = models.ForeignKey(to=Partner, on_delete=models.PROTECT)
+    is_supplier = models.BooleanField(default=True)
+    is_customer = models.BooleanField(default=False)
