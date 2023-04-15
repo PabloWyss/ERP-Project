@@ -68,4 +68,3 @@ class RetrieveUpdateDestroyItemVariantView(RetrieveUpdateDestroyAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
     lookup_url_kwarg = 'item_id'
-

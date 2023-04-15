@@ -9,7 +9,7 @@ from warehouse.serializers import WarehouseSerializer
 
 class OrderSerializer(serializers.ModelSerializer):
     merchant = MerchantSerializer(read_only=True)
-    partner= PartnerSerializer(read_only=True)
+    partner = PartnerSerializer(read_only=True)
     items = ItemSerializer(read_only=True, many=True)
     warehouse = WarehouseSerializer(read_only=True)
 
@@ -20,6 +20,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
 class OrderCreateSerializer(serializers.ModelSerializer):
     merchant = MerchantSerializer(read_only=True)
+
     class Meta:
         model = Order
         fields = '__all__'

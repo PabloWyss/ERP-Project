@@ -6,6 +6,7 @@ from merchant.serializers import MerchantSerializer
 class PartnerSerializer(serializers.ModelSerializer):
 
     merchants = MerchantSerializer(read_only=True, many=True)
+
     class Meta:
         model = Partner
         fields = '__all__'

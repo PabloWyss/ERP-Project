@@ -6,7 +6,6 @@ from item.models import Item
 from order.models import Order
 from order.serializers import OrderSerializer, OrderCreateSerializer
 from warehouse.models import WarehouseItemInventory, Warehouse
-from warehouse.serializers import WarehouseSerializer
 
 
 class ListOrderView(ListAPIView):
@@ -45,13 +44,14 @@ class CreateOrderView(CreateAPIView):
         quantity_altered = request.data['quantity']
         warehouse_instance = Warehouse.objects.filter(id=request.data['warehouse']).first()
         item_instance = Item.objects.filter(id=request.data['items'][0]).first()
+
         try:
             warehouse_inventory_instance = WarehouseItemInventory.objects.filter(warehouse=warehouse_instance,
                                                                                  item=item_instance).get()
             current_stock_level = WarehouseItemInventory.objects.filter(
                 item_id=request.data['items'][0],
                 warehouse_id=request.data['warehouse']).get().stock_level_current
-        except:
+        except WarehouseItemInventory.DoesNotExist:
             if is_refund and merchant_is_supplier:
                 WarehouseItemInventory.objects.create(warehouse=warehouse_instance, item=item_instance,
                                                       stock_level_current=0)

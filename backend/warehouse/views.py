@@ -75,16 +75,17 @@ class InboundItemToWarehouseView(UpdateAPIView):
                 InventoryLedger.objects.create(warehouse=warehouse, event_type=action,
                                                stock_level_initial=current_stock_level,
                                                quantity_altered=self.request.data['quantity'],
-                                               stock_level_final=current_stock_level + self.request.data['quantity']
-                                               , item=item)
+                                               stock_level_final=current_stock_level + self.request.data['quantity'],
+                                               item=item)
 
                 warehouse_inventory_instance = WarehouseItemInventory.objects.filter(warehouse=warehouse,
                                                                                      item=item).get()
                 if current_stock_level + quantity_altered == 0:
                     warehouse_inventory_instance.delete()
                     return Response({'status': 'Item removed from warehouse'})
-                else :
-                    warehouse_inventory_instance.stock_level_current = current_stock_level + self.request.data['quantity']
+                else:
+                    warehouse_inventory_instance.stock_level_current = current_stock_level + self.request.data[
+                        'quantity']
                     warehouse_inventory_instance.save()
                     return Response({'status': 'Stock level updated'})
         else:
