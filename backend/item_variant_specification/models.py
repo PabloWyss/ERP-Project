@@ -39,7 +39,7 @@ class ItemVariantSpecification(models.Model):
     length_cm = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
     width_cm = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
     height_cm = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
-    size = models.CharField(choices=SIZES, max_length=50)
+    size = models.CharField(choices=SIZES, max_length=50, blank=True, null=True)
     purchase_price_net_eur = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
     sale_price_net_eur = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
     stock_level_minimum = models.IntegerField(validators=[MinValueValidator(0)], blank=True, null=True)

@@ -45,25 +45,36 @@ class CreateOrderView(CreateAPIView):
         quantity_altered = request.data['quantity']
         warehouse_instance = Warehouse.objects.filter(id=request.data['warehouse']).first()
         item_instance = Item.objects.filter(id=request.data['items'][0]).first()
-        warehouse_inventory_instance = WarehouseItemInventory.objects.filter(warehouse=warehouse_instance,
-                                                                             item=item_instance).get()
-        current_stock_level = WarehouseItemInventory.objects.filter(
-            item_id=request.data['items'][0],
-            warehouse_id=request.data['warehouse']).get().stock_level_current
+        try:
+            warehouse_inventory_instance = WarehouseItemInventory.objects.filter(warehouse=warehouse_instance,
+                                                                                 item=item_instance).get()
+            current_stock_level = WarehouseItemInventory.objects.filter(
+                item_id=request.data['items'][0],
+                warehouse_id=request.data['warehouse']).get().stock_level_current
+        except:
+            if is_refund and merchant_is_supplier:
+                WarehouseItemInventory.objects.create(warehouse=warehouse_instance, item=item_instance,
+                                                      stock_level_current=0)
+                warehouse_inventory_instance = WarehouseItemInventory.objects.filter(warehouse=warehouse_instance,
+                                                                                     item=item_instance).get()
+                current_stock_level = 0
+            else:
+                return Response({'status': 'The warehouse does not have this item'})
+
         def generate_order():
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save(merchant=merchant)
 
-        def generate_inventory_ledger(action):
+        def generate_inventory_ledger(action, quantity):
             InventoryLedger.objects.create(warehouse=warehouse_instance, event_type=action,
                                            stock_level_initial=current_stock_level,
-                                           quantity_altered=request.data['quantity'],
-                                           stock_level_final=current_stock_level + request.data['quantity'],
+                                           quantity_altered=quantity,
+                                           stock_level_final=current_stock_level + quantity,
                                            item=item_instance)
 
-        def update_stock_levels():
-            warehouse_inventory_instance.stock_level_current = current_stock_level + request.data['quantity']
+        def update_stock_levels(quantity):
+            warehouse_inventory_instance.stock_level_current = current_stock_level + quantity
             warehouse_inventory_instance.save()
             return Response({'status': 'Stock level updated'})
 
@@ -71,36 +82,38 @@ class CreateOrderView(CreateAPIView):
             if is_refund:
                 action = 'Inbound'
                 generate_order()
-                generate_inventory_ledger(action)
-                update_stock_levels()
+                generate_inventory_ledger(action, quantity_altered)
+                update_stock_levels(quantity_altered)
             else:
-                if current_stock_level + request.data['quantity'] < 0:
+                quantity_altered = quantity_altered * -1
+                if current_stock_level + quantity_altered < 0:
                     return Response({'status': 'Not enough stock in warehouse'})
                 else:
                     action = 'Outbound'
                     generate_order()
-                    generate_inventory_ledger(action)
+                    generate_inventory_ledger(action, quantity_altered)
                     if current_stock_level + quantity_altered == 0:
                         warehouse_inventory_instance.delete()
                         return Response({'status': 'Item removed from warehouse'})
                     else:
-                        update_stock_levels()
+                        update_stock_levels(quantity_altered)
         else:
             if is_refund:
-                if current_stock_level + request.data['quantity'] < 0:
+                quantity_altered = quantity_altered * -1
+                if current_stock_level + quantity_altered < 0:
                     return Response({'status': 'Not enough stock in warehouse'})
                 else:
                     action = 'Outbound'
                     generate_order()
-                    generate_inventory_ledger(action)
+                    generate_inventory_ledger(action, quantity_altered)
                     if current_stock_level + quantity_altered == 0:
                         warehouse_inventory_instance.delete()
                         return Response({'status': 'Item removed from warehouse'})
                     else:
-                        update_stock_levels()
+                        update_stock_levels(quantity_altered)
             else:
                 action = 'Inbound'
                 generate_order()
-                generate_inventory_ledger(action)
-                update_stock_levels()
+                generate_inventory_ledger(action, quantity_altered)
+                update_stock_levels(quantity_altered)
         return Response({'status': 'Order successfully created'})
