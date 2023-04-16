@@ -37,14 +37,13 @@ class CreatePartnerView(CreateAPIView):
         partner_name = request.data['name']
         is_supplier = request.data['is_supplier']
         is_customer = request.data['is_customer']
-        partner_exists = merchant.partners.filter(name=partner_name).exists()
-        if partner_exists:
+        is_partner = merchant.partners.filter(name=partner_name).exists()
+        if is_partner:
             return Response({'status': 'Partner already exists'})
         else:
             serializer = self.get_serializer(data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
-            merchant.partners.add(serializer.data['id'])
             partner = Partner.objects.filter(name=partner_name).get()
             MerchantPartnerRelationship.objects.create(merchant=merchant, partner=partner, is_supplier=is_supplier,
                                                        is_customer=is_customer)

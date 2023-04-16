@@ -2,7 +2,8 @@ from rest_framework import serializers
 from item_image.models import Attachment
 
 
-class PostImageSerializer(serializers.ModelSerializer):
+class ItemImageSerializer(serializers.ModelSerializer):
+
     image = serializers.ImageField(max_length=None, use_url=True)
 
     class Meta:

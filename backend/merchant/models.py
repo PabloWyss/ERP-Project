@@ -30,5 +30,5 @@ class MerchantPartnerRelationship(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     merchant = models.ForeignKey(to=Merchant, on_delete=models.PROTECT)
     partner = models.ForeignKey(to=Partner, on_delete=models.PROTECT)
-    is_supplier = models.BooleanField(default=True)
-    is_customer = models.BooleanField(default=False)
+    is_supplier = models.BooleanField()
+    is_customer = models.BooleanField()

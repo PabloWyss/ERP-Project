@@ -9,7 +9,7 @@ class Partner(models.Model):
     address = models.CharField(max_length=50, null=True, blank=True)
     country_code = models.CharField(max_length=2, null=True, blank=True)
     phone = models.CharField(max_length=50, null=True, blank=True)
-    email = models.EmailField(unique=True)
+    email = models.EmailField()
     # orders (linked in order.models.py)
 
     def __str__(self):
