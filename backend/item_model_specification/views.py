@@ -40,6 +40,7 @@ class CreateItemModelView(CreateAPIView):
         else:
             return Response({'status': 'Model name already exists in item'})
 
+
 class UpdateItemModelView(UpdateAPIView):
 
     queryset = ItemModelSpecification.objects.all()

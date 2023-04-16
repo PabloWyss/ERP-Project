@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView
 from item_variant_specification.models import ItemVariantSpecification
 from item_variant_specification.serializers import ItemVariantSpecificationSerializer
 from item.models import Item
@@ -50,6 +50,3 @@ class CurrentItemVariantView(ListAPIView):
         item_variant = item.item_variant_specifications.latest('valid_to').id
         item_variant_queryset = ItemVariantSpecification.objects.filter(id=item_variant)
         return item_variant_queryset
-
-
-
