@@ -39,6 +39,8 @@ urlpatterns = [
 
     path('backend/api/items/models/', include('item_model_specification.urls')),
 
+    path('backend/api/item_tags/', include('item_tag.urls')),
+
     path('backend/api/merchants/', include('merchant.urls')),
 
     path('backend/api/orders/', include('order.urls')),
