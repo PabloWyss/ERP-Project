@@ -34,6 +34,7 @@ urlpatterns = [
     path('backend/api/inventory_ledgers/', include('inventory_ledger.urls')),
 
     path('backend/api/items/', include('item.urls')),
+    path('backend/api/items/variants/', include('item_variant_specification.urls')),
 
     path('backend/api/merchants/', include('merchant.urls')),
 
