@@ -44,6 +44,7 @@ class CreateOrderView(CreateAPIView):
         quantity_altered = request.data['quantity']
         warehouse = Warehouse.objects.filter(id=request.data['warehouse']).first()
         item = Item.objects.filter(id=request.data['items'][0]).first()
+        response = {}
 
         try:
             warehouse_inventory = WarehouseItemInventory.objects.filter(warehouse=warehouse, item=item).get()
@@ -51,18 +52,14 @@ class CreateOrderView(CreateAPIView):
                 item_id=request.data['items'][0],
                 warehouse_id=request.data['warehouse']).get().stock_level_current
         except WarehouseItemInventory.DoesNotExist:
-            if is_refund and is_merchant_supplier:
-                WarehouseItemInventory.objects.create(warehouse=warehouse, item=item, stock_level_current=0)
-                warehouse_inventory = WarehouseItemInventory.objects.filter(warehouse=warehouse, item=item).get()
-                current_stock_level = 0
-            else:
-                return Response({'status': 'The warehouse does not have this item'})
+            WarehouseItemInventory.objects.create(warehouse=warehouse, item=item, stock_level_current=0)
+            warehouse_inventory = WarehouseItemInventory.objects.filter(warehouse=warehouse, item=item).get()
+            current_stock_level = 0
 
         def generate_order():
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save(merchant=merchant)
-            return Response({'status': 'Order successfully created'})
 
         def generate_inventory_ledger(action, quantity):
             InventoryLedger.objects.create(warehouse=warehouse, event_type=action,
@@ -74,35 +71,44 @@ class CreateOrderView(CreateAPIView):
         def update_stock_levels(quantity):
             warehouse_inventory.stock_level_current = current_stock_level + quantity
             warehouse_inventory.save()
-            return Response({'status': 'Stock level updated'})
 
         def process_inbound_order(quantity):
             action = 'Inbound'
             generate_order()
             generate_inventory_ledger(action, quantity)
             update_stock_levels(quantity)
+            response = {'status': 'Order successfully created and stock level in warehouse updated'}
+            return response
 
         def process_outbound_order(quantity):
             quantity = quantity * -1
             if current_stock_level + quantity < 0:
-                return Response({'status': 'Not enough stock in warehouse'})
+                response = {'status': 'Not enough stock in warehouse'}
+                return response
             else:
                 action = 'Outbound'
                 generate_order()
                 generate_inventory_ledger(action, quantity)
                 if current_stock_level + quantity == 0:
                     warehouse_inventory.delete()
-                    return Response({'status': 'Item removed from warehouse'})
+                    response = {'status': 'Order successfully created and item removed from warehouse'}
+                    return response
                 else:
                     update_stock_levels(quantity)
+                    response = {'status': 'Order successfully created and stock level in warehouse updated'}
+                    return response
 
         if is_merchant_supplier:
             if is_refund:
-                process_inbound_order(quantity_altered)
+                response = process_inbound_order(quantity_altered)
+                return Response(response)
             else:
-                process_outbound_order(quantity_altered)
+                response = process_outbound_order(quantity_altered)
+                return Response(response)
         else:
             if is_refund:
-                process_outbound_order(quantity_altered)
+                response = process_outbound_order(quantity_altered)
+                return Response(response)
             else:
-                process_inbound_order(quantity_altered)
+                response = process_inbound_order(quantity_altered)
+                return Response(response)
