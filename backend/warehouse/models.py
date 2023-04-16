@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 
 from item.models import Item
@@ -12,7 +13,7 @@ class Warehouse(models.Model):
 
     # id
     merchants = models.ManyToManyField(to=Merchant, related_name="warehouses")
-    items = models.ManyToManyField(to=Item, blank=True, related_name="warehouses")
+    items = models.ManyToManyField(to=Item, through='WarehouseItemInventory', related_name="warehouses")
     name = models.CharField(max_length=50)
     contact = models.CharField(max_length=50, null=True, blank=True)
     address = models.CharField(max_length=50, null=True, blank=True)
@@ -25,3 +26,9 @@ class Warehouse(models.Model):
 
     def __str__(self):
         return f'{self.id} - Warehouse {self.name}'
+
+
+class WarehouseItemInventory(models.Model):
+    warehouse = models.ForeignKey(to=Warehouse, on_delete=models.PROTECT)
+    item = models.ForeignKey(to=Item, on_delete=models.PROTECT)
+    stock_level_current = models.IntegerField(validators=[MinValueValidator(0)], blank=True, null=True)

@@ -1,12 +1,11 @@
-# from django.urls import path
-#
-# from partner.views import ListPartnerView, SearchPartnerView, CreateOrderView, RetrieveUpdateDestroyPartnerView, ListSupplierView, \
-#     SearchSupplierView, ListCustomerView, SearchCustomerView
+from django.urls import path
+
+from order.views import ListOrderView, CreateOrderView
 
 urlpatterns = [
     # backend/api/orders/
-    # path('', ListOrderView.as_view()),
-    # path('new/', CreateOrderView.as_view()),
+    path('', ListOrderView.as_view()),
+    path('new/', CreateOrderView.as_view()),
     # path('search/', SearchOrderView.as_view()),
     # path('<int:order_id>/', RetrieveUpdateDestroyOrderView.as_view()),
 
