@@ -5,6 +5,7 @@ from item_model_specification.models import ItemModelSpecification
 
 
 class ItemModelSpecificationSerializer(serializers.ModelSerializer):
+
     items = ItemSerializer(read_only=True, many=True)
     images = ItemImageSerializer(read_only=True, many=True)
 

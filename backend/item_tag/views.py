@@ -8,10 +8,10 @@ from item_tag.serializers import ItemTagSerializer
 class ListItemTagView(ListAPIView):
     """
     get:
-    List all items tags
+    List all item tags
 
     # subtitle
-    Lists all the items tags of the merchant in alphabetical order of name
+    List all the item tags of the merchant in alphabetical order of tag name
     """
     serializer_class = ItemTagSerializer
 
@@ -24,10 +24,10 @@ class ListItemTagView(ListAPIView):
 class CreateItemTagView(CreateAPIView):
     """
     post:
-    Create a new item model and assigns it to an item
+    Create and assign a new item tag
 
     # subtitle
-    Create a new item model and assigns it to an item
+    Create a new item tag and assign it to an item model
     """
     queryset = ItemTag.objects.all()
     serializer_class = ItemTagSerializer
@@ -41,16 +41,16 @@ class CreateItemTagView(CreateAPIView):
             serializer.save(items=item)
             return Response(serializer.data)
         else:
-            return Response({'status': 'Tag Name already exist'})
+            return Response({'status': 'Item tag name already exists'})
 
 
 class SearchItemTagView(ListAPIView):
     """
     get:
-    Search for a specific Item Tag
+    Search for a specific item tag
 
     # subtitle
-    Search for a specific Item Tag of the item
+    Search for a specific item tag created by the merchant
     """
     serializer_class = ItemTagSerializer
 
@@ -64,6 +64,6 @@ class SearchItemTagView(ListAPIView):
 
 
 class RetrieveUpdateDestroyItemTagView(RetrieveUpdateDestroyAPIView):
-    serializer_class = ItemTagSerializer
-    lookup_url_kwarg = 'item_serializer_id'
     queryset = ItemTag.objects.all().order_by('tag_name')
+    serializer_class = ItemTagSerializer
+    lookup_url_kwarg = 'item_tag_id'

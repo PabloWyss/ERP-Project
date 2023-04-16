@@ -7,5 +7,5 @@ urlpatterns = [
     path('', ListItemTagView.as_view()),
     path('new/<int:item_id>/', CreateItemTagView.as_view()),
     path('search/', SearchItemTagView.as_view()),
-    path('<int:item_serializer_id>/', RetrieveUpdateDestroyItemTagView.as_view())
+    path('<int:item_tag_id>/', RetrieveUpdateDestroyItemTagView.as_view())
 ]
