@@ -21,8 +21,8 @@ class ListWarehouseView(ListAPIView):
 
     def get_queryset(self):
         merchant = self.request.user.merchant
-        partners = Warehouse.objects.filter(merchants__id=merchant.id)
-        return partners
+        warehouses_of_merchant = Warehouse.objects.filter(merchants__id=merchant.id)
+        return warehouses_of_merchant
 
 
 class CreateWarehouseView(CreateAPIView):
