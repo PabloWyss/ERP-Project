@@ -7,9 +7,17 @@ def item_image_directory_path(instance, filename):
 
 
 class Attachment(models.Model):
-    item_model_specification = models.ForeignKey(to=ItemModelSpecification, on_delete=models.CASCADE,
-                                                 related_name='images')
-    image = models.ImageField(upload_to=item_image_directory_path, null=True, blank=True)
+
+    item_model_specification = models.ForeignKey(
+        to=ItemModelSpecification,
+        on_delete=models.CASCADE,
+        related_name='images'
+    )
+    image = models.ImageField(
+        upload_to=item_image_directory_path,
+        null=True,
+        blank=True
+    )
 
     class Meta:
         verbose_name = 'Attachment'

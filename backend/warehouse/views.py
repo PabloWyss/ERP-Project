@@ -51,17 +51,29 @@ class CreateWarehouseView(CreateAPIView):
             return Response({'status': 'Warehouse Created'})
 
 
-class InboundItemToWarehouseView(UpdateAPIView):
+class UpdateOneItemInWarehouseView(UpdateAPIView):
     serializer_class = WarehouseSerializer
     lookup_url_kwarg = 'warehouse_id'
 
     def update(self, request, *args, **kwargs):
         warehouse = Warehouse.objects.filter(
             Q(merchants__id=request.user.merchant.id) & Q(id=self.kwargs['warehouse_id'])).first()
-        exist_item_in_warehouse = warehouse.items.filter(id=self.request.data['item_id']).exists()
         item = Item.objects.filter(id=self.request.data['item_id']).first()
-        if exist_item_in_warehouse:
-            quantity_altered = self.request.data['quantity']
+        is_item_in_warehouse = warehouse.items.filter(id=self.request.data['item_id']).exists()
+        quantity_altered = self.request.data['quantity']
+
+        def generate_inventory_ledger(action, quantity):
+            InventoryLedger.objects.create(warehouse=warehouse, event_type=action,
+                                           stock_level_initial=current_stock_level,
+                                           quantity_altered=quantity,
+                                           stock_level_final=current_stock_level + quantity,
+                                           item=item)
+
+        def generate_warehouse_inventory(quantity):
+            WarehouseItemInventory.objects.create(warehouse=warehouse, item=item,
+                                                  stock_level_current=quantity)
+
+        if is_item_in_warehouse:
             if quantity_altered > 0:
                 action = 'Inbound'
             else:
@@ -72,32 +84,28 @@ class InboundItemToWarehouseView(UpdateAPIView):
             if current_stock_level + quantity_altered < 0:
                 return Response({'status': 'Not enough stock in warehouse'})
             else:
-                InventoryLedger.objects.create(warehouse=warehouse, event_type=action,
-                                               stock_level_initial=current_stock_level,
-                                               quantity_altered=self.request.data['quantity'],
-                                               stock_level_final=current_stock_level + self.request.data['quantity'],
-                                               item=item)
-
-                warehouse_inventory_instance = WarehouseItemInventory.objects.filter(warehouse=warehouse,
-                                                                                     item=item).get()
+                generate_inventory_ledger(action, quantity_altered)
+                warehouse_inventory = WarehouseItemInventory.objects.filter(warehouse=warehouse,
+                                                                            item=item).get()
                 if current_stock_level + quantity_altered == 0:
-                    warehouse_inventory_instance.delete()
+                    warehouse_inventory.delete()
                     return Response({'status': 'Item removed from warehouse'})
                 else:
-                    warehouse_inventory_instance.stock_level_current = current_stock_level + self.request.data[
-                        'quantity']
-                    warehouse_inventory_instance.save()
+                    warehouse_inventory.stock_level_current = current_stock_level + quantity_altered
+                    warehouse_inventory.save()
                     return Response({'status': 'Stock level updated'})
         else:
-            WarehouseItemInventory.objects.create(warehouse=warehouse, item=item,
-                                                  stock_level_current=self.request.data['quantity'])
-            InventoryLedger.objects.create(warehouse=warehouse, event_type='Inbound', stock_level_initial=0,
-                                           quantity_altered=self.request.data['quantity'],
-                                           stock_level_final=self.request.data['quantity'], item=item)
-            return Response({'status': 'Item added to Warehouse'})
+            if quantity_altered < 0:
+                return Response({'status': 'Negative stock not allowed'})
+            else:
+                action = 'Inbound'
+                current_stock_level = 0
+                generate_inventory_ledger(action, quantity_altered)
+                generate_warehouse_inventory(quantity_altered)
+                return Response({'status': 'Item added to warehouse'})
 
 
-class AssignManyItemToWarehouseView(UpdateAPIView):
+class UpdateManyItemInWarehouseView(UpdateAPIView):
     serializer_class = WarehouseSerializer
     lookup_url_kwarg = 'warehouse_id'
 
