@@ -60,8 +60,8 @@ function SignUpRight() {
 
   return (
     <section className="flex flex-col h-screen w-1/2 bg-bgLogin">
-      <div className="flex justify-end items-center h-10 min-h-40px w-full gap-3% mt-3%">
-        <p className="text-sm font-normal">Don't have an account?</p>
+      <div className="flex justify-end items-center h-10 min-h-40px w-full mt-3">
+        <p className="text-sm font-normal">Already have an account?</p>
         <button
           className="bg-white px-6 py-2 rounded-full border border-black border-opacity-20 text-sm font-roboto font-normal mr-4 hover:cursor-pointer"
           onClick={handleSignInClick}
@@ -69,21 +69,21 @@ function SignUpRight() {
           SIGN IN
         </button>
       </div>
-      <form className="flex flex-col items-center mt-40 h-full w-full ">
+      <form className="flex flex-col items-center mt-40 h-90 w-full ">
         {error && <div className="text-red-500 text-sm mb-10">{error}</div>}
         <h2 className="text-2xl font-normal pb-4">Sign Up</h2>
-        <div className="flex items-center w-full max-w-md">
+        <div className="flex items-center w-1/2">
           <img
+            className="w-6 h-6 mr-2"
             src={LetterIcon}
             alt="Form Icon"
-            className="w-6 h-6 mr-2"
           />
           <input
+            className="m-4 w-full leading-8 border-b-2 border-solid border-opacity-10 w-40 text-indent-3rem"
             type="email"
             placeholder="Email"
-            className="m-4 flex-grow border-b-2 border-solid border-opacity-10 border-black w-40 text-left pl-12"
-            onChange={handleEmailInput}
             value={userEmail}
+            onChange={handleEmailInput}
           />
         </div>
         <button

@@ -73,7 +73,11 @@ function SignInRight() {
         {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
         <h2 className="text-2xl font-normal pb-4">Sign In</h2>
         <div className="flex items-center w-1/2">
-          <img className="w-6 h-6 mr-2" src={ProfileIcon} alt="Profile icon" />
+          <img
+              className="w-6 h-6 mr-2"
+              src={ProfileIcon}
+              alt="Profile icon"
+          />
           <input
             className="m-4 w-full leading-8 border-b-2 border-solid border-opacity-10 w-40 text-indent-3rem"
             type="email"
@@ -84,7 +88,12 @@ function SignInRight() {
           />
         </div>
         <div className="flex items-center w-1/2">
-          <img className="w-6 h-6 mr-2" src={PasswordIcon} alt="Password icon" />
+          <img
+              className="w-6 h-6 mr-2"
+              src={PasswordIcon}
+              alt="Password icon"
+
+          />
           <input
             className="m-4 w-full leading-8 border-b-2 border-solid border-opacity-10 w-40 text-indent-3rem"
             type="password"
