@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom"; // Import NavLink from react-router-dom
+import { useNavigate } from "react-router-dom";
 import callAPI from "../../Axios/callAPI";
 
 function VerificationRight() {
@@ -11,6 +11,7 @@ function VerificationRight() {
   const [verificationCode, setVerificationCode] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(true);
+  const navigate = useNavigate();
 
   const [error, setError] = useState("");
 
@@ -97,8 +98,8 @@ function VerificationRight() {
 
       //console.log("68: "+emessage);
       if (!emessage) {
-        //redirect to login page using NavLink
-        return <NavLink to="/signin" />;
+        // redirect to login page using navigate function
+        navigate("/signin");
       } else {
         alert(emessage);
       }
@@ -173,6 +174,7 @@ function VerificationRight() {
       </div>
     </div>
   );
-  
+
           }
   export default VerificationRight;
+
