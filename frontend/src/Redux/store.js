@@ -1,13 +1,10 @@
-import { configureStore } from "@reduxjs/toolkit";
-import currentUser from "./slices/currentUser";
-import signUpEmailAddress from "./slices/signUpEmailAddress";
-import friendReuqestReducer from "./slices/friendReuqestSlice";
-import profileFilter from "./slices/profileFilter";
-import postsFilter from "./slices/postsFilter";
+import { configureStore } from '@reduxjs/toolkit';
+import { signUpEmailAddress } from "./Slices/signUpEmailAddress"; 
+import currentUser from "./Slices/currentUser";
 
 export default configureStore({
-  reducer: {
-    signupemail: signUpEmailAddress,
-
-  },
+    reducer: {
+      signupemail: signUpEmailAddress,
+      currentuser: currentUser,
+    },
 });
