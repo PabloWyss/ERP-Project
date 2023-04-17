@@ -6,56 +6,35 @@ import { signUpEmail} from "../../Redux/Slices/signUpEmailAddress";
 
 function CongratsRight() {
   const navigate = useNavigate();
-  const userEmail = useSelector((store) => store.signupemail); 
+  const userEmail = useSelector((store) => store.signupemail);
 
   //navigate to verification page
   const handleContinueClick = () => {
     navigate("/verification");
   };
 
-  return (
-    <section className="flex flex-col items-center  h-screen w-1/2 bg-bgLogin">
-      <h2 className="text-2xl font-normal mt-20%">Congratulations!</h2>
+ return (
+    <section className="flex flex-col h-screen w-1/2 bg-bgLogin">
+       <div className="flex flex-col items-center mt-40 h-90 w-full">
+      <h2 className="text-3xl font-semibold pb-4">Congratulations!</h2>
       <div className="w-20% max-w-130px">
         <img src={CheckMarkIcon} alt="Check mark" />
       </div>
-      <p className="font-sans text-xs w-60% text-center mb-0.2rem mt-0.2rem">
+      <p className="font-sans text-sm w-60% text-center mb-0.2rem mt-0.2rem">
         We’ve sent a confirmation code to your email
       </p>
-      <p className="font-sans text-xs w-60% text-center">{userEmail}</p>
-      <button
-        className="px-6 py-1.2 rounded-full bg-ifOrange text-white text-xs font-sans tracking-wider mt-12% focus:outline-none hover:cursor-pointer"
-        onClick={handleContinueClick}
-      >
-        CONTINUE
-      </button>
-      <div className="flex justify-center mt-8%">
-        <svg className="h-20 w-20">
-          <circle
-            cx="8"
-            cy="8"
-            r="0.3rem"
-            fill="white"
-            stroke="rgba(0, 0, 0, 0.2)"
-            strokeWidth="2"
-          />
-        </svg>
-        <svg className="h-20 w-20">
-          <circle cx="8" cy="8" r="0.3rem" fill="black" stroke="black" />
-        </svg>
-        <svg className="h-20 w-20">
-          <circle
-            cx="8"
-            cy="8"
-            r="0.3rem"
-            fill="white"
-            stroke="rgba(0, 0, 0, 0.2)"
-            strokeWidth="2"
-          />
-        </svg>
-      </div>
+      <p className="font-sans text-sm w-60% text-center">{userEmail}</p>
+        <button
+          className="w-full max-w-md px-4 py-3 text-white mt-5 bg-ifOrange rounded hover:bg-orange-500 focus:outline-none"
+          onClick={handleContinueClick}
+        >
+          CONTINUE
+        </button>
+       </div>
     </section>
   );
 }
 
 export default CongratsRight;
+
+
