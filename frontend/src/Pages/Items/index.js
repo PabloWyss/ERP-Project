@@ -12,7 +12,7 @@ function Items() {
 
   return (
     <div className="flex h-screen w-full justify-center overflow-y-scroll">
-      <div className="flex flex-col h-screen w-full w-11/12 pt-10 pb-10 gap-4">
+      <div className="flex flex-col h-screen w-11/12 pt-10 pb-10 gap-4">
           <div className="flex justify-start w-2/5">
               <div className="flex items-center justify-between w-full">
                   <div >

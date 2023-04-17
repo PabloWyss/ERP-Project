@@ -3,7 +3,7 @@ import React from "react";
 const PrimaryDetails = () => {
 
     return (
-        <form className="flex flex-col w-full justify-between gap-4">
+        <form className="flex flex-col w-full justify-between gap-4 border-b-violet-500">
               <h2 className="text-xl">
                   Primary Details
               </h2>

@@ -1,4 +1,4 @@
-import {NavLink, useLocation, useNavigate,} from "react-router-dom"
+import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import { ReactComponent as ProfileIcon } from '../../Assets/Icons//profile.svg';
 import { ReactComponent as TagsIcon } from '../../Assets/Icons//tags.svg';
 import { ReactComponent as WarehouseIcon } from '../../Assets/Icons/warehouse.svg';
@@ -35,7 +35,7 @@ const SideBar = ({children}) => {
       return (
           <>
           <div
-              className="fixed py-10 left-0 top-0 h-full flex flex-col w-48 bg-gradient-to-b from-gradientFrom to-gradientTo">
+              className="flex h-screen py-10 left-0 top-0 flex-col w-48 bg-gradient-to-b from-gradientFrom to-gradientTo">
             <div className="flex items-center justify-center">
               <img src={logo} alt="Invenflow Logo" className="w-8 h-8 mr-5"/>
               <h1 className="text-white text-xl font-bold">invenflow</h1>
