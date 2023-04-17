@@ -10,16 +10,23 @@ import SignIn from "./Pages/Auth/SignIn";
 import SignUp from "./Pages/Auth/SignUp";
 import Congratulations from "./Pages/Auth/Congratulations";
 import Verification from "./Pages/Auth/Verification";
-
-// test
-
-// test 2
+import React, { useState, useEffect } from "react";
 
 function App() {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token){
+      setIsLoggedIn(true)
+    }
+  }, []);
+
   return (
     <Router>
       <div className="flex">
-          <SideBar/>
+        {isLoggedIn && <SideBar />}
         <Routes>
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
@@ -38,6 +45,5 @@ function App() {
   );
 }
 
-
-
 export default App;
+

@@ -38,13 +38,13 @@ function SignInRight() {
 
       //login request to API
       const response = await callAPI
-        .post("token/", JSON.stringify({ email: userEmail, password: userPassword }))
+        .post("/auth/token/", JSON.stringify({ email: userEmail, password: userPassword }))
         .catch((error) => (emessage = error.message));
 
       if (!emessage) {
-        navigate("/posts");
-        localStorage.setItem("auth-token", response.data.access);
-        console.log("auth-token :" + response.data.access);
+        navigate("/items");
+        localStorage.setItem("token", response.data.access);
+        console.log("token :" + response.data.access);
 
         dispatch(setCurrentUser(response.data.access));
       } else {

@@ -6,21 +6,10 @@ import { ReactComponent as WarehouseIcon } from '../../Assets/Icons/warehouse.sv
 import { ReactComponent as ReportsIcon } from '../../Assets/Icons/reports.svg';
 import { ReactComponent as OrdersIcon } from '../../Assets/Icons/orders.svg';
 import { ReactComponent as ItemsIcon } from '../../Assets/Icons/items.svg';
+import { ReactComponent as ExitIcon } from '../../Assets/Icons/exit.svg';
 import logo from '../../Assets/Logos/logo_white.svg';
 
 const SideBar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    // gets login status from local storage
-    const loginStatus = localStorage.getItem("isLoggedIn");
-    setIsLoggedIn(loginStatus === "true");
-  }, []);
-
-  if (!isLoggedIn) {
-    return null;
-  }
-
 
   return (
     <div className="fixed py-10 left-0 top-0 h-full flex flex-col w-48 bg-gradient-to-b from-gradientFrom to-gradientTo">
@@ -69,7 +58,10 @@ const SideBar = () => {
             </button>
           )}
         </NavLink>
-        <NavLink to="/profile">
+
+      </div>
+      <div className= 'absolute bottom-10 left-0'>
+          <NavLink to="/profile">
           {({isActive}) => (
             <button className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
               <ProfileIcon className="mr-2" />
@@ -77,7 +69,10 @@ const SideBar = () => {
             </button>
           )}
         </NavLink>
-
+            <button className={`flex mt-50 items-start w-full text-left mt-4 text-white`}>
+              < ExitIcon className="mr-2" />
+              Log out
+            </button>
       </div>
     </div>
   );
