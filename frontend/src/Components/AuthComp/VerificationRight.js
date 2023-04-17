@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom"; // Import NavLink from react-router-dom
+import { useNavigate } from "react-router-dom";
 import callAPI from "../../Axios/callAPI";
 
 function VerificationRight() {
@@ -11,6 +11,7 @@ function VerificationRight() {
   const [verificationCode, setVerificationCode] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(true);
+  const navigate = useNavigate();
 
   const [error, setError] = useState("");
 
@@ -97,8 +98,8 @@ function VerificationRight() {
 
       //console.log("68: "+emessage);
       if (!emessage) {
-        //redirect to login page using NavLink
-        return <NavLink to="/signin" />;
+        // redirect to login page using navigate function
+        navigate("/signin");
       } else {
         alert(emessage);
       }
@@ -107,73 +108,73 @@ function VerificationRight() {
   return (
     <div className="flex flex-col h-screen w-1/2 bg-bgLogin">
       <div className="flex flex-col items-center mt-12 h-90 w-full">
-        <div className="text-2xl font-semibold pb-4">Verification</div>
+        {error && <div className="text-red-500 text-sm mb-10">{error}</div>}
+        <h2 className="text-2xl font-normal pb-4">Verification</h2>
         <div className="flex flex-col items-center w-60">
           <input
             type="text"
             placeholder="Verification Code"
             value={verificationCode}
             onChange={handleVerificationCodeInput}
-            className="leading-10 border-b-2 border-gray-200 w-99 mt-5"
+            className="m-4 w-full leading-8 border-b-2 border-solid border-opacity-10 w-40 text-indent-3rem"
           />
-          <div className="grid grid-cols-2 w-full">
             <input
               type="text"
               placeholder="First Name"
               value={firstName}
               onChange={handleFirstNameInput}
-              className="leading-10 border-b-2 border-gray-200 w-90 mt-12"
+              className="m-4 w-full leading-8 border-b-2 border-solid border-opacity-10 w-40 text-indent-3rem"
             />
             <input
               type="text"
               placeholder="Last Name"
               value={lastName}
               onChange={handleLastNameInput}
-              className="leading-10 border-b-2 border-gray-200 w-90 mt-12"
+              className="m-4 w-full leading-8 border-b-2 border-solid border-opacity-10 w-40 text-indent-3rem"
             />
-          </div>
           <input
             type="text"
             placeholder="Username"
             value={userName}
             onChange={handleUserNameInput}
-            className="leading-10 border-b-2 border-gray-200 w-90 mt-12"
+            className="m-4 w-full leading-8 border-b-2 border-solid border-opacity-10 w-40 text-indent-3rem"
           />
           <input
             type="email"
             placeholder="Email"
             value={userEmail}
             onChange={handleEmailInput}
-            className="leading-10 border-b-2 border-gray-200 w-90 mt-12"
+            className="m-4 w-full leading-8 border-b-2 border-solid border-opacity-10 w-40 text-indent-3rem"
           />
           <input
             type="password"
             placeholder="Password"
             value={userPassword}
             onChange={handlePasswordInput}
-            className="leading-10 border-b-2 border-gray-200 w-90 mt-12"
+            className="m-4 w-full leading-8 border-b-2 border-solid border-opacity-10 w-40 text-indent-3rem"
           />
           <input
             type="password"
             placeholder="Repeat Password"
             value={repeatPassword}
             onChange={handleRepeatPasswordInput}
-            className="leading-10 border-b-2 border-gray-200 w-90 mt-12"
+            className="m-4 w-full leading-8 border-b-2 border-solid border-opacity-10 w-40 text-indent-3rem"
           />
           {!passwordMatch && (
             <div className="text-red-500 text-sm mb-10">Passwords do not match</div>
           )}
-          <div
+          <button
             type="submit"
             onClick={handleActivateClick}
-            className="px-24 py-5 rounded-full border-none bg-ifOrange text-white text-sm font-medium tracking-wider mt-6 hover:cursor-pointer"
+            className="w-full max-w-md px-4 py-3 text-white mt-5 bg-ifOrange rounded hoverbg-orange-500 focusoutline-none"
           >
             Complete
-          </div>
+          </button>
         </div>
       </div>
     </div>
   );
-  
+
           }
   export default VerificationRight;
+

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from "react-route
 import SideBar from "./Components/SideBar";
 import Profile from "./Pages/Profile";
 import Tags from "./Pages/Tags";
-import Warehouse from "./Pages/Warehouse";
+import Merchant from "./Pages/Merchant";
 import Reports from "./Pages/Reports";
 import Orders from "./Pages/Orders";
 import Items from "./Pages/Items";
@@ -11,8 +11,8 @@ import SignIn from "./Pages/Auth/SignIn";
 import SignUp from "./Pages/Auth/SignUp";
 import Congratulations from "./Pages/Auth/Congratulations";
 import Verification from "./Pages/Auth/Verification";
+import Warehouse from "./Pages/Warehouse";
 import { useDispatch, useSelector } from "react-redux";
-import {setCurrentUser} from "./Redux/Slices/currentUser";
 
 function App() {
   const currentUser = useSelector((store) => store.currentuser.currentuser);
@@ -56,6 +56,7 @@ function App() {
                   <Route path="/reports" element={<Reports/>}/>
                   <Route path="/tags" element={<Tags/>}/>
                   <Route path="/profile" element={<Profile/>}/>
+                  <Route path="/merchant" element={<Merchant/>}/>
                   <Route path="/" element={<Items/>}/>
               </Routes>
       </div>

@@ -6,6 +6,7 @@ import { ReactComponent as ReportsIcon } from '../../Assets/Icons/reports.svg';
 import { ReactComponent as OrdersIcon } from '../../Assets/Icons/orders.svg';
 import { ReactComponent as ItemsIcon } from '../../Assets/Icons/items.svg';
 import { ReactComponent as ExitIcon } from '../../Assets/Icons/exit.svg';
+import { ReactComponent as MerchantIcon } from '../../Assets/Icons/store.svg'
 import logo from '../../Assets/Logos/logo_white.svg';
 import {setSignUpEmail} from "../../Redux/Slices/signUpEmailAddress";
 import {setCurrentUser} from "../../Redux/Slices/currentUser";
@@ -38,9 +39,18 @@ const SideBar = ({children}) => {
               className="flex py-10 left-0 top-0 h-screen flex-col w-48 bg-gradient-to-b from-gradientFrom to-gradientTo">
             <div className="flex items-center justify-center">
               <img src={logo} alt="Invenflow Logo" className="w-8 h-8 mr-5"/>
-              <h1 className="text-white text-xl font-bold">invenflow</h1>
+              <h1 className="text-white text-xl font-bold">InvenFlow</h1>
             </div>
             <div className="mt-10">
+                <NavLink to="/merchant">
+                {({isActive}) => (
+                    <button
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                      <MerchantIcon className="mr-2"/>
+                      Merchant
+                    </button>
+                )}
+              </NavLink>
               <NavLink to="/items">
                 {({isActive}) => (
                     <button
