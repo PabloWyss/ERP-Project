@@ -9,7 +9,7 @@ import logo from '../../Assets/Logos/logo_white.svg';
 
 const SideBar = () => {
   return (
-    <div className="fixed py-10 left-0 top-0 h-full flex flex-col w-48 bg-gradient-to-b from-gradientFrom to-gradientTo">
+    <div className="py-10 left-0 top-0 h-full flex flex-col w-48 bg-gradient-to-b from-gradientFrom to-gradientTo h-screen">
       <div className="flex items-center justify-center">
         <img src={logo} alt="Invenflow Logo" className="w-8 h-8 mr-5" />
         <h1 className="text-white text-xl font-bold">invenflow</h1>
