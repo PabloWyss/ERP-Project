@@ -1,7 +1,6 @@
 from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
 from merchant.models import Merchant
 from merchant.serializers import MerchantSerializer
-from rest_framework.permissions import IsAuthenticated
 from project.global_permissions import IsSameUser
 
 
@@ -14,7 +13,6 @@ class CreateMerchantView(CreateAPIView):
     Create a new merchant
     """
     queryset = Merchant.objects.all()
-    permission_classes = [IsAuthenticated]
     serializer_class = MerchantSerializer
 
     def perform_create(self, serializer):
