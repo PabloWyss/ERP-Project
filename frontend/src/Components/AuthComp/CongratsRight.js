@@ -15,11 +15,11 @@ function CongratsRight() {
 
  return (
     <section className="flex flex-col h-screen w-1/2 bg-bgLogin">
-       <div className="flex flex-col items-center mt-40 h-90 w-full">
-      <h2 className="text-3xl font-semibold pb-4">Congratulations!</h2>
-      <div className="w-20% max-w-130px">
-        <img src={CheckMarkIcon} alt="Check mark" />
-      </div>
+      <div className="flex flex-col items-center mt-40 h-90 w-full">
+        <h2 className="text-3xl font-semibold pb-4">Congratulations!</h2>
+        <div className="w-100% max-w-500px mt-20 mb-20">
+          <img src={CheckMarkIcon} alt="Check mark" className="text-white w-20 h-20" />
+        </div>
       <p className="font-sans text-sm w-60% text-center mb-0.2rem mt-0.2rem">
         We’ve sent a confirmation code to your email
       </p>
