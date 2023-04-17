@@ -42,7 +42,7 @@ function SignInRight() {
         .catch((error) => (emessage = error.message));
 
       if (!emessage) {
-        navigate("/items");
+        navigate("/merchant");
         localStorage.setItem("token", response.data.access);
         console.log("token :" + response.data.access);
 
