@@ -127,10 +127,10 @@ class SearchWarehouseView(ListAPIView):
     # subtitle
     Searches for Warehouses users of Merchant
     """
+
     serializer_class = WarehouseSerializer
 
     def get_queryset(self):
-        # This view returns an item based on the url query param
         merchant = self.request.user.merchant
         queryset = Warehouse.objects.filter(merchants__id=merchant.id)
         search_value = self.request.query_params.get('search_string')

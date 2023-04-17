@@ -1,9 +1,8 @@
-# from django.urls import path
-#
-# from inventory_ledger.views import ListItemView, SearchItemView, RetrieveUpdateDestroyItemView
+from django.urls import path
+from inventory_ledger.views import ListInventoryLedgerPositionView, SearchInventoryLedgerPositionView
 
 urlpatterns = [
     # backend/api/inventory_ledgers/
-    # path('', ListInventoryLedgerPositionView.as_view()),
-    # path('search/', SearchInventoryLedgerPositionView.as_view()),
+    path('', ListInventoryLedgerPositionView.as_view()),
+    path('search/', SearchInventoryLedgerPositionView.as_view())
 ]

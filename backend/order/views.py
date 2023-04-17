@@ -8,20 +8,43 @@ from order.serializers import OrderSerializer, OrderCreateSerializer
 from warehouse.models import WarehouseItemInventory, Warehouse
 
 
+def search_by_search_string(self, queryset):
+    search_value = self.request.query_params.get('search_string')
+    if search_value is not None:
+        queryset = queryset.filter(
+            Q(items__sku__icontains=search_value) |
+            Q(items__ean__icontains=search_value) |
+            Q(items__upc__icontains=search_value) |
+            Q(items__series__icontains=search_value) |
+            Q(items__amazon_asin__icontains=search_value) |
+            Q(items__amazon_fnsku__icontains=search_value) |
+            Q(items__name__icontains=search_value) |
+            Q(items__item_model_specifications__name__icontains=search_value) |
+            Q(items__item_model_specifications__color__icontains=search_value) |
+            Q(items__item_model_specifications__category__icontains=search_value) |
+            Q(items__item_model_specifications__brand_name__icontains=search_value) |
+            Q(items__item_model_specifications__brand_collection__icontains=search_value) |
+            Q(items__item_model_specifications__name__icontains=search_value) |
+            Q(merchant__name__icontains=search_value) |
+            Q(partner__name__icontains=search_value) |
+            Q(warehouse__name__icontains=search_value)
+        )
+    return queryset
+
+
 class ListOrderView(ListAPIView):
     """
     get:
     List all orders
 
     # subtitle
-    Lists all orders of the merchant
+    List all orders of the merchant in chronological order of order date
     """
-
     serializer_class = OrderSerializer
 
     def get_queryset(self):
         merchant = self.request.user.merchant
-        queryset = Order.objects.filter(merchant_id=merchant.id)
+        queryset = Order.objects.filter(merchant_id=merchant.id).order_by('order_date')
         return queryset
 
 
@@ -31,9 +54,8 @@ class CreateOrderView(CreateAPIView):
     Create a new order
 
     # subtitle
-    Create a new order related to a merchant
+    Create a new order related to the merchant
     """
-
     serializer_class = OrderCreateSerializer
     queryset = Order.objects.all()
 
@@ -127,27 +149,8 @@ class SearchOrderView(ListAPIView):
     def get_queryset(self):
         merchant = self.request.user.merchant
         queryset = Order.objects.filter(merchant__id=merchant.id)
-        search_value = self.request.query_params.get('search_string')
-        if search_value is not None:
-            queryset = queryset.filter(
-                Q(items__name__icontains=search_value) |
-                Q(merchant__name__icontains=search_value) |
-                Q(partner__name__icontains=search_value) |
-                Q(warehouse__name__icontains=search_value)
-            )
-        return queryset
-
-    """
-    def get_queryset(self):
-        merchant = self.request.user.merchant
-        queryset = Order.objects.filter(merchant__id=merchant.id)
-        search_value = self.request.query_params.get('search_string')
-        if search_value is not None:
-            queryset = queryset.filter(
-                Q(merchant__name__icontains=search_value)
-            )
-        return queryset
-    """
+        queryset_filtered = search_by_search_string(self, queryset)
+        return queryset_filtered
 
 
 class ListOrderSupplyView(ListAPIView):
@@ -156,7 +159,7 @@ class ListOrderSupplyView(ListAPIView):
     List all supplies
 
     # subtitle
-    Lists all the supplies of the merchant in chronological order
+    List all supplies of the merchant in chronological order of order date
     """
     serializer_class = OrderSerializer
 
@@ -179,15 +182,8 @@ class SearchOrderSupplyView(ListAPIView):
     def get_queryset(self):
         merchant = self.request.user.merchant
         queryset = Order.objects.filter(merchant__id=merchant.id).filter(is_merchant_supplier=True)
-        search_value = self.request.query_params.get('search_string')
-        if search_value is not None:
-            queryset = queryset.filter(
-                Q(items__name__icontains=search_value) |
-                Q(merchant__name__icontains=search_value) |
-                Q(partner__name__icontains=search_value) |
-                Q(warehouse__name__icontains=search_value)
-            )
-        return queryset
+        queryset_filtered = search_by_search_string(self, queryset)
+        return queryset_filtered
 
 
 class ListOrderSupplySaleView(ListAPIView):
@@ -196,7 +192,7 @@ class ListOrderSupplySaleView(ListAPIView):
     List all supplies (sale)
 
     # subtitle
-    Lists all the supplies (sale) of the merchant
+    List all supplies (sale) of the merchant in chronological order of order date
     """
     serializer_class = OrderSerializer
 
@@ -220,15 +216,8 @@ class SearchOrderSupplySaleView(ListAPIView):
         merchant = self.request.user.merchant
         queryset = Order.objects.filter(merchant__id=merchant.id)\
             .filter(Q(is_merchant_supplier=True) & Q(is_refund=False))
-        search_value = self.request.query_params.get('search_string')
-        if search_value is not None:
-            queryset = queryset.filter(
-                Q(items__name__icontains=search_value) |
-                Q(merchant__name__icontains=search_value) |
-                Q(partner__name__icontains=search_value) |
-                Q(warehouse__name__icontains=search_value)
-            )
-        return queryset
+        queryset_filtered = search_by_search_string(self, queryset)
+        return queryset_filtered
 
 
 class ListOrderSupplyRefundView(ListAPIView):
@@ -237,7 +226,7 @@ class ListOrderSupplyRefundView(ListAPIView):
     List all supplies (refund)
 
     # subtitle
-    Lists all the supplies (refund) of the merchant
+    List all supplies (refund) of the merchant in chronological order of order date
     """
     serializer_class = OrderSerializer
 
@@ -261,15 +250,8 @@ class SearchOrderSupplyRefundView(ListAPIView):
         merchant = self.request.user.merchant
         queryset = Order.objects.filter(merchant__id=merchant.id)\
             .filter(Q(is_merchant_supplier=True) & Q(is_refund=True))
-        search_value = self.request.query_params.get('search_string')
-        if search_value is not None:
-            queryset = queryset.filter(
-                Q(items__name__icontains=search_value) |
-                Q(merchant__name__icontains=search_value) |
-                Q(partner__name__icontains=search_value) |
-                Q(warehouse__name__icontains=search_value)
-            )
-        return queryset
+        queryset_filtered = search_by_search_string(self, queryset)
+        return queryset_filtered
 
 
 class ListOrderPurchaseView(ListAPIView):
@@ -278,7 +260,7 @@ class ListOrderPurchaseView(ListAPIView):
     List all purchases
 
     # subtitle
-    Lists all the purchases of the merchant in chronological order
+    List all the purchases of the merchant in chronological order of order date
     """
     serializer_class = OrderSerializer
 
@@ -301,15 +283,8 @@ class SearchOrderPurchaseView(ListAPIView):
     def get_queryset(self):
         merchant = self.request.user.merchant
         queryset = Order.objects.filter(merchant__id=merchant.id).filter(is_merchant_supplier=False)
-        search_value = self.request.query_params.get('search_string')
-        if search_value is not None:
-            queryset = queryset.filter(
-                Q(items__name__icontains=search_value) |
-                Q(merchant__name__icontains=search_value) |
-                Q(partner__name__icontains=search_value) |
-                Q(warehouse__name__icontains=search_value)
-            )
-        return queryset
+        queryset_filtered = search_by_search_string(self, queryset)
+        return queryset_filtered
 
 
 class ListOrderPurchaseSaleView(ListAPIView):
@@ -318,7 +293,7 @@ class ListOrderPurchaseSaleView(ListAPIView):
     List all purchases (sale)
 
     # subtitle
-    Lists all the purchases (sale) of the merchant
+    List all purchases (sale) of the merchant in chronological order of order date
     """
     serializer_class = OrderSerializer
 
@@ -342,15 +317,8 @@ class SearchOrderPurchaseSaleView(ListAPIView):
         merchant = self.request.user.merchant
         queryset = Order.objects.filter(merchant__id=merchant.id)\
             .filter(Q(is_merchant_supplier=False) & Q(is_refund=False))
-        search_value = self.request.query_params.get('search_string')
-        if search_value is not None:
-            queryset = queryset.filter(
-                Q(items__name__icontains=search_value) |
-                Q(merchant__name__icontains=search_value) |
-                Q(partner__name__icontains=search_value) |
-                Q(warehouse__name__icontains=search_value)
-            )
-        return queryset
+        queryset_filtered = search_by_search_string(self, queryset)
+        return queryset_filtered
 
 
 class ListOrderPurchaseRefundView(ListAPIView):
@@ -359,7 +327,7 @@ class ListOrderPurchaseRefundView(ListAPIView):
     List all purchases (refund)
 
     # subtitle
-    Lists all the purchases (refund) of the merchant
+    List all purchases (refund) of the merchant in chronological order of order date
     """
     serializer_class = OrderSerializer
 
@@ -383,12 +351,5 @@ class SearchOrderPurchaseRefundView(ListAPIView):
         merchant = self.request.user.merchant
         queryset = Order.objects.filter(merchant__id=merchant.id)\
             .filter(Q(is_merchant_supplier=False) & Q(is_refund=True))
-        search_value = self.request.query_params.get('search_string')
-        if search_value is not None:
-            queryset = queryset.filter(
-                Q(items__name__icontains=search_value) |
-                Q(merchant__name__icontains=search_value) |
-                Q(partner__name__icontains=search_value) |
-                Q(warehouse__name__icontains=search_value)
-            )
-        return queryset
+        queryset_filtered = search_by_search_string(self, queryset)
+        return queryset_filtered

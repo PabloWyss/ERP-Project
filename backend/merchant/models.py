@@ -1,7 +1,6 @@
 from django.db import models
 from partner.models import Partner
 from django.contrib.auth import get_user_model
-
 User = get_user_model()
 
 
@@ -11,6 +10,7 @@ def merchant_directory_path(instance, filename):
 
 class Merchant(models.Model):
 
+    # id
     user = models.OneToOneField(to=User, on_delete=models.PROTECT, related_name='merchant')
     name = models.CharField(max_length=50)
     address = models.CharField(max_length=50, null=True, blank=True)
@@ -18,8 +18,9 @@ class Merchant(models.Model):
     phone = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(unique=True)
     profile_picture = models.ImageField(upload_to=merchant_directory_path, null=True, blank=True)
-    # items (linked in item.models.py)
     partners = models.ManyToManyField(to=Partner, through='MerchantPartnerRelationship', related_name='merchants')
+    # items (linked in item.models.py)
+    # item_model_specifications (linked in item_model_specification.models.py)
     # orders (linked in order.models.py)
 
     def __str__(self):
@@ -27,6 +28,8 @@ class Merchant(models.Model):
 
 
 class MerchantPartnerRelationship(models.Model):
+
+    # id
     created = models.DateTimeField(auto_now_add=True)
     merchant = models.ForeignKey(to=Merchant, on_delete=models.PROTECT)
     partner = models.ForeignKey(to=Partner, on_delete=models.PROTECT)

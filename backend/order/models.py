@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-
 from item.models import Item
 from merchant.models import Merchant
 from partner.models import Partner
@@ -10,6 +9,7 @@ User = get_user_model()
 
 
 class Order(models.Model):
+
     # id
     order_date = models.DateTimeField(auto_now_add=True)
     is_refund = models.BooleanField(default=False)

@@ -1,3 +1,5 @@
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView
 from item_variant_specification.models import ItemVariantSpecification
 from item_variant_specification.serializers import ItemVariantSpecificationSerializer
@@ -62,3 +64,19 @@ class CurrentItemVariantView(ListAPIView):
         item_variant_id = item.item_variant_specifications.latest('valid_to').id
         item_variant_queryset = ItemVariantSpecification.objects.filter(id=item_variant_id)
         return item_variant_queryset
+
+
+class ListItemVariantSizeChoiceView(APIView):
+    """
+    get:
+    List the available item variant sizes
+
+    # subtitle
+    List the available item variant sizes within the item variant specifications
+    """
+    def get(self, request, *args, **kwargs):
+        sizes = list(ItemVariantSpecification.size.field.choices)
+        choices = []
+        for size in sizes:
+            choices.append(size[1])
+        return Response({"sizes": choices})
