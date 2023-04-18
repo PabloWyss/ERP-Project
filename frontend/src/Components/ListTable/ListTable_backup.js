@@ -16,7 +16,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { forwardRef } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 function ListTable() {
   const data = useMemo(
@@ -76,14 +76,6 @@ function ListTable() {
         order: "67349585892118",
         partner: "customer",
         id: "7",
-      },
-      {
-        name: "Diane Keaton",
-        address: "4420 4th Avenue, Anaheim, WY 10923",
-        date: "05/11/2023",
-        order: "37349585892118",
-        partner: "customer",
-        id: "9",
       },
     ],
     []
@@ -152,7 +144,7 @@ function ListTable() {
 
       return (
         <>
-          <input type="checkbox" ref={resolvedRef} {...rest} className="text-drawGray"/>
+          <input type="checkbox" ref={resolvedRef} {...rest} />
         </>
       );
     }
@@ -175,7 +167,7 @@ function ListTable() {
     canPreviousPage,
     canNextPage,
   } = useTable(
-    { columns, data, defaultColumn, initialState: { pageSize: 5 } },
+    { columns, data, defaultColumn, initialState: { pageSize: 4 } },
     useFilters,
     useSortBy,
     usePagination,
@@ -214,11 +206,7 @@ function ListTable() {
 
   return (
     <div>
-      <div
-        className="absolute left-60 top-10 h-60 overflow-y-scroll 
-      scrollbar-thin scrollbar-track-transparent scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey
-      bg-white"
-      >
+      <div className="absolute left-60 top-10 h-80 overflow-y-scroll bg-white">
         <table {...getTableProps()}>
           <thead className="sticky top-0 bg-white">
             {headerGroups.map((headerGroup) => (
