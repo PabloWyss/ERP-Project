@@ -1,13 +1,13 @@
 import {NavLink, useLocation, useNavigate,} from "react-router-dom"
-import { ReactComponent as ProfileIcon } from '../../Assets/Icons//profile.svg';
-import { ReactComponent as TagsIcon } from '../../Assets/Icons//tags.svg';
-import { ReactComponent as WarehouseIcon } from '../../Assets/Icons/warehouse.svg';
-import { ReactComponent as ReportsIcon } from '../../Assets/Icons/reports.svg';
-import { ReactComponent as OrdersIcon } from '../../Assets/Icons/orders.svg';
-import { ReactComponent as ItemsIcon } from '../../Assets/Icons/items.svg';
-import { ReactComponent as ExitIcon } from '../../Assets/Icons/exit.svg';
-import { ReactComponent as MerchantIcon } from '../../Assets/Icons/store.svg'
-import { ReactComponent as PartnerIcon } from '../../Assets/Icons/partner.svg'
+import {ReactComponent as ProfileIcon} from '../../Assets/Icons//profile.svg';
+import {ReactComponent as TagsIcon} from '../../Assets/Icons//tags.svg';
+import {ReactComponent as WarehouseIcon} from '../../Assets/Icons/warehouse.svg';
+import {ReactComponent as ReportsIcon} from '../../Assets/Icons/reports.svg';
+import {ReactComponent as OrdersIcon} from '../../Assets/Icons/orders.svg';
+import {ReactComponent as ItemsIcon} from '../../Assets/Icons/items.svg';
+import {ReactComponent as ExitIcon} from '../../Assets/Icons/exit.svg';
+import {ReactComponent as MerchantIcon} from '../../Assets/Icons/store.svg'
+import {ReactComponent as PartnerIcon} from '../../Assets/Icons/partner.svg'
 import logo from '../../Assets/Logos/logo_white.svg';
 import {setSignUpEmail} from "../../Redux/Slices/signUpEmailAddress";
 import {setCurrentUser} from "../../Redux/Slices/currentUser";
@@ -17,7 +17,7 @@ const useHandleLogout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  return () => {
     localStorage.removeItem("token");
     dispatch(setCurrentUser({})); // Dispatch the setCurrentUser action with an empty object to reset the current user state
     dispatch(setSignUpEmail("")); // Dispatch the setSignUpEmail action with an empty string to reset the sign up email state
@@ -25,11 +25,9 @@ const useHandleLogout = () => {
       navigate("/signin");
     }, 0);
   };
-
-  return handleLogout;
 };
 
-const SideBar = ({children}) => {
+const SideBar = () => {
   const handleLogout = useHandleLogout();
   const location = useLocation()
 

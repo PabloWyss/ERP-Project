@@ -31,7 +31,7 @@ function SignInRight() {
 
     if (!userEmail || !userPassword) {
       setError("Please enter both email and password.");
-      return;
+
     } else {
       let emessage = "";
 
