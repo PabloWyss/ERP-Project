@@ -1,12 +1,19 @@
-import { useTable, useSortBy, useFilters, useRowSelect } from "react-table";
+import {
+  useTable,
+  useSortBy,
+  useFilters,
+  useRowSelect,
+  usePagination,
+} from "react-table";
 import { useMemo } from "react";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaChevronDown, FaChevronLeft, FaChevronRight, FaChevronUp } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import { forwardRef } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
 
-function TestTableV7() {
+
+function ListTable() {
   const data = useMemo(
     () => [
       {
@@ -14,6 +21,7 @@ function TestTableV7() {
         address: "4420 Valley Street, Garnerville, NY 10923",
         date: "07/11/2020",
         order: "87349585892118",
+        partner: "supplier",
         id: "8",
       },
       {
@@ -21,6 +29,7 @@ function TestTableV7() {
         address: "637 Kyle Street, Fullerton, NE 68638",
         date: "07/11/2020",
         order: "58418278790810",
+        partner: "customer",
         id: "2",
       },
       {
@@ -28,6 +37,7 @@ function TestTableV7() {
         address: "906 Hart Country Lane, Toccoa, GA 30577",
         date: "07/10/2020",
         order: "81534454080477",
+        partner: "supplier",
         id: "3",
       },
       {
@@ -35,6 +45,7 @@ function TestTableV7() {
         address: "2403 Edgewood Avenue, Fresno, CA 93721",
         date: "07/09/2020",
         order: "20452221703743",
+        partner: "supplier",
         id: "4",
       },
       {
@@ -42,6 +53,7 @@ function TestTableV7() {
         address: "882 Hide A Way Road, Anaktuvuk Pass, AK 99721",
         date: "07/07/2020",
         order: "22906126785176",
+        partner: "customer",
         id: "5",
       },
       {
@@ -49,6 +61,7 @@ function TestTableV7() {
         address: "796 Bryan Avenue, Minneapolis, MN 55406",
         date: "07/07/2020",
         order: "87574505851064",
+        partner: "supplier",
         id: "6",
       },
       {
@@ -56,6 +69,7 @@ function TestTableV7() {
         address: "4420 Rua de la Paz, Toledo, NY 10923",
         date: "07/11/2023",
         order: "67349585892118",
+        partner: "customer",
         id: "7",
       },
     ],
@@ -78,8 +92,12 @@ function TestTableV7() {
         accessor: "date",
       },
       {
-        Header: "Order #",
+        Header: "Order No.",
         accessor: "order",
+      },
+      {
+        Header: "Partner Type",
+        accessor: "partner",
       },
     ],
     []
@@ -136,10 +154,18 @@ function TestTableV7() {
     prepareRow,
     selectedFlatRows,
     state: { selectedRowIds },
+    page,
+    pageOptions,
+    state: { pageIndex, pageSize },
+    previousPage,
+    nextPage,
+    canPreviousPage,
+    canNextPage,
   } = useTable(
-    { columns, data, defaultColumn },
+    { columns, data, defaultColumn, initialState: { pageSize: 4 } },
     useFilters,
     useSortBy,
+    usePagination,
     useRowSelect,
     (hooks) => {
       hooks.visibleColumns.push((columns) => [
@@ -175,7 +201,7 @@ function TestTableV7() {
 
   return (
     <div>
-      <div className="absolute left-60 top-80 h-80 overflow-y-scroll bg-white">
+      <div className="absolute left-60 top-10 h-80 overflow-y-scroll bg-white">
         <table {...getTableProps()}>
           <thead className="sticky top-0 bg-white">
             {headerGroups.map((headerGroup) => (
@@ -193,9 +219,9 @@ function TestTableV7() {
                       <div className="pt-3 h-7">
                         {column.isSorted ? (
                           column.isSortedDesc ? (
-                            <FaChevronUp />
+                            <FaChevronUp className="text-buttonGrey"/>
                           ) : (
-                            <FaChevronDown />
+                            <FaChevronDown className="text-buttonGrey" />
                           )
                         ) : (
                           ""
@@ -211,7 +237,7 @@ function TestTableV7() {
             ))}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
+            {page.map((row) => {
               prepareRow(row);
               return (
                 <tr {...row.getRowProps()}>
@@ -234,6 +260,25 @@ function TestTableV7() {
           </tbody>
         </table>
       </div>
+      <div className="absolute left-60 top-96  flex flex-row">
+        <div>
+        <button onClick={() => previousPage()} disabled={!canPreviousPage} className="px-4 py-2 border-2 rounded-ifRadius border-buttonGrey bg-white">
+          <FaChevronLeft className="text-buttonGrey"/>
+        </button>
+        </div>
+        <div className="text-white pt-2 px-2">
+          Page{" "}
+          <span>
+            {pageIndex + 1} of {pageOptions.length}
+          </span>
+        </div>
+        <div>
+        <button onClick={() => nextPage()} disabled={!canNextPage} className="px-4 py-2 border-2 rounded-ifRadius border-buttonGrey bg-white">
+          <FaChevronRight className="text-buttonGrey"/>
+        </button>
+        </div>
+        
+      </div>
       <div>
         <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
         <pre>
@@ -255,4 +300,4 @@ function TestTableV7() {
   );
 }
 
-export default TestTableV7;
+export default ListTable;
