@@ -76,9 +76,15 @@ class UpdateItemVariantView(UpdateAPIView):
     Update specific item variant specifications of an item
     """
 
-    queryset = ItemVariantSpecification.objects.all()
     serializer_class = ItemVariantSpecificationSerializer
-    lookup_url_kwarg = "item_variant_id"
+    lookup_url_kwarg = 'item_variant_id'
+
+    def get_queryset(self):
+        item_variant_id = self.kwargs.get('item_variant_id')
+        merchant = self.request.user.merchant
+        items = Item.objects.filter(merchant_id=merchant.id)
+        item_target = items.filter(item_variant_specifications__id=item_variant_id).first()
+        return item_target.item_variant_specifications.all()
 
 
 class CurrentItemVariantView(ListAPIView):

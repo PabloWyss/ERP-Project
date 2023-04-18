@@ -17,8 +17,7 @@ class ListInventoryLedgerPositionView(ListAPIView):
 
     def get_queryset(self):
         merchant = self.request.user.merchant
-        queryset = InventoryLedger.objects.filter(merchant_id=merchant.id).order_by('event_date')
-        return queryset
+        return InventoryLedger.objects.filter(merchant_id=merchant.id).order_by('event_date')
 
 
 class SearchInventoryLedgerPositionView(ListAPIView):
