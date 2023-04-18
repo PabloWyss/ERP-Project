@@ -4,6 +4,7 @@ from item_tag.models import ItemTag
 
 
 class ItemTagSerializer(serializers.ModelSerializer):
+
     items = ItemSerializer(read_only=True, many=True)
 
     class Meta:

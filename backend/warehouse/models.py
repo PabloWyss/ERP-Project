@@ -1,11 +1,11 @@
 from django.core.validators import MinValueValidator
 from django.db import models
-
 from item.models import Item
 from merchant.models import Merchant
 
 
 class Warehouse(models.Model):
+
     STATUS_OPTIONS = [
         ('Active', 'Active'),
         ('Inactive', 'Inactive'),
@@ -29,6 +29,8 @@ class Warehouse(models.Model):
 
 
 class WarehouseItemInventory(models.Model):
+
+    # id
     warehouse = models.ForeignKey(to=Warehouse, on_delete=models.PROTECT)
     item = models.ForeignKey(to=Item, on_delete=models.PROTECT)
     stock_level_current = models.IntegerField(validators=[MinValueValidator(0)], blank=True, null=True)

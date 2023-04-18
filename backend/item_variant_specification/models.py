@@ -8,6 +8,7 @@ def item_directory_path(instance, filename):
 
 
 class ItemVariantSpecification(models.Model):
+
     SIZES = [
         ('S', 'S'),
         ('M', 'M'),
