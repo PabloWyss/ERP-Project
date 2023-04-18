@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {FaChevronDown, FaChevronUp} from "react-icons/fa";
 
-const ItemPartner = () => {
+const MerchPartner = () => {
     const [showDetails, setShowDetails] = useState(false)
 
     const handleShowDetails = (e) =>{
@@ -11,7 +11,7 @@ const ItemPartner = () => {
     return (
         <div>
               <div className="flex flex-col gap-4">
-                  <div className="flex justify-between items-center px-4 bg-backgroundGrey text-xl">
+                  <div className="flex justify-between text-xl">
                         <div>
                             Partners
                         </div>
@@ -34,4 +34,4 @@ const ItemPartner = () => {
     )
 }
 
-export default ItemPartner
+export default MerchPartner

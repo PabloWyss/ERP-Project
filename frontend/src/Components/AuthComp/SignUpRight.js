@@ -28,11 +28,11 @@ function SignUpRight() {
       let emessage = "";
       dispatch(setSignUpEmail(userEmail));
 
-      //store user email in redux for congratulations page
 
-      //redirect to activation page
 
-      //registration request to API
+
+
+
       await callAPI
         .post(
           "/registration/",

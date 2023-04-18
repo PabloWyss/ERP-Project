@@ -7,6 +7,7 @@ import { ReactComponent as OrdersIcon } from '../../Assets/Icons/orders.svg';
 import { ReactComponent as ItemsIcon } from '../../Assets/Icons/items.svg';
 import { ReactComponent as ExitIcon } from '../../Assets/Icons/exit.svg';
 import { ReactComponent as MerchantIcon } from '../../Assets/Icons/store.svg'
+import { ReactComponent as PartnerIcon } from '../../Assets/Icons/partner.svg'
 import logo from '../../Assets/Logos/logo_white.svg';
 import {setSignUpEmail} from "../../Redux/Slices/signUpEmailAddress";
 import {setCurrentUser} from "../../Redux/Slices/currentUser";
@@ -42,7 +43,7 @@ const SideBar = ({children}) => {
               <h1 className="text-white text-xl font-bold">InvenFlow</h1>
             </div>
             <div className="mt-10">
-                <NavLink to="/merchant">
+                <NavLink to="/merchants">
                 {({isActive}) => (
                     <button
                         className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
@@ -84,6 +85,15 @@ const SideBar = ({children}) => {
                         className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
                       <TagsIcon className="mr-2"/>
                       Tags
+                    </button>
+                )}
+              </NavLink>
+              <NavLink to="/partners">
+                {({isActive}) => (
+                    <button
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                      <PartnerIcon className="mr-2"/>
+                      Partners
                     </button>
                 )}
               </NavLink>
