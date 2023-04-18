@@ -81,10 +81,26 @@ class SearchItemTagView(ListAPIView):
 
 
 class RetrieveUpdateDestroyItemTagView(RetrieveUpdateDestroyAPIView):
+    """
+    get:
+    Retrieve a specific item tag
 
-    queryset = ItemTag.objects.all().order_by('tag_name')
+    patch:
+    Update a specific item tag
+
+    delete:
+    Delete a specific item tag
+
+    # subtitle
+    Retrieve, update and delete a specific item tag of the merchant
+    """
+
     serializer_class = ItemTagSerializer
     lookup_url_kwarg = 'item_tag_id'
+
+    def get_queryset(self):
+        merchant = self.request.user.merchant
+        return ItemTag.objects.filter(merchant__id=merchant.id)
 
     def delete(self, request, *args, **kwargs):
         item_tag = ItemTag.objects.get(pk=self.kwargs.get('item_tag_id'))

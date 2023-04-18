@@ -1,7 +1,6 @@
 from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
-
 from merchant.models import MerchantPartnerRelationship
 from partner.models import Partner
 from partner.serializers import PartnerSerializer
@@ -25,8 +24,9 @@ class ListPartnerView(ListAPIView):
     List all partners
 
     # subtitle
-    Lists all partners of the merchant in alphabetical order of name
+    List all partners of the merchant in alphabetical order of name
     """
+
     serializer_class = PartnerSerializer
 
     def get_queryset(self):
@@ -42,6 +42,7 @@ class CreatePartnerView(CreateAPIView):
     # subtitle
     Create a new partner related to the merchant
     """
+
     serializer_class = PartnerSerializer
 
     def post(self, request, *args, **kwargs):
@@ -82,15 +83,22 @@ class SearchPartnerView(ListAPIView):
 
 class RetrieveUpdateDestroyPartnerView(RetrieveUpdateDestroyAPIView):
     """
-    t.b.d.
+    get:
+    Retrieve a specific partner
+
+    patch:
+    Update a specific partner
+
+    # subtitle
+    Retrieve and update a specific partner of the merchant
     """
+
+    serializer_class = PartnerSerializer
+    lookup_url_kwarg = 'partner_id'
 
     def get_queryset(self):
         merchant = self.request.user.merchant
         return Partner.objects.filter(merchants__id=merchant.id)
-
-    serializer_class = PartnerSerializer
-    lookup_url_kwarg = 'partner_id'
 
 
 class ListSupplierView(ListAPIView):
@@ -99,8 +107,9 @@ class ListSupplierView(ListAPIView):
     List all suppliers
 
     # subtitle
-    Lists all the suppliers of the merchant in alphabetical order of name
+    List all suppliers of the merchant in alphabetical order of name
     """
+
     serializer_class = PartnerSerializer
 
     def get_queryset(self):
@@ -116,6 +125,7 @@ class SearchSupplierView(ListAPIView):
     # subtitle
     Search for a specific supplier of the merchant
     """
+
     serializer_class = PartnerSerializer
 
     def get_queryset(self):
@@ -131,8 +141,9 @@ class ListCustomerView(ListAPIView):
     List all customers
 
     # subtitle
-    Lists all the customers of the merchant in alphabetical order of name
+    List all customers of the merchant in alphabetical order of name
     """
+
     serializer_class = PartnerSerializer
 
     def get_queryset(self):
@@ -148,6 +159,7 @@ class SearchCustomerView(ListAPIView):
     # subtitle
     Search for a specific customer of the merchant
     """
+
     serializer_class = PartnerSerializer
 
     def get_queryset(self):

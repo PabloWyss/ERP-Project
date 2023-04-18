@@ -45,8 +45,7 @@ class ListOrderView(ListAPIView):
 
     def get_queryset(self):
         merchant = self.request.user.merchant
-        queryset = Order.objects.filter(merchant_id=merchant.id).order_by('order_date')
-        return queryset
+        return Order.objects.filter(merchant_id=merchant.id).order_by('order_date')
 
 
 class CreateOrderView(CreateAPIView):
@@ -55,11 +54,10 @@ class CreateOrderView(CreateAPIView):
     Create a new order
 
     # subtitle
-    Create a new order related to the merchant
+    Create a new order related to the merchant and update the other tables (inventory ledger, warehouse etc.)
     """
 
     serializer_class = OrderCreateSerializer
-    queryset = Order.objects.all()
 
     def create(self, request, *args, **kwargs):
         merchant = request.user.merchant

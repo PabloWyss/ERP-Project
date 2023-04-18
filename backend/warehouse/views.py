@@ -14,15 +14,14 @@ class ListWarehouseView(ListAPIView):
     List all warehouses
 
     # subtitle
-    Lists all the warehouses of the Merchant
+    List all warehouses of the merchant
     """
 
     serializer_class = WarehouseSerializer
 
     def get_queryset(self):
         merchant = self.request.user.merchant
-        warehouses_of_merchant = Warehouse.objects.filter(merchants__id=merchant.id)
-        return warehouses_of_merchant
+        return Warehouse.objects.filter(merchants__id=merchant.id)
 
 
 class CreateWarehouseView(CreateAPIView):
@@ -31,27 +30,34 @@ class CreateWarehouseView(CreateAPIView):
     Create a new warehouse
 
     # subtitle
-    Create a new warehouse related to a merchant
+    Create a new warehouse related to the merchant
     """
 
     serializer_class = WarehouseSerializer
-    queryset = Warehouse.objects.all()
 
     def post(self, request):
         merchant = request.user.merchant
         warehouse_name = request.data['name']
         warehouse_exists = merchant.warehouses.filter(name=warehouse_name).exists()
         if warehouse_exists:
-            return Response({'status': 'Warehouse Already Existed'})
+            return Response({'status': 'Warehouse already exists'})
         else:
             serializer = self.get_serializer(data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             merchant.warehouses.add(serializer.data['id'])
-            return Response({'status': 'Warehouse Created'})
+            return Response({'status': 'Warehouse successfully created'})
 
 
 class UpdateOneItemInWarehouseView(UpdateAPIView):
+    """
+    patch:
+    Update one item in the specific warehouse
+
+    # subtitle
+    Update one item in the specific warehouse of the merchant
+    """
+
     serializer_class = WarehouseSerializer
     lookup_url_kwarg = 'warehouse_id'
 
@@ -106,6 +112,14 @@ class UpdateOneItemInWarehouseView(UpdateAPIView):
 
 
 class UpdateManyItemInWarehouseView(UpdateAPIView):
+    """
+    patch:
+    Update many items in the specific warehouse
+
+    # subtitle
+    Update many items in the specific warehouse of the merchant (currently not accessible)
+    """
+
     serializer_class = WarehouseSerializer
     lookup_url_kwarg = 'warehouse_id'
 
@@ -122,10 +136,10 @@ class UpdateManyItemInWarehouseView(UpdateAPIView):
 class SearchWarehouseView(ListAPIView):
     """
     get:
-    Search for Warehouse
+    Search for a specific warehouse
 
     # subtitle
-    Searches for Warehouses users of Merchant
+    Search for a specific warehouse of the merchant
     """
 
     serializer_class = WarehouseSerializer
@@ -142,10 +156,20 @@ class SearchWarehouseView(ListAPIView):
 
 
 class RetrieveUpdateDestroyWarehouseView(RetrieveUpdateDestroyAPIView):
+    """
+    get:
+    Retrieve a specific warehouse
+
+    patch:
+    Update a specific warehouse
+
+    # subtitle
+    Retrieve and update a specific warehouse of the merchant
+    """
+
     serializer_class = WarehouseSerializer
     lookup_url_kwarg = 'warehouse_id'
 
     def get_queryset(self):
         merchant = self.request.user.merchant
-        partners = Warehouse.objects.filter(merchants__id=merchant.id)
-        return partners
+        return Warehouse.objects.filter(merchants__id=merchant.id)
