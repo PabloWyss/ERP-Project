@@ -1,11 +1,11 @@
 from django.core.validators import MinValueValidator
 from django.db import models
-
 from item.models import Item
 from warehouse.models import Warehouse
 
 
 class InventoryLedger(models.Model):
+
     EVENTS = [
         ('Inbound', 'Inbound'),
         ('Outbound', 'Outbound'),

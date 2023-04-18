@@ -1,10 +1,8 @@
 import random
-
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
 User = get_user_model()
 
 
@@ -14,12 +12,17 @@ def code_generator(length=6):
 
 
 class Registration(models.Model):
+
     validation_code = models.TextField(
         help_text='random code used for registration and for password reset',
         max_length=15,
         default=code_generator
     )
-    user = models.OneToOneField(to=User, on_delete=models.CASCADE, related_name='user_registration')
+    user = models.OneToOneField(
+        to=User,
+        on_delete=models.CASCADE,
+        related_name='user_registration'
+    )
 
     def __str__(self):
         return f'{self.id} - Registration profile for {self.user.username}'

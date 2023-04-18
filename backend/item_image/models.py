@@ -3,7 +3,7 @@ from item_model_specification.models import ItemModelSpecification
 
 
 def item_image_directory_path(instance, filename):
-    return f"items/{instance.id}/{filename}"
+    return f"item-models/{instance.item_model_specification_id}/{filename}"
 
 
 class Attachment(models.Model):

@@ -34,11 +34,11 @@ class SearchUserView(ListAPIView):
         queryset = User.objects.all()
         search_value = self.request.query_params.get('search_string')
         if search_value is not None:
-            queryset = queryset.filter(
+            queryset_filtered = queryset.filter(
                 Q(first_name__icontains=search_value) |
                 Q(last_name__icontains=search_value)
             )
-        return queryset
+        return queryset_filtered
 
 
 class RetrieveUpdateDestroyUserView(RetrieveUpdateDestroyAPIView):

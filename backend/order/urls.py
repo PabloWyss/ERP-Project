@@ -1,29 +1,31 @@
 from django.urls import path
 
-from order.views import ListOrderView, CreateOrderView
+from order.views import ListOrderView, CreateOrderView, SearchOrderView, ListOrderSupplyView, SearchOrderSupplyView, \
+    ListOrderSupplySaleView, SearchOrderSupplySaleView, ListOrderSupplyRefundView, SearchOrderSupplyRefundView, \
+    ListOrderPurchaseView, SearchOrderPurchaseView, ListOrderPurchaseSaleView, SearchOrderPurchaseSaleView, \
+    ListOrderPurchaseRefundView, SearchOrderPurchaseRefundView
 
 urlpatterns = [
     # backend/api/orders/
     path('', ListOrderView.as_view()),
     path('new/', CreateOrderView.as_view()),
-    # path('search/', SearchOrderView.as_view()),
-    # path('<int:order_id>/', RetrieveUpdateDestroyOrderView.as_view()),
+    path('search/', SearchOrderView.as_view()),
 
-    # path('supplies/', ListSupplyView.as_view()),
-    # path('supplies/search/', SearchSupplyView.as_view()),
+    path('supplies/', ListOrderSupplyView.as_view()),
+    path('supplies/search/', SearchOrderSupplyView.as_view()),
 
-    # path('supplies/sales/', ListSupplySaleView.as_view()),
-    # path('supplies/sales/search/', SearchSupplySaleView.as_view()),
+    path('supplies/sales/', ListOrderSupplySaleView.as_view()),
+    path('supplies/sales/search/', SearchOrderSupplySaleView.as_view()),
 
-    # path('supplies/refunds/', ListSupplyRefundView.as_view()),
-    # path('supplies/refunds/search/', SearchSupplyRefundView.as_view()),
+    path('supplies/refunds/', ListOrderSupplyRefundView.as_view()),
+    path('supplies/refunds/search/', SearchOrderSupplyRefundView.as_view()),
 
-    # path('purchases/', ListPurchaseView.as_view()),
-    # path('purchases/search/', SearchPurchaseView.as_view()),
+    path('purchases/', ListOrderPurchaseView.as_view()),
+    path('purchases/search/', SearchOrderPurchaseView.as_view()),
 
-    # path('purchases/sales/', ListPurchaseSaleView.as_view()),
-    # path('purchases/sales/search/', SearchPurchaseSaleView.as_view()),
+    path('purchases/sales/', ListOrderPurchaseSaleView.as_view()),
+    path('purchases/sales/search/', SearchOrderPurchaseSaleView.as_view()),
 
-    # path('purchases/refunds/', ListPurchaseRefundView.as_view()),
-    # path('purchases/refunds/search/', SearchPurchaseRefundView.as_view()),
+    path('purchases/refunds/', ListOrderPurchaseRefundView.as_view()),
+    path('purchases/refunds/search/', SearchOrderPurchaseRefundView.as_view()),
 ]
