@@ -3,7 +3,6 @@ from django.db.models import Q
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
 from project.global_permissions import IsSameUser, IsStaff
 from user.serializers import UserSerializer, UserUpdateSerializer
-
 User = get_user_model()
 
 
@@ -13,8 +12,9 @@ class ListUserView(ListAPIView):
     List all users
 
     # subtitle
-    Lists all the users of the merchant (currently, all users are returned)
+    List all users of the merchant (currently, all users are returned)
     """
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -22,42 +22,61 @@ class ListUserView(ListAPIView):
 class SearchUserView(ListAPIView):
     """
     get:
-    Search for specific user
+    Search for a specific user
 
     # subtitle
-    Searches for all the users of the merchant
+    Search for a specific user of the merchant
     """
+
     serializer_class = UserSerializer
 
     def get_queryset(self):
-        # This view returns an item based on the url query param
-        queryset = User.objects.all()
+        merchant = self.request.user.merchant
+        queryset = User.objects.filter(merchant__id=merchant.id)
         search_value = self.request.query_params.get('search_string')
         if search_value is not None:
             queryset_filtered = queryset.filter(
                 Q(first_name__icontains=search_value) |
-                Q(last_name__icontains=search_value)
+                Q(last_name__icontains=search_value) |
+                Q(email__icontains=search_value)
             )
         return queryset_filtered
 
 
 class RetrieveUpdateDestroyUserView(RetrieveUpdateDestroyAPIView):
     """
-    Note: This view is not linked to any path yet
+    get:
+    Retrieve a specific user
+
+    patch:
+    Update a specific user
+
+    # subtitle
+    Retrieve and update a specific user (accessible only for staff members)
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    lookup_url_kwarg = 'user_id'
     permission_classes = [IsStaff]
+    lookup_url_kwarg = 'user_id'
 
 
 class MyUserRetrieveUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    """
+    get:
+    Retrieve my user
+
+    patch:
+    Update my user
+
+    # subtitle
+    Retrieve and update my user
+    """
+
     permission_classes = [IsSameUser]
 
     def get_object(self):
         return self.request.user
 
-    # Use different serializers for get and patch methods
     def get_serializer_class(self):
         if self.request.method == 'GET':
             return UserSerializer
