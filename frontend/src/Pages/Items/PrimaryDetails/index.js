@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import callAPI from "../../../Axios/callAPI";
 import ItemDetailsInput from "./ItemDetailsInput";
+import {useParams} from "react-router-dom";
 
 const PrimaryDetails = () => {
 
@@ -16,8 +17,7 @@ const PrimaryDetails = () => {
     const [AASIN, setAASIN] = useState("")
     const [AFNSKU, setAFNSKU] = useState("")
 
-
-    const item_id = 1
+    const { itemID } = useParams();
 
     const handleEditButton = (e) => {
         e.preventDefault()
@@ -40,7 +40,7 @@ const PrimaryDetails = () => {
                 },
             };
 
-            const response = await callAPI.get(`/items/${item_id}/`, config);
+            const response = await callAPI.get(`/items/${itemID}/`, config);
             setItem(response.data)
             setName(response.data.name)
             setStatus(response.data.status)
@@ -101,6 +101,7 @@ const PrimaryDetails = () => {
             const data = {
                 name: name,
                 status: status,
+                series: series,
                 sku: SKU,
                 ean: EAN,
                 upc: UPC,
@@ -113,11 +114,12 @@ const PrimaryDetails = () => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
             };
-            const response = await callAPI.patch(`/items/${item_id}/`, data, config)
+            const response = await callAPI.patch(`/items/${itemID}/`, data, config)
         } catch (error) {
             console.log(error)
         }
       }
+      const date = new Date(item.release_date).toString().slice(0,15)
 
     return (
         <form className="flex flex-col w-full justify-between gap-4" onSubmit={handleEditButton}>
@@ -125,7 +127,7 @@ const PrimaryDetails = () => {
                 <h2 className="text-xl">
                     Primary Details
                 </h2>
-                <button onClick={handleEditButton}>
+                <button className="text-xl p-0" onClick={handleEditButton}>
                     {
                         editClicked ?
                             "Save" :
@@ -138,11 +140,9 @@ const PrimaryDetails = () => {
                     <div className="flex w-1/2 flex-col gap-1">
                         <ItemDetailsInput value={item.id}
                                           disableInput={"disabled"}
-                                          handleInput={""}
                                           description={"Item ID:"}/>
-                        <ItemDetailsInput value={item.release_date?.slice(0, 10)}
+                        <ItemDetailsInput value={date}
                                           disableInput={"disabled"}
-                                          handleInput={""}
                                           description={"Release Date:"}/>
                         <ItemDetailsInput value={name} disableInput={disableInput}
                                           handleInput={handleNameInput} description={"Item Name:"}/>

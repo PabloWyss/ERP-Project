@@ -9,36 +9,22 @@ const ItemTag = () => {
         setShowDetails(!showDetails)
     }
     return (
-        <div>
-              <div className="flex flex-col gap-4">
-                  <div className="flex justify-between items-center px-4 bg-backgroundGrey text-xl">
-                        <div>
-                            Item tags
-                        </div>
-                        <button className="product-minified-button" onClick={handleShowDetails}>
-                        {showDetails ? <FaChevronUp /> : <FaChevronDown />}
-                        </button>
-                  </div>
-                  {showDetails && (
-                      <div className="flex w-full justify-around">
-                          <div className="flex gap-1 flex-wrap">
-                              <input placeholder={'Item Tag 1'}/>
-                              <input placeholder={'Item Tag 2'}/>
-                              <input placeholder={'Item Tag 3'}/>
-                              <input placeholder={'Item Tag 4'}/>
-                              <input placeholder={'Item Tag 4'}/>
-                              <input placeholder={'Item Tag 4'}/>
-                              <input placeholder={'Item Tag 4'}/>
-                              <input placeholder={'Item Tag 4'}/>
-                              <input placeholder={'Item Tag 4'}/>
-                              <input placeholder={'Item Tag 4'}/>
-                              <input placeholder={'Item Tag 4'}/>
-                              <input placeholder={'Item Tag 4'}/>
-                          </div>
-                      </div>
-                  )}
+          <div className="flex w-full justify-around">
+              <div className="flex gap-1 flex-wrap">
+                  <input placeholder={'Item Tag 1'}/>
+                  <input placeholder={'Item Tag 2'}/>
+                  <input placeholder={'Item Tag 3'}/>
+                  <input placeholder={'Item Tag 4'}/>
+                  <input placeholder={'Item Tag 4'}/>
+                  <input placeholder={'Item Tag 4'}/>
+                  <input placeholder={'Item Tag 4'}/>
+                  <input placeholder={'Item Tag 4'}/>
+                  <input placeholder={'Item Tag 4'}/>
+                  <input placeholder={'Item Tag 4'}/>
+                  <input placeholder={'Item Tag 4'}/>
+                  <input placeholder={'Item Tag 4'}/>
               </div>
-        </div>
+          </div>
     )
 }
 

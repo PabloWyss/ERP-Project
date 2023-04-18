@@ -13,6 +13,7 @@ import Congratulations from "./Pages/Auth/Congratulations";
 import Verification from "./Pages/Auth/Verification";
 import Warehouse from "./Pages/Warehouse";
 import { useDispatch, useSelector } from "react-redux";
+import CreateItemVariant from "./Pages/CreateItemVariant";
 
 function App() {
   const currentUser = useSelector((store) => store.currentuser.currentuser);
@@ -51,6 +52,8 @@ function App() {
                   <Route path="/congratulations" element={<Congratulations/>}/>
                   <Route path="/verification" element={<Verification/>}/>
                   <Route path="/items" element={<Items/>}/>
+                 <Route path="/items/:itemID" element={<Items />} />
+                 <Route path="/items/itemVariant/:itemID" element={<CreateItemVariant />} />
                   <Route path="/orders" element={<Orders/>}/>
                   <Route path="/warehouses" element={<Warehouse/>}/>
                   <Route path="/reports" element={<Reports/>}/>

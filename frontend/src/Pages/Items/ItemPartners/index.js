@@ -9,28 +9,14 @@ const ItemPartner = () => {
         setShowDetails(!showDetails)
     }
     return (
-        <div>
-              <div className="flex flex-col gap-4">
-                  <div className="flex justify-between items-center px-4 bg-backgroundGrey text-xl">
-                        <div>
-                            Partners
-                        </div>
-                        <button className="product-minified-button" onClick={handleShowDetails}>
-                        {showDetails ? <FaChevronUp /> : <FaChevronDown />}
-                        </button>
-                  </div>
-                  {showDetails && (
-                      <div className="flex w-full justify-start">
-                          <div className="flex gap-1 flex-wrap">
-                              <input placeholder={'Partner 1'}/>
-                              <input placeholder={'Partner 2'}/>
-                              <input placeholder={'Partner 3'}/>
-                              <input placeholder={'Partner 4'}/>
-                          </div>
-                      </div>
-                  )}
+          <div className="flex w-full justify-start">
+              <div className="flex gap-1 flex-wrap">
+                  <input placeholder={'Partner 1'}/>
+                  <input placeholder={'Partner 2'}/>
+                  <input placeholder={'Partner 3'}/>
+                  <input placeholder={'Partner 4'}/>
               </div>
-        </div>
+          </div>
     )
 }
 
