@@ -61,7 +61,6 @@ const PrimaryDetails = () => {
 
     const handleNameInput = (e) => {
         setName(e.target.value);
-        console.log(name)
     };
 
     const handleStatusInput = (e) => {
