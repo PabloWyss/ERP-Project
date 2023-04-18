@@ -13,8 +13,11 @@ class ListItemView(ListAPIView):
     Lists all items of the merchant in alphabetical order of SKU number
     """
 
-    queryset = Item.objects.all().order_by('sku')
     serializer_class = ItemSerializer
+
+    def get_queryset(self):
+        merchant = self.request.user.merchant
+        return Item.objects.filter(merchant_id=merchant.id).order_by('sku')
 
 
 class CreateItemView(CreateAPIView):
@@ -26,7 +29,6 @@ class CreateItemView(CreateAPIView):
     Create a new item related to the merchant
     """
 
-    queryset = Item.objects.all()
     serializer_class = ItemSerializer
 
     def perform_create(self, serializer):
@@ -63,13 +65,19 @@ class SearchItemView(ListAPIView):
 
 class RetrieveUpdateDestroyItemView(RetrieveUpdateDestroyAPIView):
     """
+    get:
+    Retrieve a specific item
+
     patch:
-    Retrieve and update a specific item
+    Update a specific item
 
     # subtitle
     Retrieve and update a specific item of the merchant
     """
 
-    queryset = Item.objects.all()
     serializer_class = ItemSerializer
     lookup_url_kwarg = 'item_id'
+
+    def get_queryset(self):
+        merchant = self.request.user.merchant
+        return Item.objects.filter(merchant__id=merchant.id)

@@ -1,20 +1,25 @@
 from django.core.mail import send_mail
 from django.http import JsonResponse
 from rest_framework.generics import ListCreateAPIView, UpdateAPIView
-
 from registration.models import Registration
 from registration.serializers import RegistrationSerializer
 from rest_framework.permissions import AllowAny
-
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
-
 User = get_user_model()
 
 
 class RegistrationView(ListCreateAPIView):
-    serializer_class = RegistrationSerializer
+    """
+    post:
+    Create a new user
+
+    # subtitle
+    Create a new user and send a validation code to finalize the registration process
+    """
+
     queryset = Registration.objects.all()
+    serializer_class = RegistrationSerializer
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
@@ -38,9 +43,17 @@ class RegistrationView(ListCreateAPIView):
 
 
 class RegistrationValidationView(UpdateAPIView):
+    """
+    patch:
+    Update a specific user
+
+    # subtitle
+    Update a specific user with the validation code received
+    """
+
+    queryset = User.objects.all()
     serializer_class = RegistrationSerializer
     permission_classes = [AllowAny]
-    queryset = User.objects.all()
 
     def patch(self, request, *args, **kwargs):
         email_request = request.data['email']

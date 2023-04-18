@@ -79,9 +79,12 @@ class UpdateItemModelView(UpdateAPIView):
     Update specific item model specifications of the merchant
     """
 
-    queryset = ItemModelSpecification.objects.all()
     serializer_class = ItemModelSpecificationSerializer
     lookup_url_kwarg = "item_model_id"
+
+    def get_queryset(self):
+        merchant = self.request.user.merchant
+        return ItemModelSpecification.objects.filter(merchant__id=merchant.id)
 
 
 class AssignItemToItemModelView(UpdateAPIView):
