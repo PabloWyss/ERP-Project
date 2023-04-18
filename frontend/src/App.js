@@ -56,7 +56,7 @@ function App() {
                   <Route path="/reports" element={<Reports/>}/>
                   <Route path="/tags" element={<Tags/>}/>
                   <Route path="/profile" element={<Profile/>}/>
-                  <Route path="/merchant" element={<Merchant/>}/>
+                  <Route path="/merchants" element={<Merchant/>}/>
                   <Route path="/" element={<Items/>}/>
               </Routes>
       </div>
