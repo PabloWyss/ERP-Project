@@ -6,12 +6,17 @@ import {
   usePagination,
 } from "react-table";
 import { useMemo } from "react";
-import { FaChevronDown, FaChevronLeft, FaChevronRight, FaChevronUp } from "react-icons/fa";
+import {
+  FaChevronDown,
+  FaChevronLeft,
+  FaChevronRight,
+  FaChevronUp,
+} from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import { forwardRef } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
-
+import { v4 as uuidv4 } from 'uuid';
 
 function ListTable() {
   const data = useMemo(
@@ -207,7 +212,7 @@ function ListTable() {
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
-                  <th className="px-2">
+                  <th key={uuidv4()} className="px-2">
                     <div
                       {...column.getHeaderProps(
                         column.getSortByToggleProps()
@@ -219,7 +224,7 @@ function ListTable() {
                       <div className="pt-3 h-7">
                         {column.isSorted ? (
                           column.isSortedDesc ? (
-                            <FaChevronUp className="text-buttonGrey"/>
+                            <FaChevronUp className="text-buttonGrey" />
                           ) : (
                             <FaChevronDown className="text-buttonGrey" />
                           )
@@ -247,7 +252,7 @@ function ListTable() {
                         {...cell.getCellProps()}
                         {...(index !== 0
                           ? { onClick: () => handleRowClick(row.original) }
-                          : {})} /*exclude navigation to details page for checkbox*/
+                          : {})} /*exclude navigation to details page for the checkbox*/
                         className="px-2 py-2 border-t-2 border-drawGrey text-textGrey"
                       >
                         {cell.render("Cell")}
@@ -262,9 +267,13 @@ function ListTable() {
       </div>
       <div className="absolute left-60 top-96  flex flex-row">
         <div>
-        <button onClick={() => previousPage()} disabled={!canPreviousPage} className="px-4 py-2 border-2 rounded-ifRadius border-buttonGrey bg-white">
-          <FaChevronLeft className="text-buttonGrey"/>
-        </button>
+          <button
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
+            className="px-4 py-2 border-2 rounded-ifRadius border-buttonGrey bg-white"
+          >
+            <FaChevronLeft className="text-buttonGrey" />
+          </button>
         </div>
         <div className="text-white pt-2 px-2">
           Page{" "}
@@ -273,11 +282,14 @@ function ListTable() {
           </span>
         </div>
         <div>
-        <button onClick={() => nextPage()} disabled={!canNextPage} className="px-4 py-2 border-2 rounded-ifRadius border-buttonGrey bg-white">
-          <FaChevronRight className="text-buttonGrey"/>
-        </button>
+          <button
+            onClick={() => nextPage()}
+            disabled={!canNextPage}
+            className="px-4 py-2 border-2 rounded-ifRadius border-buttonGrey bg-white"
+          >
+            <FaChevronRight className="text-buttonGrey" />
+          </button>
         </div>
-        
       </div>
       <div>
         <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
