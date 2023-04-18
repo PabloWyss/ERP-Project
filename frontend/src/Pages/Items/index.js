@@ -1,12 +1,10 @@
 import React from "react";
-import ListTable from "../../Components/ListTable/ListTable";
-import TestTable from "../../Components/ListTable/TestTable";
+import TestTableV7 from "../../Components/ListTable/TestTableV7";
 
 function Items() {
   return (
     <div className="h-screen w-screen bg-blue-400">
-      <ListTable></ListTable>
-      <TestTable></TestTable>
+      <TestTableV7></TestTableV7>
     </div>
 );
 }
