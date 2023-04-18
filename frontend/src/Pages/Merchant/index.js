@@ -20,7 +20,7 @@ function Merchant() {
           </div>
           <div className="flex flex-col w-full gap-4 justify-between">
               <MerchDetails/>
-              <MerchPartner/>
+
           </div>
       </div>
     </div>

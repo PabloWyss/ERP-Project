@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SideBar from "./Components/SideBar";
 import Profile from "./Pages/Profile";
 import Tags from "./Pages/Tags";
@@ -17,21 +17,20 @@ import { useDispatch, useSelector } from "react-redux";
 
 function App() {
   const currentUser = useSelector((store) => store.currentuser.currentuser);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const dispatch = useDispatch();
+  const [, setIsLoggedIn] = useState(false);
+    useDispatch();
 
-  useEffect(() => {
-    if (currentUser === {}) {
-      setIsLoggedIn(false);
-    } else {
-      const token = localStorage.getItem("token");
-      if (token) {
-        setIsLoggedIn(true);
-      }
-    }
-  }, [currentUser]);
-
-  useEffect(() => {
+    useEffect(() => {
+        if (currentUser === {}) {
+            setIsLoggedIn(false);
+        } else {
+            const token = localStorage.getItem("token");
+            if (token) {
+                setIsLoggedIn(true);
+            }
+        }
+    }, [currentUser]);
+    useEffect(() => {
     if (currentUser === {}) {
       setIsLoggedIn(false);
     } else {
