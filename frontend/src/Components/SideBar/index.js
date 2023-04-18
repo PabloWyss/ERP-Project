@@ -42,7 +42,7 @@ const SideBar = ({children}) => {
               <h1 className="text-white text-xl font-bold">InvenFlow</h1>
             </div>
             <div className="mt-10">
-                <NavLink to="/merchant">
+                <NavLink to="/merchants">
                 {({isActive}) => (
                     <button
                         className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1)' : 'text-white'}`}>

@@ -1,14 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CheckMarkIcon from "../../Assets/Icons/checkmark.svg";
-import { signUpEmail} from "../../Redux/Slices/signUpEmailAddress"; 
 
 
 function CongratsRight() {
   const navigate = useNavigate();
   const userEmail = useSelector((store) => store.signupemail);
 
-  //navigate to verification page
+
   const handleContinueClick = () => {
     navigate("/verification");
   };

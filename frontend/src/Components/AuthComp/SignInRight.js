@@ -34,15 +34,15 @@ function SignInRight() {
       return;
     } else {
       let emessage = "";
-      //redirect to homepage
 
-      //login request to API
+
+
       const response = await callAPI
         .post("/auth/token/", JSON.stringify({ email: userEmail, password: userPassword }))
         .catch((error) => (emessage = error.message));
 
       if (!emessage) {
-        navigate("/merchant");
+        navigate("/merchants");
         localStorage.setItem("token", response.data.access);
         console.log("token :" + response.data.access);
 
@@ -53,7 +53,7 @@ function SignInRight() {
     }
   };
 
-  //navigate to sign up page
+
   const handleSignUpClick = () => {
     navigate("/signup");
   };
