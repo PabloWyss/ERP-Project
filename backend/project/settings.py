@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-irxbz7s)133t)960h4n*6*5^&yi3s2yi*lo5b)bjg5f+5m&wo1
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'https://invenflow.propulsion-learn.ch/']
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'https://invenflow.propulsion-learn.ch']
 # add name of page once we have it
 CORS_ALLOW_ALL_ORIGINS = True
 

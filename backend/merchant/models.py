@@ -21,6 +21,7 @@ class Merchant(models.Model):
     partners = models.ManyToManyField(to=Partner, through='MerchantPartnerRelationship', related_name='merchants')
     # items (linked in item.models.py)
     # item_model_specifications (linked in item_model_specification.models.py)
+    # item_tags (linked in item_tags.models.py)
     # orders (linked in order.models.py)
 
     def __str__(self):

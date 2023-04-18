@@ -27,9 +27,9 @@ class ItemModelSpecification(models.Model):
     ]
 
     # id
-    merchant = models.ForeignKey(to=Merchant, on_delete=models.PROTECT, related_name="items")
+    merchant = models.ForeignKey(to=Merchant, on_delete=models.PROTECT, related_name="item_model_specifications")
     items = models.ManyToManyField(to=Item, blank=True, related_name="item_model_specifications")
-    name = models.CharField(max_length=50)
+    name = models.CharField(unique=True, max_length=50)
     color = models.CharField(choices=COLORS, max_length=50, blank=True, null=True)
     valid_from = models.DateTimeField()
     valid_to = models.DateTimeField()

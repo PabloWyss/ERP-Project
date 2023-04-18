@@ -11,7 +11,7 @@ from warehouse.models import WarehouseItemInventory, Warehouse
 def search_by_search_string(self, queryset):
     search_value = self.request.query_params.get('search_string')
     if search_value is not None:
-        queryset = queryset.filter(
+        queryset_filtered = queryset.filter(
             Q(items__sku__icontains=search_value) |
             Q(items__ean__icontains=search_value) |
             Q(items__upc__icontains=search_value) |
@@ -29,7 +29,7 @@ def search_by_search_string(self, queryset):
             Q(partner__name__icontains=search_value) |
             Q(warehouse__name__icontains=search_value)
         )
-    return queryset
+    return queryset_filtered
 
 
 class ListOrderView(ListAPIView):
@@ -40,6 +40,7 @@ class ListOrderView(ListAPIView):
     # subtitle
     List all orders of the merchant in chronological order of order date
     """
+
     serializer_class = OrderSerializer
 
     def get_queryset(self):
@@ -56,6 +57,7 @@ class CreateOrderView(CreateAPIView):
     # subtitle
     Create a new order related to the merchant
     """
+
     serializer_class = OrderCreateSerializer
     queryset = Order.objects.all()
 
@@ -144,6 +146,7 @@ class SearchOrderView(ListAPIView):
     # subtitle
     Search for a specific order of the merchant
     """
+
     serializer_class = OrderSerializer
 
     def get_queryset(self):
@@ -161,6 +164,7 @@ class ListOrderSupplyView(ListAPIView):
     # subtitle
     List all supplies of the merchant in chronological order of order date
     """
+
     serializer_class = OrderSerializer
 
     def get_queryset(self):
@@ -177,6 +181,7 @@ class SearchOrderSupplyView(ListAPIView):
     # subtitle
     Search for a specific supply of the merchant
     """
+
     serializer_class = OrderSerializer
 
     def get_queryset(self):
@@ -194,6 +199,7 @@ class ListOrderSupplySaleView(ListAPIView):
     # subtitle
     List all supplies (sale) of the merchant in chronological order of order date
     """
+
     serializer_class = OrderSerializer
 
     def get_queryset(self):
@@ -210,6 +216,7 @@ class SearchOrderSupplySaleView(ListAPIView):
     # subtitle
     Search for a specific supply (sale) of the merchant
     """
+
     serializer_class = OrderSerializer
 
     def get_queryset(self):
@@ -228,6 +235,7 @@ class ListOrderSupplyRefundView(ListAPIView):
     # subtitle
     List all supplies (refund) of the merchant in chronological order of order date
     """
+
     serializer_class = OrderSerializer
 
     def get_queryset(self):
@@ -244,6 +252,7 @@ class SearchOrderSupplyRefundView(ListAPIView):
     # subtitle
     Search for a specific supply (refund) of the merchant
     """
+
     serializer_class = OrderSerializer
 
     def get_queryset(self):
@@ -262,6 +271,7 @@ class ListOrderPurchaseView(ListAPIView):
     # subtitle
     List all the purchases of the merchant in chronological order of order date
     """
+
     serializer_class = OrderSerializer
 
     def get_queryset(self):
@@ -278,6 +288,7 @@ class SearchOrderPurchaseView(ListAPIView):
     # subtitle
     Search for a specific purchase of the merchant
     """
+
     serializer_class = OrderSerializer
 
     def get_queryset(self):
@@ -295,6 +306,7 @@ class ListOrderPurchaseSaleView(ListAPIView):
     # subtitle
     List all purchases (sale) of the merchant in chronological order of order date
     """
+
     serializer_class = OrderSerializer
 
     def get_queryset(self):
@@ -311,6 +323,7 @@ class SearchOrderPurchaseSaleView(ListAPIView):
     # subtitle
     Search for a specific purchase (sale) of the merchant
     """
+
     serializer_class = OrderSerializer
 
     def get_queryset(self):
@@ -329,6 +342,7 @@ class ListOrderPurchaseRefundView(ListAPIView):
     # subtitle
     List all purchases (refund) of the merchant in chronological order of order date
     """
+
     serializer_class = OrderSerializer
 
     def get_queryset(self):
@@ -345,6 +359,7 @@ class SearchOrderPurchaseRefundView(ListAPIView):
     # subtitle
     Search for a specific purchase (refund) of the merchant
     """
+
     serializer_class = OrderSerializer
 
     def get_queryset(self):

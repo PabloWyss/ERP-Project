@@ -45,10 +45,11 @@ class SearchItemView(ListAPIView):
     serializer_class = ItemSerializer
 
     def get_queryset(self):
-        queryset = Item.objects.all()
+        merchant = self.request.user.merchant
+        queryset = Item.objects.filter(merchant__id=merchant.id)
         search_value = self.request.query_params.get('search_string')
         if search_value is not None:
-            queryset = queryset.filter(
+            queryset_filtered = queryset.filter(
                 Q(sku__icontains=search_value) |
                 Q(ean__icontains=search_value) |
                 Q(upc__icontains=search_value) |
@@ -57,7 +58,7 @@ class SearchItemView(ListAPIView):
                 Q(amazon_fnsku__icontains=search_value) |
                 Q(name__icontains=search_value)
             )
-        return queryset
+        return queryset_filtered
 
 
 class RetrieveUpdateDestroyItemView(RetrieveUpdateDestroyAPIView):

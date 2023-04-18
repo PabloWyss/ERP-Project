@@ -7,13 +7,25 @@ from partner.models import Partner
 from partner.serializers import PartnerSerializer
 
 
+def search_by_search_string(self, queryset):
+    search_value = self.request.query_params.get('search_string')
+    if search_value is not None:
+        queryset_filtered = queryset.filter(
+            Q(name__icontains=search_value) |
+            Q(contact__icontains=search_value) |
+            Q(address__icontains=search_value) |
+            Q(email__icontains=search_value)
+        )
+    return queryset_filtered
+
+
 class ListPartnerView(ListAPIView):
     """
     get:
     List all partners
 
     # subtitle
-    Lists all the partners of the merchant in alphabetical order of name
+    Lists all partners of the merchant in alphabetical order of name
     """
     serializer_class = PartnerSerializer
 
@@ -28,7 +40,7 @@ class CreatePartnerView(CreateAPIView):
     Create a new partner
 
     # subtitle
-    Create a new partner related to a merchant
+    Create a new partner related to the merchant
     """
     serializer_class = PartnerSerializer
 
@@ -58,20 +70,14 @@ class SearchPartnerView(ListAPIView):
     # subtitle
     Search for a specific partner of the merchant
     """
+
     serializer_class = PartnerSerializer
 
     def get_queryset(self):
         merchant = self.request.user.merchant
         queryset = Partner.objects.filter(merchants__id=merchant.id)
-        search_value = self.request.query_params.get('search_string')
-        if search_value is not None:
-            queryset = queryset.filter(
-                Q(name__icontains=search_value) |
-                Q(contact__icontains=search_value) |
-                Q(address__icontains=search_value) |
-                Q(email__icontains=search_value)
-            )
-        return queryset
+        queryset_filtered = search_by_search_string(self, queryset)
+        return queryset_filtered
 
 
 class RetrieveUpdateDestroyPartnerView(RetrieveUpdateDestroyAPIView):
@@ -115,15 +121,8 @@ class SearchSupplierView(ListAPIView):
     def get_queryset(self):
         merchant = self.request.user.merchant
         queryset = Partner.objects.filter(merchants__id=merchant.id).filter(is_supplier=True)
-        search_value = self.request.query_params.get('search_string')
-        if search_value is not None:
-            queryset = queryset.filter(
-                Q(name__icontains=search_value) |
-                Q(contact__icontains=search_value) |
-                Q(address__icontains=search_value) |
-                Q(email__icontains=search_value)
-            )
-        return queryset
+        queryset_filtered = search_by_search_string(self, queryset)
+        return queryset_filtered
 
 
 class ListCustomerView(ListAPIView):
@@ -154,12 +153,5 @@ class SearchCustomerView(ListAPIView):
     def get_queryset(self):
         merchant = self.request.user.merchant
         queryset = Partner.objects.filter(merchants__id=merchant.id).filter(is_customer=True)
-        search_value = self.request.query_params.get('search_string')
-        if search_value is not None:
-            queryset = queryset.filter(
-                Q(name__icontains=search_value) |
-                Q(contact__icontains=search_value) |
-                Q(address__icontains=search_value) |
-                Q(email__icontains=search_value)
-            )
-        return queryset
+        queryset_filtered = search_by_search_string(self, queryset)
+        return queryset_filtered

@@ -135,10 +135,10 @@ class SearchWarehouseView(ListAPIView):
         queryset = Warehouse.objects.filter(merchants__id=merchant.id)
         search_value = self.request.query_params.get('search_string')
         if search_value is not None:
-            queryset = queryset.filter(
+            queryset_filtered = queryset.filter(
                 Q(name__icontains=search_value)
             )
-        return queryset
+        return queryset_filtered
 
 
 class RetrieveUpdateDestroyWarehouseView(RetrieveUpdateDestroyAPIView):
