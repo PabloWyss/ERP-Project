@@ -11,6 +11,7 @@ module.exports = {
         buttonGrey: "#5D6679",
         drawGrey: "#D0D3D9",
         ifOrange: "#F4A261",
+        bgLogin: "#CEE3D9"
       },
       fontFamily: {
         sans: ["Roboto", "sans-serif"], //"sans" is applied to the whole document by default
