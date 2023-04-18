@@ -1,19 +1,47 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import ItemModelInput from "./IitemModelInput";
+import callAPI from "../../../Axios/callAPI";
 
 const ItemModel = () => {
 
     const [showDetails, setShowDetails] = useState(false)
+    const [itemModel, setItemModel] = useState({})
+
+    const item_id = 1
+
+    const obtainItemsModelVariantInfo = async () => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            };
+
+            const response = await callAPI.get(`/items/models/current/${item_id}/`, config);
+            console.log(response)
+            setItemModel(response.data[0])
+            console.log(itemModel)
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
 
     const handleShowDetails = (e) =>{
         e.preventDefault()
         setShowDetails(!showDetails)
     }
 
+    // useEffect(() => {
+    //     obtainItemsModelVariantInfo()
+    // }, [])
+
     return (
         <div>
               <div className="flex flex-col gap-4">
-                  <div className="flex justify-between text-xl">
+                  <div className="flex justify-between items-center text-xl bg-backgroundGrey px-4">
                         <div>
                             Item model Specifications (Current)
                         </div>
@@ -23,42 +51,18 @@ const ItemModel = () => {
                   </div>
                   {showDetails && (
                       <div className="flex flex-col gap-4">
-                          <div className="flex w-full justify-around">
-                              <div className="flex flex-col gap-1 w-1/3">
-                                  <div className="flex gap-1 items-center justify-between">
-                                      <label htmlFor="product_variant_name">Name: </label>
-                                      <input id="product_variant_name" name="product_variant_name" placeholder={'Name'}/>
-                                  </div>
-                                  <div className="flex gap-1 items-center justify-between">
-                                      <label htmlFor="product_variant_color">Name: </label>
-                                      <input id="product_variant_color" name="product_variant_color" placeholder={'Color'}/>
-                                  </div>
-                                  <div className="flex gap-1 items-center justify-between">
-                                      <label htmlFor="product_variant_valid_from">Valid from: </label>
-                                      <input id="product_variant_valid_from" name="product_variant_valid_from" placeholder={'Valid from'}/>
-                                  </div>
-                                  <div className="flex gap-1 items-center justify-between">
-                                      <label htmlFor="product_variant_valid_to">Valid to: </label>
-                                      <input id="product_variant_valid_to" name="product_variant_valid_to" placeholder={'Valid to'}/>
-                                  </div>
+                          <div className="flex w-full justify-around gap-10 justify-around">
+                              <div className="flex flex-col gap-1 w-1/2">
+                                  <ItemModelInput description={"Name:"} value={"name"}/>
+                                  <ItemModelInput description={"Color:"} value={"color"}/>
+                                  <ItemModelInput description={"Valid from:"} value={"valid_from"}/>
+                                  <ItemModelInput description={"Valid to:"} value={"valid_to"}/>
                               </div>
-                              <div className="flex flex-col gap-1 w-1/3">
-                                  <div className="flex gap-1 items-center justify-between">
-                                      <label htmlFor="product_variant_condition">Condition: </label>
-                                      <input id="product_variant_condition" name="product_variant_condition" placeholder={'Condition'}/>
-                                  </div>
-                                  <div className="flex gap-1 items-center justify-between">
-                                      <label htmlFor="product_variant_category">Category: </label>
-                                      <input id="product_variant_category" name="product_variant_category" placeholder={'Category'}/>
-                                  </div>
-                                  <div className="flex gap-1 items-center justify-between">
-                                      <label htmlFor="product_variant_brand_name">Brand Name: </label>
-                                      <input id="product_variant_brand_name" name="product_variant_brand_name" placeholder={'Brand Name'}/>
-                                  </div>
-                                  <div className="flex gap-1 items-center justify-between">
-                                      <label htmlFor="product_variant_brand_collection">Brand Collection: </label>
-                                      <input id="product_variant_brand_collection" name="product_variant_brand_collection" placeholder={'Brand Collection'}/>
-                                  </div>
+                              <div className="flex flex-col gap-1 w-1/2">
+                                  <ItemModelInput description={"Condition:"} value={"condition"}/>
+                                  <ItemModelInput description={"Category:"} value={"category"}/>
+                                  <ItemModelInput description={"Brand name:"} value={"brand_name"}/>
+                                  <ItemModelInput description={"Brand collection:"} value={"brand_collection"}/>
                               </div>
                           </div>
                           <div >
