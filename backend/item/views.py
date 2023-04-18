@@ -10,8 +10,9 @@ class ListItemView(ListAPIView):
     List all items
 
     # subtitle
-    Lists all the items of the merchant in alphabetical order of SKU number
+    Lists all items of the merchant in alphabetical order of SKU number
     """
+
     queryset = Item.objects.all().order_by('sku')
     serializer_class = ItemSerializer
 
@@ -22,8 +23,9 @@ class CreateItemView(CreateAPIView):
     Create a new item
 
     # subtitle
-    Create a new item
+    Create a new item related to the merchant
     """
+
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
 
@@ -37,16 +39,17 @@ class SearchItemView(ListAPIView):
     Search for a specific item
 
     # subtitle
-    Search for a specific item
+    Search for a specific item of the merchant
     """
+
     serializer_class = ItemSerializer
 
     def get_queryset(self):
-        # This view returns an item based on the url query param
-        queryset = Item.objects.all()
+        merchant = self.request.user.merchant
+        queryset = Item.objects.filter(merchant__id=merchant.id)
         search_value = self.request.query_params.get('search_string')
         if search_value is not None:
-            queryset = queryset.filter(
+            queryset_filtered = queryset.filter(
                 Q(sku__icontains=search_value) |
                 Q(ean__icontains=search_value) |
                 Q(upc__icontains=search_value) |
@@ -55,13 +58,18 @@ class SearchItemView(ListAPIView):
                 Q(amazon_fnsku__icontains=search_value) |
                 Q(name__icontains=search_value)
             )
-        return queryset
+        return queryset_filtered
 
 
 class RetrieveUpdateDestroyItemView(RetrieveUpdateDestroyAPIView):
     """
-    t.b.d.
+    patch:
+    Retrieve and update a specific item
+
+    # subtitle
+    Retrieve and update a specific item of the merchant
     """
+
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
     lookup_url_kwarg = 'item_id'

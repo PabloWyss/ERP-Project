@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import callAPI from "../../../Axios/callAPI";
+import ItemDetailsInput from "./ItemDetailsInput";
 
 const PrimaryDetails = () => {
 
@@ -61,7 +62,6 @@ const PrimaryDetails = () => {
 
     const handleNameInput = (e) => {
         setName(e.target.value);
-        console.log(name)
     };
 
     const handleStatusInput = (e) => {
@@ -135,70 +135,33 @@ const PrimaryDetails = () => {
             </div>
             <div className="flex w-full">
                 <div className="flex w-full justify-around gap-4">
-                    <div className="flex w-1/3 flex-col gap-1">
-                        <div className="flex gap-1 items-center justify-between">
-                            <label htmlFor="item_id">Item ID: </label>
-                            <input id="item_id" name="item_id" value={item.id}
-                                   disabled/>
-                        </div>
-                        <div className="flex gap-1 items-center justify-between">
-                            <label htmlFor="item_release_date">Release Date: </label>
-                            <input id="item_release_date" name="item_release_date"
-                                   value={item.release_date?.slice(0, 10)}
-                                   disabled/>
-                        </div>
-                        <div className="flex gap-1 items-center justify-between">
-                            <label htmlFor="item_name">Item Name: </label>
-                            <input id="item_name" name="item_name" value={name}
-                                   disabled={disableInput}
-                                   onChange={handleNameInput}/>
-                        </div>
-                        <div className="flex gap-1 items-center justify-between">
-                            <label htmlFor="item_status">Item Status: </label>
-                            <input id="item_status" name="item_status" value={status}
-                                   disabled={disableInput}
-                                   onChange={handleStatusInput}/>
-                        </div>
-
-                        <div className="flex gap-1 items-center justify-between">
-                            <label htmlFor="item_series">Series No.: </label>
-                            <input id="item_series" name="item_series" value={series}
-                                   disabled={disableInput}
-                                   onChange={handleSeriesInput}/>
-                        </div>
+                    <div className="flex w-1/2 flex-col gap-1">
+                        <ItemDetailsInput value={item.id}
+                                          disableInput={"disabled"}
+                                          handleInput={""}
+                                          description={"Item ID:"}/>
+                        <ItemDetailsInput value={item.release_date?.slice(0, 10)}
+                                          disableInput={"disabled"}
+                                          handleInput={""}
+                                          description={"Release Date:"}/>
+                        <ItemDetailsInput value={name} disableInput={disableInput}
+                                          handleInput={handleNameInput} description={"Item Name:"}/>
+                        <ItemDetailsInput value={status} disableInput={disableInput}
+                                          handleInput={handleStatusInput} description={"Item Status: "}/>
+                        <ItemDetailsInput value={series} disableInput={disableInput}
+                                          handleInput={handleSeriesInput} description={"Series No.:"}/>
                     </div>
-                    <div className="flex w-1/3 flex-col gap-1">
-                        <div className="flex gap-1 items-center justify-between">
-                            <label htmlFor="item_sku">SKU No.: </label>
-                            <input id="item_sku" name="item_sku" value={SKU}
-                                   disabled={disableInput}
-                                   onChange={handleSKUInput}/>
-                        </div>
-                        <div className="flex gap-1 items-center justify-between">
-                            <label htmlFor="item_ean">EAN No.: </label>
-                            <input id="item_ean" name="item_ean" value={EAN}
-                                   disabled={disableInput}
-                                   onChange={handleEANInput}/>
-                        </div>
-                        <div className="flex gap-1 items-center justify-between">
-                            <label htmlFor="item_upc">UPC No.: </label>
-                            <input id="item_upc" name="item_upc" value={UPC}
-                                   disabled={disableInput}
-                                   onChange={handleUPCInput}/>
-                        </div>
-                        <div className="flex gap-1 items-center justify-between">
-                            <label htmlFor="item_amazon_asin">Amazon ASIN No.: </label>
-                            <input id="item_amazon_asin" name="item_amazon_asin" value={AASIN}
-                                   disabled={disableInput}
-                                   onChange={handleAASINInput}/>
-                        </div>
-                        <div className="flex gap-1 items-center justify-between   ">
-                            <label htmlFor="item_amazon_fnsku">Amazon FNSKU No.: </label>
-                            <input id="item_amazon_fnsku" name="item_amazon_fnsku"
-                                   value={AFNSKU}
-                                   disabled={disableInput}
-                                   onChange={handleAFNSKUInput}/>
-                        </div>
+                    <div className="flex w-1/2 flex-col gap-1">
+                        <ItemDetailsInput value={SKU} disableInput={disableInput}
+                                          handleInput={handleSKUInput} description={"SKU No.:"}/>
+                        <ItemDetailsInput value={EAN} disableInput={disableInput}
+                                          handleInput={handleEANInput} description={"EAN No.:"}/>
+                        <ItemDetailsInput value={UPC} disableInput={disableInput}
+                                          handleInput={handleUPCInput} description={"UPC No.:"}/>
+                        <ItemDetailsInput value={AASIN} disableInput={disableInput}
+                                          handleInput={handleAASINInput} description={"Amazon ASIN No.:"}/>
+                        <ItemDetailsInput value={AFNSKU} disableInput={disableInput}
+                                          handleInput={handleAFNSKUInput} description={"Amazon FNSKU No.:"}/>
                     </div>
                 </div>
             </div>

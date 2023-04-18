@@ -12,6 +12,7 @@ class CreateMerchantView(CreateAPIView):
     # subtitle
     Create a new merchant
     """
+
     queryset = Merchant.objects.all()
     serializer_class = MerchantSerializer
 
@@ -20,6 +21,7 @@ class CreateMerchantView(CreateAPIView):
 
 
 class MyMerchantRetrieveUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+
     permission_classes = [IsSameUser]
     serializer_class = MerchantSerializer
 
