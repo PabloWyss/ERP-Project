@@ -11,7 +11,7 @@ const ItemPartner = () => {
     return (
         <div>
               <div className="flex flex-col gap-4">
-                  <div className="flex justify-between text-xl">
+                  <div className="flex justify-between items-center px-4 bg-backgroundGrey text-xl">
                         <div>
                             Partners
                         </div>
