@@ -1,12 +1,14 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import arrow_left_image from "../../Assets/Icons/arrow_left_orange.svg";
 import PrimaryDetails from "./PrimaryDetails";
 import ItemVariant from "./ItemVariant";
 import ItemModel from "./ItemModel";
 import ItemTag from "./ItemTag";
 import ItemPartners from "./ItemPartners";
+import callAPI from "../../Axios/callAPI";
 
 function Items() {
+
 
 
 
