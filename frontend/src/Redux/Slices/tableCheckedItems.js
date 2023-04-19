@@ -12,7 +12,6 @@ export const tableCheckedItems = createSlice({
       // state.checkeditems = newCheckedItems;
       const newCheckedItems = action.payload;
       state.checkeditems = newCheckedItems;
-      console.log(state.checkeditems);
     },
   },
 });

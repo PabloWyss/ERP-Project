@@ -16,7 +16,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { forwardRef } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { setCheckedItems } from "../../Redux/Slices/tableCheckedItems";
 import { useDispatch } from "react-redux";
 
@@ -41,7 +40,7 @@ function ListTable(props) {
     );
   }
 
-  //apply input field to every column
+  //apply search to every column
   const defaultColumn = useMemo(
     () => ({
       Filter: TextFilter,
@@ -77,19 +76,21 @@ function ListTable(props) {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
     prepareRow,
-    selectedFlatRows,
-    state: { selectedRowIds },
-    page,
-    pageOptions,
-    state: { pageIndex, pageSize },
-    previousPage,
-    nextPage,
+    page, //select all selects only the items in the current page
+    // rows //select all selects all the items in the table
     canPreviousPage,
     canNextPage,
+    pageOptions,
+    pageCount, //added
+    gotoPage, //added
+    nextPage,
+    previousPage,
+    setPageSize, //added
+    selectedFlatRows,
+    state: { pageIndex, pageSize, selectedRowIds },
   } = useTable(
-    { columns, data, defaultColumn, initialState: { pageSize: 5 } },
+    { columns, data, defaultColumn, initialState: { pageSize: 5 } }, //select how many rows per page to show
     useFilters,
     useSortBy,
     usePagination,
@@ -101,9 +102,11 @@ function ListTable(props) {
           id: "selection",
           // The header can use the table's getToggleAllRowsSelectedProps method
           // to render a checkbox
-          Header: ({ getToggleAllRowsSelectedProps }) => (
+          // Header: ({ getToggleAllRowsSelectedProps }) => (
+          Header: ({ getToggleAllPageRowsSelectedProps }) => (
             <div>
-              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+              {/* <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} /> */}
+              <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
             </div>
           ),
           // The cell can use the individual row's getToggleRowSelectedProps method
@@ -136,9 +139,9 @@ function ListTable(props) {
   useEffect(extractIdFromSelectedRows, [selectedFlatRows]);
 
   return (
-    <div>
+    <div className="max-h-full">
       <div
-        className="overflow-y-scroll 
+        className="max-h-full overflow-y-scroll 
       scrollbar-thin scrollbar-track-transparent scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey
       bg-white"
       >
@@ -147,7 +150,8 @@ function ListTable(props) {
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
-                  <th key={uuidv4()} className="px-2">
+                  <th className="px-2">
+                    {/* putting a key={uuidv4()} inside <th> makes the filter lose focus after each keystroke*/}
                     <div
                       {...column.getHeaderProps(
                         column.getSortByToggleProps()
@@ -200,7 +204,7 @@ function ListTable(props) {
           </tbody>
         </table>
       </div>
-      <div className="flex flex-row my-2">
+      <div className="flex flex-row my-2 pb-6">
         <div>
           <button
             onClick={() => previousPage()}
@@ -225,26 +229,6 @@ function ListTable(props) {
             <FaChevronRight className="text-buttonGrey" />
           </button>
         </div>
-      </div>
-      <div>
-        <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
-        <pre>
-          <code>
-            {JSON.stringify(
-              {
-                selectedRowIds: selectedRowIds,
-                "selectedFlatRows[].original": selectedFlatRows.map(
-                  (d) => d.original
-                ),
-              },
-              null,
-              2
-            )}
-          </code>
-        </pre>
-        <p>
-          Selected names: {selectedFlatRows.map((item) => item.original.name)}
-        </p>
       </div>
     </div>
   );
