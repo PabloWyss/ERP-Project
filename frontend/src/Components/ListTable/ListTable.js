@@ -17,6 +17,8 @@ import { forwardRef } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { setCheckedItems } from "../../Redux/Slices/tableCheckedItems";
+import { useDispatch } from "react-redux";
 
 function ListTable(props) {
   const data = useMemo(() => props.data, []);
@@ -123,6 +125,15 @@ function ListTable(props) {
   const handleRowClick = (row) => {
     navigate(location.pathname + "/" + row.id);
   };
+
+  //update redux store when selecting a row with the checkbox
+  const dispatch = useDispatch();
+  const extractIdFromSelectedRows = () => {
+    const selectedId = [];
+    selectedFlatRows.map((row) => selectedId.push(row.original.id));
+    dispatch(setCheckedItems(selectedId));
+  };
+  useEffect(extractIdFromSelectedRows, [selectedFlatRows]);
 
   return (
     <div>
@@ -231,6 +242,9 @@ function ListTable(props) {
             )}
           </code>
         </pre>
+        <p>
+          Selected names: {selectedFlatRows.map((item) => item.original.name)}
+        </p>
       </div>
     </div>
   );
