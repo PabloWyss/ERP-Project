@@ -33,8 +33,8 @@ class ItemVariantSpecification(models.Model):
 
     # id
     item = models.ForeignKey(to=Item, on_delete=models.PROTECT, related_name="item_variant_specifications")
-    valid_from = models.DateTimeField()
-    valid_to = models.DateTimeField()
+    valid_from = models.DateTimeField(blank=True)
+    valid_to = models.DateTimeField(blank=True, null=True)
     weight_net_kg = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
     weight_gross_kg = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
     length_cm = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
