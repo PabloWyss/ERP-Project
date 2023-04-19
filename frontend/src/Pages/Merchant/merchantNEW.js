@@ -17,71 +17,72 @@ const MerchantNEW = () => {
   const [email, setEmail] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
 
+
   const handleSaveButton = async (e) => {
     console.log("PAIN")
     e.preventDefault();
-      updateMerchant()
+    navigate("/merchants/me")
+    updateMerchant()
   };
 
+  const handleNameInput = (e) => {
+    setName(e.target.value);
+  };
 
-    const handleNameInput = (e) => {
-      setName(e.target.value);
+  const handleAddressInput = (e) => {
+    setAddress(e.target.value);
+  };
+
+  const handleCountryCodeInput = (e) => {
+    setCountryCode(e.target.value);
+  };
+
+  const handlePhoneInput = (e) => {
+    setPhone(e.target.value);
+  };
+
+  const handleEmailInput = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleProfilePictureChange = async (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = async () => {
+      setProfilePicture(file);
+      const formData = new FormData();
+      formData.append("profile_picture", event.target.files[0]);
     };
+    reader.readAsDataURL(file);
 
-    const handleAddressInput = (e) => {
-      setAddress(e.target.value);
-    };
+    event.target.value = "";
+  };
 
-    const handleCountryCodeInput = (e) => {
-      setCountryCode(e.target.value);
-    };
-
-    const handlePhoneInput = (e) => {
-      setPhone(e.target.value);
-    };
-
-    const handleEmailInput = (e) => {
-      setEmail(e.target.value);
-    };
-
-    const handleProfilePictureChange = async (event) => {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      reader.onload = async () => {
-        setProfilePicture(file);
-        const formData = new FormData();
-        formData.append("profile_picture", event.target.files[0]);
+  const getMerchantByID = async () => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       };
-      reader.readAsDataURL(file);
 
-      event.target.value = "";
-    };
+      const response = await callAPI.get(`/merchants/me/`, config);
+      setMerchant(response.data);
+      setName(response.data.name);
+      setAddress(response.data.address);
+      setCountryCode(response.data.country_code);
+      setPhone(response.data.phone);
+      setEmail(response.data.email);
+      setProfilePicture(response.data.profile_picture);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    const getMerchantByID = async () => {
-      try {
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        };
-
-        const response = await callAPI.get(`/merchants/me/`, config);
-        setMerchant(response.data);
-        setName(response.data.name);
-        setAddress(response.data.address);
-        setCountryCode(response.data.country_code);
-        setPhone(response.data.phone);
-        setEmail(response.data.email);
-        setProfilePicture(response.data.profile_picture);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    useEffect(() => {
-      getMerchantByID();
-    }, []);
+  useEffect(() => {
+    getMerchantByID();
+  }, []);
 
   const updateMerchant = async () => {
     if (!localStorage.getItem("token")) {
@@ -102,18 +103,14 @@ const MerchantNEW = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       };
-      const response = await callAPI.post(`/merchants/new/`, data, config);
+      const response = await callAPI.post(`/merchants/me/`, data, config);
       if (response.status === 200) {
-
-        navigate("/merchants/me");
+        navigate("/merchants/new");
       }
-
     } catch (error) {
       console.log(error);
     }
   };
-
-
 
 return (
   <div className="flex h-screen w-full justify-center overflow-y-scroll">
