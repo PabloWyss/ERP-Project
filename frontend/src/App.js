@@ -39,7 +39,7 @@ function App() {
   }, [currentUser]);
 
 
-  //const isPathExcluded = ['/signin', '/signup/verification', '/congratulations'].includes(location.pathname);
+
 
   return (
       <Router>
@@ -56,7 +56,7 @@ function App() {
                   <Route path="/reports" element={<Reports/>}/>
                   <Route path="/tags" element={<Tags/>}/>
                   <Route path="/profile" element={<Profile/>}/>
-                  <Route path="/merchants" element={<Merchant/>}/>
+                  <Route path="/merchants/me" element={<Merchant/>}/>
                   <Route path="/partners" element={<Partners/>}/>
                   <Route path="/" element={<Items/>}/>
               </Routes>

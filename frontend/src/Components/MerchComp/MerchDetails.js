@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import callAPI from "../../Axios/callAPI";
-
+import { useDispatch, useSelector } from 'react-redux';
+import CallAPI from "../../Axios/callAPI";
 
 const MerchDetails = () => {
+  const dispatch = useDispatch();
   const [merchant, setMerchant] = useState({});
   const [editClicked, setEditClicked] = useState(false);
   const [disableInput, setDisableInput] = useState(true);
@@ -19,6 +21,7 @@ const MerchDetails = () => {
       setEditClicked(!editClicked);
       setDisableInput(!disableInput);
       updateMerchant()
+        console.log("hello")
     } else {
       setEditClicked(!editClicked);
       setDisableInput(!disableInput);
@@ -221,6 +224,27 @@ const handleProfilePictureChange = async (event) => {
     </div>
   );
 
-  }
 
+}
+
+
+  ///////THIS IS TO CHECK IF FORM IS EMPTY FOR THE SIDEBARFAKE!///////////////
+
+/*
+export async function isFormEmpty() {
+  try {
+      const response = await CallAPI.get('/merchants/me/');
+      const merchant = response.data;
+      if (!merchant.name) {
+          return true
+      }
+  } catch (error) {
+    console.log("error in isFormEmpty function");
+    return false;
+  }
+}
+*/
+
+
+//////////////////////////////////////////////////////////////////////////
 export default MerchDetails;

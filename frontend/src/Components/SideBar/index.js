@@ -12,54 +12,85 @@ import logo from '../../Assets/Logos/logo_white.svg';
 import {setSignUpEmail} from "../../Redux/Slices/signUpEmailAddress";
 import {setCurrentUser} from "../../Redux/Slices/currentUser";
 import {useDispatch} from "react-redux";
+import {useState} from "react";
 
 const useHandleLogout = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+const dispatch = useDispatch();
+const navigate = useNavigate();
 
-  return () => {
-    localStorage.removeItem("token");
-    dispatch(setCurrentUser({})); // Dispatch the setCurrentUser action with an empty object to reset the current user state
-    dispatch(setSignUpEmail("")); // Dispatch the setSignUpEmail action with an empty string to reset the sign up email state
-    setTimeout(() => {
-      navigate("/signin");
-    }, 0);
-  };
+return () => {
+localStorage.removeItem("token");
+dispatch(setCurrentUser({}));
+dispatch(setSignUpEmail(""));
+setTimeout(() => navigate("/signin"), 0);
+};
 };
 
+
 const SideBar = () => {
-  const handleLogout = useHandleLogout();
-  const location = useLocation()
+  const location = useLocation();
+  const handleLogout = useHandleLogout()
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleClosePopup = () => setShowPopup(false);
+
+  const handleOpenPopup = () => setShowPopup(true);
 
   if (!['/signin', '/signup','/verification', '/congratulations'].includes(location.pathname)) {
-      return (
-          <>
-          <div
-              className="flex py-10 left-0 top-0 h-screen flex-col w-48 bg-gradient-to-b from-gradientFrom to-gradientTo">
-            <div className="flex items-center justify-center">
-              <img src={logo} alt="Invenflow Logo" className="w-8 h-8 mr-5"/>
-              <h1 className="text-white text-xl font-bold">InvenFlow</h1>
-            </div>
-            <div className="mt-10">
-                <NavLink to="/merchants">
-                {({isActive}) => (
-                    <button
-                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
-                      <MerchantIcon className="mr-2"/>
-                      Merchant
-                    </button>
-                )}
-              </NavLink>
-              <NavLink to="/items">
-                {({isActive}) => (
-                    <button
-                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
-                      <ItemsIcon className="mr-2"/>
-                      Items
-                    </button>
-                )}
-              </NavLink>
-              <NavLink to="/orders">
+    return (
+    <>
+
+      {showPopup && (
+        <div
+          className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center"
+          onClick={handleClosePopup}
+        >
+          <div className="bg-white p-8 rounded-lg z-60">
+            <h2 className="text-2xl font-bold mb-4">Access Denied</h2>
+            <p>Register a merchant first to access functionalities of InvenFlow.</p>
+            <button className="bg-ifOrange text-white" onClick={handleClosePopup}>Close</button>
+          </div>
+        </div>
+      )}
+    <div className="relative flex py-10 left-0 top-0 h-screen flex-col w-48 bg-gradient-to-b from-gradientFrom to-gradientTo z-10">
+      <div
+        className="absolute left-0 bottom-20 w-full h-3/4 bg-black bg-opacity-50 z-50"
+        onClick={handleOpenPopup}
+      ></div>
+      <div className="flex items-center justify-center">
+        <img src={logo} alt="Invenflow Logo" className="w-8 h-8 mr-5" />
+        <h1 className="text-white text-xl font-bold">InvenFlow</h1>
+      </div>
+      <div className="mt-10">
+        <NavLink to="/merchants/me">
+          {({ isActive }) => (
+            <button
+              className={`flex items-center w-full text-left mt-4 ${
+                isActive
+                  ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1)'
+                  : 'text-white'
+              }`}
+            >
+              <MerchantIcon className="mr-2" />
+              Merchant
+            </button>
+          )}
+        </NavLink>
+        <NavLink to="/items">
+          {({ isActive }) => (
+            <button
+              className={`flex items-center w-full text-left mt-4 ${
+                isActive
+                  ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1)'
+                  : 'text-white'
+              }`}
+            >
+              <ItemsIcon className="mr-2" />
+              Items
+            </button>
+          )}
+        </NavLink>
+        <NavLink to="/orders">
                 {({isActive}) => (
                     <button
                         className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
