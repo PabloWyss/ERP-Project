@@ -5,19 +5,19 @@ import {useNavigate, useParams} from "react-router-dom";
 
 const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
     const [disableInput, setDisableInput] = useState(true)
-    const [validFrom, setValidFrom] = useState(fromCreate ? "" : formatDate(new Date(itemVariant.valid_from)))
-    const [validTo, setValidTo] = useState(fromCreate ? "" : formatDate(new Date(itemVariant.valid_to)))
-    const [purchasePrice, setPurchasePrice] = useState(fromCreate ? "" : itemVariant.purchase_price_net_eur)
-    const [salePrice, setSalePrice] = useState(fromCreate ? "" : itemVariant.sale_price_net_eur)
-    const [stockMinimum, setStockMinimum] = useState(fromCreate ? "" : itemVariant.stock_level_minimum)
-    const [stockReorder, setStockReorder] = useState(fromCreate ? "" : itemVariant.stock_level_reorder)
-    const [length, setLength] = useState(fromCreate ? "" : itemVariant.length_cm)
-    const [width, setWidth] = useState(fromCreate ? "" : itemVariant.width_cm)
-    const [height, setHeight] = useState(fromCreate ? "" : itemVariant.height_cm)
-    const [weightGross, setWeightGross] = useState(fromCreate ? "" : itemVariant.weight_gross_kg)
-    const [weightNet, setWeightNet] = useState(fromCreate ? "" : itemVariant.weight_net_kg)
-    const [size, setSize] = useState(fromCreate ? "" : itemVariant.size)
-    const [changes, setChanges] = useState(fromCreate ? "" : itemVariant.item_changes)
+    const [validFrom, setValidFrom] = useState(fromCreate ? "" : formatDate(new Date(itemVariant?.valid_from)))
+    const [validTo, setValidTo] = useState(fromCreate ? "" : formatDate(new Date(itemVariant?.valid_to)))
+    const [purchasePrice, setPurchasePrice] = useState(fromCreate ? "" : itemVariant?.purchase_price_net_eur)
+    const [salePrice, setSalePrice] = useState(fromCreate ? "" : itemVariant?.sale_price_net_eur)
+    const [stockMinimum, setStockMinimum] = useState(fromCreate ? "" : itemVariant?.stock_level_minimum)
+    const [stockReorder, setStockReorder] = useState(fromCreate ? "" : itemVariant?.stock_level_reorder)
+    const [length, setLength] = useState(fromCreate ? "" : itemVariant?.length_cm)
+    const [width, setWidth] = useState(fromCreate ? "" : itemVariant?.width_cm)
+    const [height, setHeight] = useState(fromCreate ? "" : itemVariant?.height_cm)
+    const [weightGross, setWeightGross] = useState(fromCreate ? "" : itemVariant?.weight_gross_kg)
+    const [weightNet, setWeightNet] = useState(fromCreate ? "" : itemVariant?.weight_net_kg)
+    const [size, setSize] = useState(fromCreate ? "" : itemVariant?.size)
+    const [changes, setChanges] = useState(fromCreate ? "" : itemVariant?.item_changes)
     const [comesFromUpdate, setComesFromUpdate] = useState(fromUpdate)
     const navigate = useNavigate()
 
@@ -194,56 +194,56 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
                                       disabled={disableInput} placeholder={itemVariant?.id}/>
                     }
                     <ItemVariantInput description={"Valid From:"}
-                                      value={validFrom}
+                                      value={validFrom ? validFrom : ""}
                                       disabled={!comesFromUpdate & !fromCreate}
                                       type={"date"}
                                       handleInput={handleInitialDateInput}/>
                     <ItemVariantInput description={"Valid To:"}
-                                      value={validTo} type={"date"}
+                                      value={validTo ? validTo : ""} type={"date"}
                                       disabled={!comesFromUpdate & !fromCreate}
                                       handleInput={handleFinalDateInput}/>
                     <ItemVariantInput description={"Purchase Price [eur]:"}
-                                      value={purchasePrice}
+                                      value={purchasePrice ? purchasePrice : ""}
                                       disabled={!comesFromUpdate & !fromCreate}
                                       handleInput={handlePurchasePriceInput}/>
                     <ItemVariantInput description={"Sale Price [eur]:"}
-                                      value={salePrice}
+                                      value={salePrice ? salePrice : ""}
                                       handleInput={handleSalePriceInput}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                     <ItemVariantInput description={"Stock level minimum [qty]:"}
-                                      value={stockMinimum}
+                                      value={stockMinimum ? stockMinimum : ""}
                                       handleInput={handleStockMinimumInput}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                     <ItemVariantInput description={"Stock level reorder [qty]:"}
-                                      value={stockReorder}
+                                      value={stockReorder ? stockReorder : ""}
                                       handleInput={handleStockReorderInput}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                 </div>
                 <div className="flex flex-col w-1/2 gap-1">
                     <ItemVariantInput description={"Length [cm]:"}
-                                      value={length}
+                                      value={length ? length: ""}
                                       handleInput={handleLengthInput}
                                       type={"number"}
                                       step={0.01}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                     <ItemVariantInput description={"Width [cm]:"}
-                                      value={width}
+                                      value={width ? width : ""}
                                       handleInput={handleWidthInput}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                     <ItemVariantInput description={"Height [cm]:"}
-                                      value={height}
+                                      value={height ? height : ""}
                                       handleInput={handleHeightInput}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                     <ItemVariantInput description={"Weight gross [kg]:"}
-                                      value={weightGross}
+                                      value={weightGross ? weightGross : ""}
                                       handleInput={handleWeightGrossInput}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                     <ItemVariantInput description={"Weight net [kg]:"}
-                                      value={weightNet}
+                                      value={weightNet ? weightNet : ""}
                                       handleInput={handleWeightNetInput}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                     <ItemVariantInput description={"Size:"}
-                                      value={size}
+                                      value={size ? size : ""}
                                       handleInput={handleSizeInput}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                 </div>

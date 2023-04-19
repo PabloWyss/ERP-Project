@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import callAPI from "../../../Axios/callAPI";
 import ItemDetailsInput from "./ItemDetailsInput";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
-const PrimaryDetails = () => {
+const PrimaryDetails = ({fromCreate}) => {
 
     const [item, setItem] = useState({})
     const [editClicked, setEditClicked] = useState(false)
@@ -16,6 +16,8 @@ const PrimaryDetails = () => {
     const [UPC, setUPC] = useState("")
     const [AASIN, setAASIN] = useState("")
     const [AFNSKU, setAFNSKU] = useState("")
+    const [newItemID, setNewItemID] = useState("")
+    const navigate = useNavigate()
 
     const { itemID } = useParams();
 
@@ -29,6 +31,13 @@ const PrimaryDetails = () => {
             setEditClicked(!editClicked)
             setDisableInput(!disableInput)
         }
+    }
+
+    const handleSubmitButton = (e) => {
+        e.preventDefault()
+        createItem()
+        navigate(`/items/${newItemID}/`)
+
     }
 
     const obtainItemsInfo = async () => {
@@ -57,7 +66,10 @@ const PrimaryDetails = () => {
     }
 
     useEffect(() => {
-        obtainItemsInfo()
+        if (fromCreate) {
+        } else {
+            obtainItemsInfo()
+        }
     }, [])
 
     const handleNameInput = (e) => {
@@ -119,52 +131,116 @@ const PrimaryDetails = () => {
             console.log(error)
         }
       }
+
+      const createItem = async () => {
+
+        if (!localStorage.getItem('token')) {
+            return;
+        }
+        try {
+            const data = {
+                name: name,
+                status: status,
+                series: series,
+                sku: SKU,
+                ean: EAN,
+                upc: UPC,
+                amazon_asin: AASIN,
+                amazon_fnsku: AFNSKU
+            }
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            };
+            const response = await callAPI.post(`/items/new/`, data, config)
+            setNewItemID(response.data.id)
+            console.log(newItemID)
+        } catch (error) {
+            console.log(error)
+        }
+      }
+
       const date = new Date(item.release_date).toString().slice(0,15)
 
     return (
-        <form className="flex flex-col w-full justify-between gap-4" onSubmit={handleEditButton}>
+        <form className="flex flex-col w-full justify-between gap-4" onSubmit={handleSubmitButton}>
             <div className="flex items-center justify-between bg-backgroundGrey px-4">
                 <h2 className="text-xl">
                     Primary Details
                 </h2>
-                <button className="text-xl p-0" onClick={handleEditButton}>
-                    {
-                        editClicked ?
-                            "Save" :
-                            "Edit"
-                    }
-                </button>
+                {
+                    fromCreate ?
+                        "":
+                        <button className="text-xl p-0" onClick={handleEditButton}>
+                            {
+                                editClicked ?
+                                    "Save" :
+                                    "Edit"
+                            }
+                        </button>
+                }
             </div>
             <div className="flex w-full">
                 <div className="flex w-full justify-around gap-4">
                     <div className="flex w-1/2 flex-col gap-1">
-                        <ItemDetailsInput value={item.id}
-                                          disableInput={"disabled"}
-                                          description={"Item ID:"}/>
-                        <ItemDetailsInput value={date}
-                                          disableInput={"disabled"}
-                                          description={"Release Date:"}/>
-                        <ItemDetailsInput value={name} disableInput={disableInput}
-                                          handleInput={handleNameInput} description={"Item Name:"}/>
-                        <ItemDetailsInput value={status} disableInput={disableInput}
-                                          handleInput={handleStatusInput} description={"Item Status: "}/>
-                        <ItemDetailsInput value={series} disableInput={disableInput}
-                                          handleInput={handleSeriesInput} description={"Series No.:"}/>
+                        {
+                            fromCreate ?
+                                "":
+                                [<ItemDetailsInput value={item.id}
+                                                   disableInput={!fromCreate}
+                                                   description={"Item ID:"}/>,
+                                <ItemDetailsInput value={date}
+                                                  disableInput={!fromCreate}
+                                                  description={"Release Date:"}/>]
+                        }
+                        <ItemDetailsInput value={name}
+                                          disableInput={!fromCreate}
+                                          handleInput={handleNameInput}
+                                          description={"Item Name:"}/>
+                        <ItemDetailsInput value={status}
+                                          disableInput={!fromCreate}
+                                          handleInput={handleStatusInput}
+                                          description={"Item Status: "}/>
+                        <ItemDetailsInput value={series}
+                                          disableInput={!fromCreate}
+                                          handleInput={handleSeriesInput}
+                                          description={"Series No.:"}/>
                     </div>
                     <div className="flex w-1/2 flex-col gap-1">
-                        <ItemDetailsInput value={SKU} disableInput={disableInput}
-                                          handleInput={handleSKUInput} description={"SKU No.:"}/>
-                        <ItemDetailsInput value={EAN} disableInput={disableInput}
-                                          handleInput={handleEANInput} description={"EAN No.:"}/>
-                        <ItemDetailsInput value={UPC} disableInput={disableInput}
-                                          handleInput={handleUPCInput} description={"UPC No.:"}/>
-                        <ItemDetailsInput value={AASIN} disableInput={disableInput}
-                                          handleInput={handleAASINInput} description={"Amazon ASIN No.:"}/>
-                        <ItemDetailsInput value={AFNSKU} disableInput={disableInput}
-                                          handleInput={handleAFNSKUInput} description={"Amazon FNSKU No.:"}/>
+                        <ItemDetailsInput value={SKU}
+                                          disableInput={!fromCreate}
+                                          handleInput={handleSKUInput}
+                                          description={"SKU No.:"}/>
+                        <ItemDetailsInput value={EAN}
+                                          disableInput={!fromCreate}
+                                          handleInput={handleEANInput}
+                                          description={"EAN No.:"}/>
+                        <ItemDetailsInput value={UPC}
+                                          disableInput={!fromCreate}
+                                          handleInput={handleUPCInput}
+                                          description={"UPC No.:"}/>
+                        <ItemDetailsInput value={AASIN}
+                                          disableInput={!fromCreate}
+                                          handleInput={handleAASINInput}
+                                          description={"Amazon ASIN No.:"}/>
+                        <ItemDetailsInput value={AFNSKU}
+                                          disableInput={!fromCreate}
+                                          handleInput={handleAFNSKUInput}
+                                          description={"Amazon FNSKU No.:"}/>
                     </div>
                 </div>
             </div>
+            {
+                fromCreate ?
+                    <div>
+                        <button type={"submit"}>
+                            submit
+                        </button>
+                    </div>:
+                    ""
+            }
         </form>
     )
 }

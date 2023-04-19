@@ -27,6 +27,11 @@ function Items() {
         navigate(`/items/itemVariant/create/${itemID}`)
     }
 
+    const handleClickCreateModel = (e) => {
+        e.preventDefault()
+        navigate(`/items/itemModel/create/`)
+    }
+
     const handleClickUpdateVariant = () => {
         // navigate(`/items/itemVariant/update/${itemID}`)
         setFromUpdate(!fromUpdate)
@@ -67,7 +72,7 @@ function Items() {
 
   return (
     <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-5">
-      <div className="flex flex-col h-full w-11/12 rounded-ifRadius p-5 bg-white  overflow-y-scroll">
+      <div className="flex flex-col h-full w-full rounded-ifRadius p-5 bg-white  overflow-y-scroll">
           <div className="flex flex-col h-full rounded-ifRadius bg-white gap-4">
               <div className="flex justify-start w-2/5">
                   <div className="flex items-center justify-between w-full">
@@ -105,13 +110,23 @@ function Items() {
                           ""
                   }
                   <div className="flex flex-col gap-4">
-                      <div className="flex justify-between items-center text-xl bg-backgroundGrey px-4">
-                          <div>
+                      <div className="flex justify-between items-center  bg-backgroundGrey px-4">
+                          <div className="text-xl">
                               Item model Specifications (Current)
                           </div>
-                          <button className="p-0" onClick={handleShowModelDetails}>
-                              {showModelDetails ? <FaChevronUp className="h-6 w-6" /> : <FaChevronDown className="h-6 w-6"/>}
-                          </button>
+                          <div className="items-center flex gap-4 justify-items-center">
+                              {
+                                  showModelDetails ?
+                                      [<button className="p-0" onClick={handleClickCreateModel} key="3">Create Model</button>,
+                                      <button className="p-0" onClick={handleClickUpdateVariant} key="4">Update Model</button>]:
+                                      ""
+                              }
+
+                              <button className="p-0" onClick={handleShowModelDetails}>
+                                  {showModelDetails ? <FaChevronUp className="h-6 w-6" /> : <FaChevronDown className="h-6 w-6"/>}
+                              </button>
+                          </div>
+
                       </div>
                   </div>
                   {
