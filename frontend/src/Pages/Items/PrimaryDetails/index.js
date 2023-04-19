@@ -21,6 +21,7 @@ const PrimaryDetails = ({fromCreate}) => {
 
     const { itemID } = useParams();
 
+
     const handleEditButton = (e) => {
         e.preventDefault()
         if(editClicked){
@@ -36,7 +37,7 @@ const PrimaryDetails = ({fromCreate}) => {
     const handleSubmitButton = (e) => {
         e.preventDefault()
         createItem()
-        navigate(`/items/${newItemID}/`)
+        // navigate(`/items/${newItemID}/`)
 
     }
 
@@ -155,8 +156,8 @@ const PrimaryDetails = ({fromCreate}) => {
                 },
             };
             const response = await callAPI.post(`/items/new/`, data, config)
-            setNewItemID(response.data.id)
-            console.log(newItemID)
+            navigate(`/items/${response.data.id}/`)
+
         } catch (error) {
             console.log(error)
         }
@@ -189,44 +190,44 @@ const PrimaryDetails = ({fromCreate}) => {
                             fromCreate ?
                                 "":
                                 [<ItemDetailsInput value={item.id}
-                                                   disableInput={!fromCreate}
+                                                   disableInput={true}
                                                    description={"Item ID:"}/>,
                                 <ItemDetailsInput value={date}
-                                                  disableInput={!fromCreate}
+                                                  disableInput={true}
                                                   description={"Release Date:"}/>]
                         }
                         <ItemDetailsInput value={name}
-                                          disableInput={!fromCreate}
+                                          disableInput={!fromCreate & disableInput}
                                           handleInput={handleNameInput}
                                           description={"Item Name:"}/>
                         <ItemDetailsInput value={status}
-                                          disableInput={!fromCreate}
+                                          disableInput={!fromCreate & disableInput}
                                           handleInput={handleStatusInput}
                                           description={"Item Status: "}/>
                         <ItemDetailsInput value={series}
-                                          disableInput={!fromCreate}
+                                          disableInput={!fromCreate & disableInput}
                                           handleInput={handleSeriesInput}
                                           description={"Series No.:"}/>
                     </div>
                     <div className="flex w-1/2 flex-col gap-1">
                         <ItemDetailsInput value={SKU}
-                                          disableInput={!fromCreate}
+                                          disableInput={!fromCreate & disableInput}
                                           handleInput={handleSKUInput}
                                           description={"SKU No.:"}/>
                         <ItemDetailsInput value={EAN}
-                                          disableInput={!fromCreate}
+                                          disableInput={!fromCreate & disableInput}
                                           handleInput={handleEANInput}
                                           description={"EAN No.:"}/>
                         <ItemDetailsInput value={UPC}
-                                          disableInput={!fromCreate}
+                                          disableInput={!fromCreate & disableInput}
                                           handleInput={handleUPCInput}
                                           description={"UPC No.:"}/>
                         <ItemDetailsInput value={AASIN}
-                                          disableInput={!fromCreate}
+                                          disableInput={!fromCreate & disableInput}
                                           handleInput={handleAASINInput}
                                           description={"Amazon ASIN No.:"}/>
                         <ItemDetailsInput value={AFNSKU}
-                                          disableInput={!fromCreate}
+                                          disableInput={!fromCreate & disableInput}
                                           handleInput={handleAFNSKUInput}
                                           description={"Amazon FNSKU No.:"}/>
                     </div>

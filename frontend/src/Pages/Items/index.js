@@ -69,7 +69,7 @@ function Items() {
         obtainItemsCurrentVariantInfo()
     }, [])
 
-
+    console.log(itemVariant)
   return (
     <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-5">
       <div className="flex flex-col h-full w-full rounded-ifRadius p-5 bg-white  overflow-y-scroll">

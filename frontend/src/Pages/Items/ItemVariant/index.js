@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import callAPI from "../../../Axios/callAPI";
 import ItemVariantInput from "./itemVariantInput";
 import {useNavigate, useParams} from "react-router-dom";
+import {isValidDateValue} from "@testing-library/user-event/dist/utils";
 
 const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
     const [disableInput, setDisableInput] = useState(true)
@@ -21,7 +22,7 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
     const [comesFromUpdate, setComesFromUpdate] = useState(fromUpdate)
     const navigate = useNavigate()
 
-    console.log(comesFromUpdate)
+    console.log(itemID)
 
     useEffect(()=>{
 
@@ -110,8 +111,8 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
         }
         try {
             const data = {
-                valid_from: validFrom,
-                valid_to: validTo,
+                // valid_from: validFrom,
+                // valid_to: validTo,
                 weight_net_kg: weightNet,
                 weight_gross_kg: weightGross,
                 length_cm: length,
@@ -143,8 +144,8 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
         }
         try {
             const data = {
-                valid_from: validFrom,
-                valid_to: validTo,
+                // valid_from: validFrom,
+                // valid_to: validTo,
                 weight_net_kg: weightNet,
                 weight_gross_kg: weightGross,
                 length_cm: length,
@@ -181,7 +182,7 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
           ].join('-');
         }
 
-
+    console.log(validTo)
     return (
         <form className="flex flex-col gap-4 " onSubmit={handleOnSubmit}>
             <div className="flex w-full gap-10 justify-around">
@@ -194,56 +195,57 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
                                       disabled={disableInput} placeholder={itemVariant?.id}/>
                     }
                     <ItemVariantInput description={"Valid From:"}
-                                      value={validFrom ? validFrom : ""}
+                                      value={validFrom}
                                       disabled={!comesFromUpdate & !fromCreate}
                                       type={"date"}
                                       handleInput={handleInitialDateInput}/>
                     <ItemVariantInput description={"Valid To:"}
-                                      value={validTo ? validTo : ""} type={"date"}
+                                      value={validTo}
                                       disabled={!comesFromUpdate & !fromCreate}
+                                      type={"date"}
                                       handleInput={handleFinalDateInput}/>
                     <ItemVariantInput description={"Purchase Price [eur]:"}
-                                      value={purchasePrice ? purchasePrice : ""}
+                                      value={purchasePrice}
                                       disabled={!comesFromUpdate & !fromCreate}
                                       handleInput={handlePurchasePriceInput}/>
                     <ItemVariantInput description={"Sale Price [eur]:"}
-                                      value={salePrice ? salePrice : ""}
+                                      value={salePrice}
                                       handleInput={handleSalePriceInput}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                     <ItemVariantInput description={"Stock level minimum [qty]:"}
-                                      value={stockMinimum ? stockMinimum : ""}
+                                      value={stockMinimum}
                                       handleInput={handleStockMinimumInput}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                     <ItemVariantInput description={"Stock level reorder [qty]:"}
-                                      value={stockReorder ? stockReorder : ""}
+                                      value={stockReorder}
                                       handleInput={handleStockReorderInput}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                 </div>
                 <div className="flex flex-col w-1/2 gap-1">
                     <ItemVariantInput description={"Length [cm]:"}
-                                      value={length ? length: ""}
+                                      value={length}
                                       handleInput={handleLengthInput}
                                       type={"number"}
                                       step={0.01}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                     <ItemVariantInput description={"Width [cm]:"}
-                                      value={width ? width : ""}
+                                      value={width}
                                       handleInput={handleWidthInput}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                     <ItemVariantInput description={"Height [cm]:"}
-                                      value={height ? height : ""}
+                                      value={height}
                                       handleInput={handleHeightInput}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                     <ItemVariantInput description={"Weight gross [kg]:"}
-                                      value={weightGross ? weightGross : ""}
+                                      value={weightGross}
                                       handleInput={handleWeightGrossInput}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                     <ItemVariantInput description={"Weight net [kg]:"}
-                                      value={weightNet ? weightNet : ""}
+                                      value={weightNet}
                                       handleInput={handleWeightNetInput}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                     <ItemVariantInput description={"Size:"}
-                                      value={size ? size : ""}
+                                      value={size}
                                       handleInput={handleSizeInput}
                                       disabled={!comesFromUpdate & !fromCreate}/>
                 </div>
