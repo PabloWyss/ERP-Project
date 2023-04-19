@@ -34,7 +34,7 @@ class ItemModel(models.Model):
     # id
     merchant = models.ForeignKey(to=Merchant, on_delete=models.PROTECT, related_name="item_modelS")
     release_date = models.DateTimeField(auto_now_add=True)
-    is_archived = models.BooleanFieldField(default=False)
+    is_archived = models.BooleanField(default=False)
     archiving_date = models.DateTimeField(blank=True, null=True)
     status = models.CharField(choices=STATUS_OPTIONS, default="Active")
     name = models.CharField(unique=True, max_length=50)

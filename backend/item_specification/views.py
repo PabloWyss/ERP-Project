@@ -14,12 +14,15 @@ class ListItemSpecificationView(ListAPIView):
     List all item specifications
 
     # subtitle
-    List all specifications of an item in chronological order of valid from
+    List all specifications of an item of the merchant in chronological order of valid from
     """
 
-    queryset = ItemSpecification.objects.all().order_by('-valid_from')
     serializer_class = ItemSpecificationSerializer
     lookup_url_kwarg = 'item_id'
+
+    def get_queryset(self):
+        item = Item.objects.filter(id=self.kwargs.get('item_id')).first()
+        return item.item_specifications.all().order_by('-valid_from')
 
 
 class CreateItemSpecificationView(CreateAPIView):

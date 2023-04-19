@@ -5,7 +5,7 @@ class Partner(models.Model):
 
     # id
     creation_date = models.DateTimeField(auto_now_add=True)
-    is_archived = models.BooleanFieldField(default=False)
+    is_archived = models.BooleanField(default=False)
     archiving_date = models.DateTimeField(blank=True, null=True)
     name = models.CharField(max_length=50)
     contact = models.CharField(max_length=50, null=True, blank=True)
@@ -13,6 +13,8 @@ class Partner(models.Model):
     country_code = models.CharField(max_length=2, null=True, blank=True)
     phone = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField()
+    # merchants (linked in merchant.models.py)
+    # merchantpartnerrelationship (linked in merchant.models.py)
     # items (linked in item.models.py)
     # orders (linked in order.models.py)
 

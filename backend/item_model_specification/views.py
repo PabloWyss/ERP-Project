@@ -13,12 +13,15 @@ class ListItemModelSpecificationView(ListAPIView):
     List all item model specifications
 
     # subtitle
-    List all item model specifications of the merchant in chronological order of valid from
+    List all specifications of an item model of the merchant in chronological order of valid from
     """
 
-    queryset = ItemModelSpecification.objects.all().order_by('-valid_from')
     serializer_class = ItemModelSpecificationSerializer
     lookup_url_kwarg = 'item_model_id'
+
+    def get_queryset(self):
+        item_model = ItemModel.objects.filter(id=self.kwargs.get('item_model_id')).first()
+        return item_model.item_model_specifications.all().order_by('-valid_from')
 
 
 class CreateItemModelSpecificationView(CreateAPIView):
@@ -42,7 +45,7 @@ class CreateItemModelSpecificationView(CreateAPIView):
         item_model.has_specifications = True
         item_model.save()
 
-    def update_item_specifications_current(self, date_time_current):
+    def update_item_model_specifications_current(self, date_time_current):
         item_model = ItemModel.objects.get(pk=self.kwargs.get('item_model_id'))
         try:
             item_model_specifications_latest = item_model.item_model_specifications.latest('valid_from')
@@ -103,8 +106,8 @@ class UpdateItemModelSpecificationView(UpdateAPIView):
         item_model_specifications_id = self.kwargs.get('item_model_specifications_id')
         merchant = self.request.user.merchant
         item_models = ItemModel.objects.filter(merchant_id=merchant.id)
-        item_model_target = item_models.filter(item_model_specifications_id=item_model_specifications_id).first()
-        return item_model_target.item_specifications.all()
+        item_model_target = item_models.filter(item_model_specifications__id=item_model_specifications_id).first()
+        return item_model_target.item_model_specifications.all()
 
 
 class CurrentItemModelSpecificationView(ListAPIView):

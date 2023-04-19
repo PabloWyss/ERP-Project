@@ -4,7 +4,7 @@ from item_specification.views import ListItemSpecificationView, CreateItemSpecif
     ListItemSpecificationChoiceSizeView
 
 urlpatterns = [
-    # backend/api/items/specifications/
+    # backend/api/item_specifications/
     path('<int:item_id>/', ListItemSpecificationView.as_view()),
     path('new/<int:item_id>/', CreateItemSpecificationView.as_view()),
     path('search/<int:item_id>/', SearchItemSpecificationView.as_view()),

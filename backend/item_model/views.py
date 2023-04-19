@@ -41,7 +41,7 @@ class CreateItemModelView(CreateAPIView):
         images = self.request.FILES.getlist('images')
         for image in images:
             Attachment.objects.create(
-                item_model_specification_id=serializer.instance.id,
+                item_model_id=serializer.instance.id,
                 image=image
             )
 
@@ -128,7 +128,7 @@ class ListItemInItemModelView(ListAPIView):
 
     def get_queryset(self):
         item_model_id = self.kwargs.get('item_model_id')
-        return Item.objects.filter(item_model__id=item_model_id).order_by('sku')
+        return Item.objects.filter(item_models__id=item_model_id).order_by('sku')
 
 
 class ListItemModelChoiceStatusView(APIView):

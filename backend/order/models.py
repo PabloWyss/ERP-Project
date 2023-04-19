@@ -11,8 +11,9 @@ User = get_user_model()
 class Order(models.Model):
 
     # id
+    order_number = models.CharField(unique=True, max_length=50)
     order_date = models.DateTimeField(auto_now_add=True)
-    shipment_date = models.DateTimeField(auto_now_add=True)
+    shipment_date = models.DateTimeField()
     is_refund = models.BooleanField(default=False)
     items = models.ManyToManyField(to=Item, blank=True, related_name="orders")
     quantity = models.IntegerField()
