@@ -26,32 +26,36 @@ function SignInRight() {
   };
 
   //login
-  const handleLoginClick = async (e) => {
-    e.preventDefault();
+const handleLoginClick = async (e) => {
+  e.preventDefault();
 
-    if (!userEmail || !userPassword) {
-      setError("Please enter both email and password.");
+  if (!userEmail || !userPassword) {
+    setError("Please enter both email and password.");
+  } else {
+    let emessage = "";
+    const response = await callAPI
+      .post("/auth/token/", JSON.stringify({ email: userEmail, password: userPassword }))
+      .catch((error) => (emessage = error.message));
 
-    } else {
-      let emessage = "";
+    if (!emessage) {
+      localStorage.setItem("token", response.data.access);
+      console.log("token :" + response.data.access);
+      dispatch(setCurrentUser(response.data.access));
 
-
-
-      const response = await callAPI
-        .post("/auth/token/", JSON.stringify({ email: userEmail, password: userPassword }))
-        .catch((error) => (emessage = error.message));
-
-      if (!emessage) {
-        navigate("/merchants/new");
-        localStorage.setItem("token", response.data.access);
-        console.log("token :" + response.data.access);
-
-        dispatch(setCurrentUser(response.data.access));
+      // Check if the user already has a merchant account
+      const merchantResponse = await callAPI.get("/merchants/me/").catch(() => {});
+      if (merchantResponse && merchantResponse.data) {
+        // User has a merchant account, redirect to /merchants/me
+        navigate("/merchants/me");
       } else {
-        alert("Please check your username and password!");
+        // User does not have a merchant account, redirect to /merchants/new
+        navigate("/merchants/new");
       }
+    } else {
+      alert("Please check your username and password!");
     }
-  };
+  }
+};
 
 
   const handleSignUpClick = () => {

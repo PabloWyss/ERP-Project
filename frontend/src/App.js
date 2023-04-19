@@ -14,7 +14,7 @@ import Verification from "./Pages/Auth/Verification";
 import Warehouse from "./Pages/Warehouse";
 import Partners from "./Pages/Partners";
 import { useDispatch, useSelector } from "react-redux";
-
+import MerchantNEW from "./Pages/Merchant/merchantNEW";
 function App() {
   const currentUser = useSelector((store) => store.currentuser.currentuser);
   const [, setIsLoggedIn] = useState(false);
@@ -57,6 +57,7 @@ function App() {
                   <Route path="/tags" element={<Tags/>}/>
                   <Route path="/profile" element={<Profile/>}/>
                   <Route path="/merchants/me" element={<Merchant/>}/>
+                  <Route path="/merchants/new" element={<MerchantNEW/>}/>
                   <Route path="/partners" element={<Partners/>}/>
                   <Route path="/" element={<Items/>}/>
               </Routes>
