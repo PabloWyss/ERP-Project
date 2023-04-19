@@ -48,16 +48,16 @@ function VerificationRight() {
     setUserName(e.target.value);
   };
 
-  //store typed firstname
+  //store  firstname
   const handleFirstNameInput = (e) => {
     setFirstName(e.target.value);
   };
 
-  //store typed lastname
+  //store  lastname
   const handleLastNameInput = (e) => {
     setLastName(e.target.value);
   };
-  //store typed verification code
+  //store code
   const handleVerificationCodeInput = (e) => {
     setVerificationCode(e.target.value);
   };
@@ -96,9 +96,9 @@ function VerificationRight() {
         )
         .catch((error) => (emessage = error.message));
 
-      //console.log("68: "+emessage);
+;
       if (!emessage) {
-        // redirect to login page using navigate function
+
         navigate("/signin");
       } else {
         alert(emessage);

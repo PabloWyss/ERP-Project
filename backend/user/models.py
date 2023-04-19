@@ -25,4 +25,4 @@ class User(AbstractUser):
     # merchant (linked in merchant.models.py)
 
     def __str__(self):
-        return self.usename
+        return self.username

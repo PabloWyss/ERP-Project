@@ -1,9 +1,11 @@
+import datetime
 from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView
 from item_variant_specification.models import ItemVariantSpecification
-from item_variant_specification.serializers import ItemVariantSpecificationSerializer
+from item_variant_specification.serializers import ItemVariantSpecificationSerializer, \
+    UpdateItemVariantSpecificationSerializer
 from item.models import Item
 
 
@@ -33,14 +35,29 @@ class CreateItemVariantView(CreateAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemVariantSpecificationSerializer
 
+    def get_date_time_current(self):
+        date_time_current = datetime.datetime.now()
+        return date_time_current
+
     def update_has_variants(self):
         item = Item.objects.get(pk=self.kwargs.get('item_id'))
         item.has_variants = True
         item.save()
 
-    def perform_create(self, serializer):
+    def update_variant_current(self, date_time_current):
         item = Item.objects.get(pk=self.kwargs.get('item_id'))
-        serializer.save(item=item)
+        try:
+            item_variant_latest = item.item_variant_specifications.latest('valid_from')
+            item_variant_latest.valid_to = date_time_current
+            item_variant_latest.save()
+        except ItemVariantSpecification.DoesNotExist:
+            pass
+
+    def perform_create(self, serializer):
+        date_time_current = self.get_date_time_current()
+        self.update_variant_current(date_time_current)
+        item = Item.objects.get(pk=self.kwargs.get('item_id'))
+        serializer.save(item=item, valid_from=date_time_current, valid_to=None)
         self.update_has_variants()
 
 
@@ -76,9 +93,15 @@ class UpdateItemVariantView(UpdateAPIView):
     Update specific item variant specifications of an item
     """
 
-    queryset = ItemVariantSpecification.objects.all()
-    serializer_class = ItemVariantSpecificationSerializer
-    lookup_url_kwarg = "item_variant_id"
+    serializer_class = UpdateItemVariantSpecificationSerializer
+    lookup_url_kwarg = 'item_variant_id'
+
+    def get_queryset(self):
+        item_variant_id = self.kwargs.get('item_variant_id')
+        merchant = self.request.user.merchant
+        items = Item.objects.filter(merchant_id=merchant.id)
+        item_target = items.filter(item_variant_specifications__id=item_variant_id).first()
+        return item_target.item_variant_specifications.all()
 
 
 class CurrentItemVariantView(ListAPIView):
@@ -96,7 +119,7 @@ class CurrentItemVariantView(ListAPIView):
     def get_queryset(self):
         item = Item.objects.get(pk=self.kwargs.get('item_id'))
         try:
-            item_variant_id = item.item_variant_specifications.latest('valid_to').id
+            item_variant_id = item.item_variant_specifications.latest('valid_from').id
             item_variant_queryset = ItemVariantSpecification.objects.filter(id=item_variant_id)
             return item_variant_queryset
         except ItemVariantSpecification.DoesNotExist:

@@ -12,6 +12,7 @@ import SignUp from "./Pages/Auth/SignUp";
 import Congratulations from "./Pages/Auth/Congratulations";
 import Verification from "./Pages/Auth/Verification";
 import Warehouse from "./Pages/Warehouse";
+import Partners from "./Pages/Partners";
 import { useDispatch, useSelector } from "react-redux";
 import CreateItemVariant from "./Pages/CreateItemVariant";
 import CreateItemModel from "./Pages/CreateItemModel";
@@ -63,7 +64,8 @@ function App() {
                   <Route path="/reports" element={<Reports/>}/>
                   <Route path="/tags" element={<Tags/>}/>
                   <Route path="/profile" element={<Profile/>}/>
-                  <Route path="/merchant" element={<Merchant/>}/>
+                  <Route path="/merchants" element={<Merchant/>}/>
+                  <Route path="/partners" element={<Partners/>}/>
                   <Route path="/" element={<Items/>}/>
               </Routes>
       </div>

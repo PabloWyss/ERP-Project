@@ -1,5 +1,4 @@
 from django.urls import path
-
 from item_tag.views import ListItemTagView, CreateItemTagView, CreateAssignItemTagView, SearchItemTagView, \
     RetrieveUpdateDestroyItemTagView, AssignItemToItemTagView, ListItemAssignedToItemTagView, \
     ListItemTagAssignedToItemView
