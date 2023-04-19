@@ -1,4 +1,4 @@
-import ItemModel from "../Items/ItemModel";
+import ItemModel from "../Items/Item/ItemModel";
 
 const CreateItemModel = () => {
 

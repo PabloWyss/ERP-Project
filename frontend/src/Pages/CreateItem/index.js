@@ -1,4 +1,4 @@
-import PrimaryDetails from "../Items/PrimaryDetails";
+import PrimaryDetails from "../Items/Item/PrimaryDetails";
 import React from "react";
 
 const CreateItem = () => {

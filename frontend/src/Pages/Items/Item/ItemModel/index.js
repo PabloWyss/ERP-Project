@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import ItemModelInput from "./IitemModelInput";
-import callAPI from "../../../Axios/callAPI";
+import callAPI from "../../../../Axios/callAPI";
 import ItemModelImages from "./ItemModelImages";
 import {useParams} from "react-router-dom";
 import ItemVariantInput from "../ItemVariant/itemVariantInput";

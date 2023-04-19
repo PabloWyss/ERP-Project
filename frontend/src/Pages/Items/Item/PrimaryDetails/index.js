@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import callAPI from "../../../Axios/callAPI";
+import callAPI from "../../../../Axios/callAPI";
 import ItemDetailsInput from "./ItemDetailsInput";
 import {useNavigate, useParams} from "react-router-dom";
 

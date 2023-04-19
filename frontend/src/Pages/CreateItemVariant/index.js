@@ -1,4 +1,4 @@
-import ItemVariant from "../Items/ItemVariant";
+import ItemVariant from "../Items/Item/ItemVariant";
 import {FaChevronDown, FaChevronUp} from "react-icons/fa";
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";

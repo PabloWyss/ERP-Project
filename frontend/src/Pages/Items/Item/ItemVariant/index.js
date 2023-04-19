@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import callAPI from "../../../Axios/callAPI";
+import callAPI from "../../../../Axios/callAPI";
 import ItemVariantInput from "./itemVariantInput";
 import {useNavigate, useParams} from "react-router-dom";
 import {isValidDateValue} from "@testing-library/user-event/dist/utils";
