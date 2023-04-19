@@ -10,14 +10,14 @@ class ListInventoryLedgerPositionView(ListAPIView):
     List all inventory ledger positions
 
     # subtitle
-    List all inventory ledger positions in chronological order of event date
+    List all inventory ledger positions in chronological order of -event date
     """
 
     serializer_class = InventoryLedgerSerializer
 
     def get_queryset(self):
         merchant = self.request.user.merchant
-        return InventoryLedger.objects.filter(merchant_id=merchant.id).order_by('event_date')
+        return InventoryLedger.objects.filter(merchant_id=merchant.id).order_by('-event_date')
 
 
 class SearchInventoryLedgerPositionView(ListAPIView):
@@ -64,14 +64,14 @@ class ListInventoryLedgerFilteredByItemView(ListAPIView):
 
     # subtitle
     List all inventory ledger positions filtered by the specific item of the merchant in chronological order
-    of event date
+    of -event date
     """
 
     serializer_class = InventoryLedgerSerializer
 
     def get_queryset(self):
         item_id = self.kwargs.get('item_id')
-        return InventoryLedger.objects.filter(item__id=item_id).order_by('event_date')
+        return InventoryLedger.objects.filter(item__id=item_id).order_by('-event_date')
 
 
 class ListInventoryLedgerFilteredByWarehouseView(ListAPIView):
@@ -88,4 +88,4 @@ class ListInventoryLedgerFilteredByWarehouseView(ListAPIView):
 
     def get_queryset(self):
         warehouse_id = self.kwargs.get('warehouse_id')
-        return InventoryLedger.objects.filter(warehouse__id=warehouse_id).order_by('event_date')
+        return InventoryLedger.objects.filter(warehouse__id=warehouse_id).order_by('-event_date')
