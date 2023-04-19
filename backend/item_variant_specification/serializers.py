@@ -10,3 +10,10 @@ class ItemVariantSpecificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = ItemVariantSpecification
         fields = '__all__'
+
+
+class UpdateItemVariantSpecificationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ItemVariantSpecification
+        exclude = ('valid_from', 'valid_to')
