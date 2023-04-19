@@ -8,10 +8,13 @@ class Warehouse(models.Model):
 
     STATUS_OPTIONS = [
         ('Active', 'Active'),
-        ('Inactive', 'Inactive'),
+        ('To shut down', 'To shut down'),
     ]
 
     # id
+    creation_date = models.DateTimeField(auto_now_add=True)
+    is_archived = models.BooleanFieldField(default=False)
+    archiving_date = models.DateTimeField(blank=True, null=True)
     merchants = models.ManyToManyField(to=Merchant, related_name="warehouses")
     items = models.ManyToManyField(to=Item, through='WarehouseItemInventory', related_name="warehouses")
     name = models.CharField(max_length=50)

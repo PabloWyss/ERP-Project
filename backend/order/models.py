@@ -12,6 +12,7 @@ class Order(models.Model):
 
     # id
     order_date = models.DateTimeField(auto_now_add=True)
+    shipment_date = models.DateTimeField(auto_now_add=True)
     is_refund = models.BooleanField(default=False)
     items = models.ManyToManyField(to=Item, blank=True, related_name="orders")
     quantity = models.IntegerField()
@@ -21,4 +22,5 @@ class Order(models.Model):
     warehouse = models.ForeignKey(to=Warehouse, on_delete=models.PROTECT, related_name="orders")
 
     def __str__(self):
-        return f'{self.id} - Date {self.order_date}'
+        return f'{self.id} - Date {self.order_date} - Merchant is supplier {self.is_merchant_supplier} - Is refund \
+        {self.is_refund}- Partner {self.partner} - Warehouse {self.warehouse} - Item {self.item}'

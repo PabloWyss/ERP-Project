@@ -4,6 +4,9 @@ from django.db import models
 class Partner(models.Model):
 
     # id
+    creation_date = models.DateTimeField(auto_now_add=True)
+    is_archived = models.BooleanFieldField(default=False)
+    archiving_date = models.DateTimeField(blank=True, null=True)
     name = models.CharField(max_length=50)
     contact = models.CharField(max_length=50, null=True, blank=True)
     address = models.CharField(max_length=50, null=True, blank=True)
@@ -14,4 +17,4 @@ class Partner(models.Model):
     # orders (linked in order.models.py)
 
     def __str__(self):
-        return f'{self.id} - Review {self.name}'
+        return f'{self.id} - Partner {self.name}'

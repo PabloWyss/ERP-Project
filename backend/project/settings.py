@@ -47,17 +47,18 @@ INSTALLED_APPS = [
     "corsheaders",
 
     # Own apps
-    'partner',
-    'user',
-    'registration',
-    'merchant',
     'inventory_ledger',
     'item',
     'item_image',
+    'item_model',
     'item_model_specification',
+    'item_specification',
     'item_tag',
-    'item_variant_specification',
+    'merchant',
     'order',
+    'partner',
+    'registration',
+    'user',
     'warehouse',
 ]
 

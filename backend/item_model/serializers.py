@@ -1,19 +1,19 @@
 from rest_framework import serializers
-from item.models import Item
+from item_model.models import ItemModel
 from merchant.serializers import MerchantSerializer
 
 
-class ItemSerializer(serializers.ModelSerializer):
+class ItemModelSerializer(serializers.ModelSerializer):
 
     merchant = MerchantSerializer(read_only=True)
 
     class Meta:
-        model = Item
+        model = ItemModel
         fields = '__all__'
 
 
-class UpdateItemSerializer(serializers.ModelSerializer):
+class UpdateItemModelSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Item
+        model = ItemModel
         exclude = ('release_date', 'is_archived', 'archiving_date')
