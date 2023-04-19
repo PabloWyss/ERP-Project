@@ -18,103 +18,10 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-function ListTable() {
-  const data = useMemo(
-    () => [
-      {
-        name: "Kim Parrish",
-        address: "4420 Valley Street, Garnerville, NY 10923",
-        date: "07/11/2020",
-        order: "87349585892118",
-        partner: "supplier",
-        id: "8",
-      },
-      {
-        name: "Michele Castillo",
-        address: "637 Kyle Street, Fullerton, NE 68638",
-        date: "07/11/2020",
-        order: "58418278790810",
-        partner: "customer",
-        id: "2",
-      },
-      {
-        name: "Eric Ferris",
-        address: "906 Hart Country Lane, Toccoa, GA 30577",
-        date: "07/10/2020",
-        order: "81534454080477",
-        partner: "supplier",
-        id: "3",
-      },
-      {
-        name: "Gloria Noble",
-        address: "2403 Edgewood Avenue, Fresno, CA 93721",
-        date: "07/09/2020",
-        order: "20452221703743",
-        partner: "supplier",
-        id: "4",
-      },
-      {
-        name: "Darren Daniels",
-        address: "882 Hide A Way Road, Anaktuvuk Pass, AK 99721",
-        date: "07/07/2020",
-        order: "22906126785176",
-        partner: "customer",
-        id: "5",
-      },
-      {
-        name: "Ted McDonald",
-        address: "796 Bryan Avenue, Minneapolis, MN 55406",
-        date: "07/07/2020",
-        order: "87574505851064",
-        partner: "supplier",
-        id: "6",
-      },
-      {
-        name: "Abra Kebabra",
-        address: "4420 Rua de la Paz, Toledo, NY 10923",
-        date: "07/11/2023",
-        order: "67349585892118",
-        partner: "customer",
-        id: "7",
-      },
-      {
-        name: "Diane Keaton",
-        address: "4420 4th Avenue, Anaheim, WY 10923",
-        date: "05/11/2023",
-        order: "37349585892118",
-        partner: "customer",
-        id: "9",
-      },
-    ],
-    []
-  );
+function ListTable(props) {
+  const data = useMemo(() => props.data, []);
 
-  //create columns model
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Name",
-        accessor: "name",
-      },
-      {
-        Header: "Address",
-        accessor: "address",
-      },
-      {
-        Header: "Date",
-        accessor: "date",
-      },
-      {
-        Header: "Order No.",
-        accessor: "order",
-      },
-      {
-        Header: "Partner Type",
-        accessor: "partner",
-      },
-    ],
-    []
-  );
+  const columns = useMemo(() => props.columns, []);
 
   //create input field for search
   function TextFilter({ column: { filterValue, preFilteredRows, setFilter } }) {
@@ -152,7 +59,12 @@ function ListTable() {
 
       return (
         <>
-          <input type="checkbox" ref={resolvedRef} {...rest} className="text-drawGray"/>
+          <input
+            type="checkbox"
+            ref={resolvedRef}
+            {...rest}
+            className="text-drawGray"
+          />
         </>
       );
     }
@@ -215,7 +127,7 @@ function ListTable() {
   return (
     <div>
       <div
-        className="absolute left-60 top-10 h-60 overflow-y-scroll 
+        className="overflow-y-scroll 
       scrollbar-thin scrollbar-track-transparent scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey
       bg-white"
       >
@@ -277,7 +189,7 @@ function ListTable() {
           </tbody>
         </table>
       </div>
-      <div className="absolute left-60 top-96  flex flex-row">
+      <div className="flex flex-row my-2">
         <div>
           <button
             onClick={() => previousPage()}
@@ -287,7 +199,7 @@ function ListTable() {
             <FaChevronLeft className="text-buttonGrey" />
           </button>
         </div>
-        <div className="text-white pt-2 px-2">
+        <div className="text-buttonGrey pt-2 px-2">
           Page{" "}
           <span>
             {pageIndex + 1} of {pageOptions.length}
