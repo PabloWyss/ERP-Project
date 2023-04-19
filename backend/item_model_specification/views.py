@@ -13,7 +13,7 @@ class ListItemModelSpecificationView(ListAPIView):
     List all item model specifications
 
     # subtitle
-    List all specifications of an item model of the merchant in chronological order of valid from
+    List all specifications of an item model of the merchant in chronological order of -valid from
     """
 
     serializer_class = ItemModelSpecificationSerializer
