@@ -14,6 +14,7 @@ import Verification from "./Pages/Auth/Verification";
 import Warehouse from "./Pages/Warehouse";
 import Partners from "./Pages/Partners";
 import { useDispatch, useSelector } from "react-redux";
+import OrderDetails from "./Pages/Orders/OrderDetails";
 
 function App() {
   const currentUser = useSelector((store) => store.currentuser.currentuser);
@@ -53,6 +54,7 @@ function App() {
                   <Route path="/verification" element={<Verification/>}/>
                   <Route path="/items" element={<Items/>}/>
                   <Route path="/orders" element={<Orders/>}/>
+                  <Route path="/orders/:orderID/" element={<OrderDetails/>}/>
                   <Route path="/warehouses" element={<Warehouse/>}/>
                   <Route path="/reports" element={<Reports/>}/>
                   <Route path="/tags" element={<Tags/>}/>
