@@ -1,6 +1,5 @@
 from django.db import models
 from merchant.models import Merchant
-from item.models import Item
 
 
 class ItemModel(models.Model):
@@ -42,7 +41,6 @@ class ItemModel(models.Model):
     category = models.CharField(choices=CATEGORIES)
     color = models.CharField(choices=COLORS, max_length=50, blank=True, null=True)
     brand_name = models.CharField(max_length=50, blank=True, null=True)
-    items = models.ManyToManyField(to=Item, blank=True, related_name="item_models")
     has_specifications = models.BooleanField(default=False)
     # images (linked in item_image.models.py)
     # item_model_specifications (linked in item_model_specification.models.py)
