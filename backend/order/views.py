@@ -99,7 +99,7 @@ class CreateOrderView(CreateAPIView):
             generate_order()
             generate_inventory_ledger(action, quantity)
             update_stock_levels(quantity)
-            response = {'status': 'Order successfully created and stock level in warehouse updated'}
+            response = {'status': 'Order created and stock level in warehouse updated successfully'}
             return response
 
         def process_outbound_order(quantity):
@@ -113,11 +113,11 @@ class CreateOrderView(CreateAPIView):
                 generate_inventory_ledger(action, quantity)
                 if current_stock_level + quantity == 0:
                     warehouse_inventory.delete()
-                    response = {'status': 'Order successfully created and item removed from warehouse'}
+                    response = {'status': 'Order created and item removed from warehouse successfully'}
                     return response
                 else:
                     update_stock_levels(quantity)
-                    response = {'status': 'Order successfully created and stock level in warehouse updated'}
+                    response = {'status': 'Order created and stock level in warehouse updated successfully'}
                     return response
 
         if is_merchant_supplier:

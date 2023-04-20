@@ -26,7 +26,7 @@ class Item(models.Model):
     name = models.CharField(unique=True, max_length=50)
     has_specifications = models.BooleanField(default=False)
     partners = models.ManyToManyField(to=Partner, blank=True, related_name="items")
-    item_model = models.ForeignKey(to=ItemModel, on_delete=models.PROTECT, related_name="items")
+    item_model = models.ForeignKey(to=ItemModel, on_delete=models.PROTECT, null=True, related_name="items")
     # warehouse (linked in warehouse.models.py)
     # item_specifications (linked in item_specification.models.py)
     # item_model (linked in item_model.models.py)

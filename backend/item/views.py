@@ -77,12 +77,17 @@ class RetrieveUpdateDestroyItemView(RetrieveUpdateDestroyAPIView):
     Retrieve and update a specific item of the merchant
     """
 
-    serializer_class = UpdateItemSerializer
     lookup_url_kwarg = 'item_id'
 
     def get_queryset(self):
         merchant = self.request.user.merchant
         return Item.objects.filter(merchant__id=merchant.id)
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return ItemSerializer
+        elif self.request.method == 'PATCH':
+            return UpdateItemSerializer
 
 
 class ListItemChoiceStatusView(APIView):
