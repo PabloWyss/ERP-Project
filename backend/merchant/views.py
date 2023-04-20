@@ -1,3 +1,4 @@
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
 from merchant.models import Merchant
@@ -37,6 +38,7 @@ class MyMerchantRetrieveUpdateDeleteView(RetrieveUpdateDestroyAPIView):
 class SignInMerchantRetrieveUpdateDeleteView(ListAPIView):
 
     serializer_class = MerchantSerializer
+    permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
         data = self.request.data
