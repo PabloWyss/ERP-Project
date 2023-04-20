@@ -16,6 +16,7 @@ function Item() {
     const [showPartnersDetails, setShowPartnersDetails] = useState(false)
     const [fromUpdate, setFromUpdate] = useState(false)
     const [itemVariant, setItemVariant] = useState({})
+    const [itemName, setItemName] = useState("")
     const navigate = useNavigate()
     const { itemID } = useParams();
     const handleShowVariantDetails = (e) =>{
@@ -50,6 +51,15 @@ function Item() {
         setShowPartnersDetails(!showPartnersDetails)
     }
 
+    const handleClickGoBack = (e) =>{
+        e.preventDefault()
+        navigate(`/items`)
+    }
+
+    const obtainNameFromChildren = (name) => {
+        setItemName(name)
+    }
+
     const obtainItemsCurrentVariantInfo = async () => {
         try {
             const config = {
@@ -69,23 +79,22 @@ function Item() {
         obtainItemsCurrentVariantInfo()
     }, [])
 
-    console.log(itemVariant)
   return (
     <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-6">
       <div className="flex flex-col h-full w-full rounded-ifRadius py-6 px-8 bg-white  overflow-y-scroll">
           <div className="flex flex-col h-full rounded-ifRadius bg-white gap-4">
               <div className="flex justify-start w-2/5">
-                  <div className="flex items-center justify-between w-full">
+                  <div className="flex w-full content-start items-center gap-4 px-4">
                       <div >
-                          <img src={arrow_left_image}/>
+                          <img className="cursor-pointer" src={arrow_left_image} alt={"go back"} onClick={handleClickGoBack}/>
                       </div>
                       <h1 className="text-2xl">
-                          Espadilla Fomentera Yellow
+                          {itemName}
                       </h1>
                   </div>
               </div>
               <div className="flex flex-col w-full gap-4 justify-between">
-                  <PrimaryDetails/>
+                  <PrimaryDetails obtainNameFromChildren={obtainNameFromChildren}/>
                   <div className="flex flex-col gap-4">
                       <div className="flex justify-between items-center  bg-backgroundGrey px-4">
                           <div className="text-xl">

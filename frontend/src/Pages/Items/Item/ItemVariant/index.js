@@ -22,8 +22,6 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
     const [comesFromUpdate, setComesFromUpdate] = useState(fromUpdate)
     const navigate = useNavigate()
 
-    console.log(itemID)
-
     useEffect(()=>{
 
         if(fromUpdate){
@@ -182,7 +180,6 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
           ].join('-');
         }
 
-    console.log(validTo)
     return (
         <form className="flex flex-col gap-4 " onSubmit={handleOnSubmit}>
             <div className="flex w-full gap-10 justify-around">
@@ -256,14 +253,15 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
                        id="item_variant_changes" name="item_variant_changes"
                        value={changes} onChange={handleChangesInput} disabled={!comesFromUpdate & !fromCreate}/>
             </div>
-            {
+            <div>
+                {
                  (fromCreate || comesFromUpdate) ?
                      <button type={"submit"}>
                         Submit
                      </button>:
                      ""
-            }
-
+                }
+            </div>
         </form>
     )
 }

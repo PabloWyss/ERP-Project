@@ -3,7 +3,7 @@ import callAPI from "../../../../Axios/callAPI";
 import ItemDetailsInput from "./ItemDetailsInput";
 import {useNavigate, useParams} from "react-router-dom";
 
-const PrimaryDetails = ({fromCreate}) => {
+const PrimaryDetails = ({fromCreate, obtainNameFromChildren}) => {
 
     const [item, setItem] = useState({})
     const [editClicked, setEditClicked] = useState(false)
@@ -53,6 +53,7 @@ const PrimaryDetails = ({fromCreate}) => {
             const response = await callAPI.get(`/items/${itemID}/`, config);
             setItem(response.data)
             setName(response.data.name)
+            obtainNameFromChildren(name)
             setStatus(response.data.status)
             setSeries(response.data.series)
             setSKU(response.data.sku)
@@ -167,14 +168,14 @@ const PrimaryDetails = ({fromCreate}) => {
 
     return (
         <form className="flex flex-col w-full justify-between gap-4" onSubmit={handleSubmitButton}>
-            <div className="flex items-center justify-between bg-backgroundGrey px-4">
+            <div className="flex items-center justify-between bg-backgroundGrey px-4 h-10">
                 <h2 className="text-xl">
                     Primary Details
                 </h2>
                 {
                     fromCreate ?
                         "":
-                        <button className="text-xl p-0" onClick={handleEditButton}>
+                        <button className="text-xl p-0 bg-ifOrange w-20 text-white" onClick={handleEditButton}>
                             {
                                 editClicked ?
                                     "Save" :
@@ -233,15 +234,18 @@ const PrimaryDetails = ({fromCreate}) => {
                     </div>
                 </div>
             </div>
-            {
-                fromCreate ?
-                    <div>
-                        <button type={"submit"}>
-                            submit
-                        </button>
-                    </div>:
-                    ""
-            }
+            <div className="flex w-full justify-center">
+                {
+                    fromCreate ?
+                        <div>
+                            <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"}>
+                                Submit
+                            </button>
+                        </div>:
+                        ""
+                }
+
+            </div>
         </form>
     )
 }
