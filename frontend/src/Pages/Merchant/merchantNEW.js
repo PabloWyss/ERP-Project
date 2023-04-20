@@ -85,9 +85,6 @@ const MerchantNEW = () => {
   }, []);
 
   const updateMerchant = async () => {
-    if (!localStorage.getItem("token")) {
-      return;
-    }
     try {
       const data = {
         name: name,
@@ -103,14 +100,16 @@ const MerchantNEW = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       };
-      const response = await callAPI.post(`/merchants/me/`, data, config);
+      const response = await callAPI.post('/merchants/new/', data, config);
       if (response.status === 200) {
-        navigate("/merchants/new");
+        // Redirect to /merchants/me after successfully creating the new merchant
+        navigate('/merchants/me');
       }
     } catch (error) {
       console.log(error);
     }
   };
+
 
 return (
   <div className="flex h-screen w-full justify-center overflow-y-scroll">
