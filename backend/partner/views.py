@@ -60,7 +60,7 @@ class CreatePartnerView(CreateAPIView):
             partner = Partner.objects.filter(name=partner_name).get()
             MerchantPartnerRelationship.objects.create(merchant=merchant, partner=partner, is_supplier=is_supplier,
                                                        is_customer=is_customer)
-            return Response({'status': 'Partner successfully created'})
+            return Response({'status': 'Partner created successfully'})
 
 
 class SearchPartnerView(ListAPIView):
@@ -151,7 +151,7 @@ class UpdateIsSupplierView(UpdateAPIView):
                 MerchantPartnerRelationship.objects.update(merchant=merchant, partner=partner, is_supplier=False)
             else:
                 MerchantPartnerRelationship.objects.update(merchant=merchant, partner=partner, is_supplier=True)
-            return Response({'status': 'Partner successfully updated'})
+            return Response({'status': 'Partner updated successfully'})
         else:
             return Response({'status': 'Partner does not exist'})
 
@@ -206,6 +206,6 @@ class UpdateIsCustomerView(UpdateAPIView):
                 MerchantPartnerRelationship.objects.update(merchant=merchant, partner=partner, is_customer=False)
             else:
                 MerchantPartnerRelationship.objects.update(merchant=merchant, partner=partner, is_customer=True)
-            return Response({'status': 'Partner successfully updated'})
+            return Response({'status': 'Partner updated successfully'})
         else:
             return Response({'status': 'Partner does not exist'})

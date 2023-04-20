@@ -1,7 +1,6 @@
 from django.db.models import Q
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
-
 from inventory_ledger.models import InventoryLedger
 from item.models import Item
 from warehouse.models import Warehouse, WarehouseItemInventory
@@ -46,7 +45,7 @@ class CreateWarehouseView(CreateAPIView):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             merchant.warehouses.add(serializer.data['id'])
-            return Response({'status': 'Warehouse successfully created'})
+            return Response({'status': 'Warehouse created successfully'})
 
 
 class UpdateOneItemInWarehouseView(UpdateAPIView):
@@ -173,3 +172,19 @@ class RetrieveUpdateDestroyWarehouseView(RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         merchant = self.request.user.merchant
         return Warehouse.objects.filter(merchants__id=merchant.id)
+
+
+class ListWarehouseAssignedToItemView(ListAPIView):
+    """
+    get:
+    List all warehouses assigned to the specific item
+
+    # subtitle
+    List all warehouses assigned to the specific item of the merchant in alphabetical order of name
+    """
+
+    serializer_class = WarehouseSerializer
+
+    def get_queryset(self):
+        item_id = self.kwargs.get('item_id')
+        return Warehouse.objects.filter(items__id=item_id).order_by('name')

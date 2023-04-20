@@ -128,7 +128,7 @@ class AssignItemToItemTagView(UpdateAPIView):
                 item_tag.items.remove(item_id)
             else:
                 item_tag.items.add(item_id)
-        return Response({'status': 'Item tag successfully updated'})
+        return Response({'status': 'Item tag updated successfully'})
 
 
 class ListItemAssignedToItemTagView(ListAPIView):
