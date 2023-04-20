@@ -15,44 +15,67 @@ function OrderDetails() {
     partner: "Darren Daniels",
     is_merchant_supplier: false,
     is_refund: true,
+    address: "882 Hide A Way Road, Anaktuvuk Pass, AK 99721",
     order_date: "07/07/2020",
+    shipment_date: "08/07/2020",
     order_number: "22906126785176",
+    warehouse: "Amazon Warehouse",
     quantity: 12,
   };
 
   //fake data for table testing
-  const data = [
+  const items = [
     {
-      product: "Kim Parrish",
-      address: "4420 Valley Street, Garnerville, NY 10923",
-      date: "07/11/2020",
-      order: "87349585892118",
-      partner: "supplier",
-      id: "8",
+      model_name: "Espadrilla",
+      item_name: "Formentera Yellow",
+      size: "38",
+      quantity: 4,
+      price: 12.58,
+      total: 50.32,
+    },
+    {
+      model_name: "Espadrilla",
+      item_name: "Lanzarote Feta",
+      size: "40",
+      quantity: 2,
+      price: 11.22,
+      total: 22.44,
+    },
+    {
+      model_name: "Bandana",
+      item_name: "Gaucho Vino",
+      size: "XL",
+      quantity: 30,
+      price: 7.05,
+      total: 211.5,
     },
   ];
 
   //create columns model
   const columns = [
     {
-      Header: "Product",
-      accessor: "product",
+      Header: "Category",
+      accessor: "model_name",
     },
     {
-      Header: "Variant",
-      accessor: "address",
+      Header: "Model",
+      accessor: "item_name",
     },
     {
-      Header: "Date",
-      accessor: "date",
+      Header: "Size",
+      accessor: "size",
     },
     {
       Header: "Qty.",
-      accessor: "order",
+      accessor: "quantity",
     },
     {
-      Header: "Warehouse",
-      accessor: "partner",
+      Header: "Price",
+      accessor: "price",
+    },
+    {
+      Header: "Total",
+      accessor: "total",
     },
   ];
 
@@ -68,12 +91,12 @@ function OrderDetails() {
         overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey"
       >
-        <h1 className="text-title mb-2">Order # {order.order_number}</h1>
+        <h1 className="text-title mb-4">Order # {order.order_number}</h1>
         <OrderPrimaryDetails order={order} />
-        <div className="flex items-center justify-between bg-backgroundGrey px-4">
+        <div className="flex items-center justify-between bg-backgroundGrey px-4 mb-2">
           <h2 className="text-section">Items</h2>
         </div>
-        <ListTable data={data} columns={columns}></ListTable>
+        <ListTable data={items} columns={columns}></ListTable>
       </div>
     </div>
   );

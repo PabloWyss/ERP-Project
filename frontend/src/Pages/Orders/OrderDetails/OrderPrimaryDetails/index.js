@@ -9,14 +9,37 @@ function OrderPrimaryDetails(props) {
       <div className="flex w-full py-4">
         <div className="flex w-full justify-around gap-4">
           <div className="flex w-1/2 flex-col gap-1">
-            <div>Type: <span className="pl-2">{props.order.is_merchant_supplier ? "Supply" : "Purchase"}</span></div>
-            <div>Date: <span className="pl-2">{props.order.order_date}</span></div>
-            <div>Partner: <span className="pl-2">{props.order.partner}</span></div>
+            <div>
+              Type:
+              <span className="pl-2">
+                {props.order.is_merchant_supplier ? "Supply" : "Purchase"}
+              </span>
+            </div>
+            <div>
+              Date: <span className="pl-2">{props.order.order_date}</span>
+            </div>
+            <div>
+              Partner: <span className="pl-2">{props.order.partner}</span>
+            </div>
+            <div>
+              Item qty.: <span className="pl-2">{props.order.quantity}</span>
+            </div>
           </div>
           <div className="flex w-1/2 flex-col gap-1">
-            <div>Refund: <span className="pl-2">{props.order.is_refund  ? "Yes" : ""}</span></div>
-            <div>Shipping date: <span className="pl-2"> !TODO!  {props.order.order_date}</span></div>
-            <div>Item Qty. <span className="pl-2">{props.order.quantity}</span></div>
+            <div>
+              Refund:
+              <span className="pl-2">{props.order.is_refund ? "Yes" : ""}</span>
+            </div>
+            <div>
+              Shipping date:
+              <span className="pl-2">{props.order.shipment_date}</span>
+            </div>
+            <div>
+              Warehouse: <span className="pl-2">{props.order.warehouse}</span>
+            </div>
+            <div>
+              Total: <span className="pl-2">!TBD! {props.order.quantity}</span>
+            </div>
           </div>
         </div>
       </div>
