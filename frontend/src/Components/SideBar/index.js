@@ -36,8 +36,103 @@ const SideBar = () => {
 
   const handleOpenPopup = () => setShowPopup(true);
 
-  if (!['/signin', '/signup','/verification', '/congratulations'].includes(location.pathname)) {
+  if (!['/signin', '/signup','/verification', '/congratulations','/merchants/new'].includes(location.pathname)) {
     return (
+
+          <>
+          <div
+              className="flex py-10 left-0 top-0 h-screen flex-col w-48 bg-gradient-to-b from-gradientFrom to-gradientTo">
+            <div className="flex items-center justify-center">
+              <img src={logo} alt="Invenflow Logo" className="w-8 h-8 mr-5"/>
+              <h1 className="text-white text-xl font-bold">InvenFlow</h1>
+            </div>
+            <div className="mt-10">
+                <NavLink to="/merchants/me">
+                {({isActive}) => (
+                    <button
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                      <MerchantIcon className="mr-2"/>
+                      Merchant
+                    </button>
+                )}
+              </NavLink>
+              <NavLink to="/items">
+                {({isActive}) => (
+                    <button
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                      <ItemsIcon className="mr-2"/>
+                      Items
+                    </button>
+                )}
+              </NavLink>
+              <NavLink to="/orders">
+                {({isActive}) => (
+                    <button
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                      <OrdersIcon className="mr-2"/>
+                      Orders
+                    </button>
+                )}
+              </NavLink>
+              <NavLink to="/reports">
+                {({isActive}) => (
+                    <button
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                      <ReportsIcon className="mr-2"/>
+                      Reports
+                    </button>
+                )}
+              </NavLink>
+              <NavLink to="/tags">
+                {({isActive}) => (
+                    <button
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                      <TagsIcon className="mr-2"/>
+                      Tags
+                    </button>
+                )}
+              </NavLink>
+              <NavLink to="/partners">
+                {({isActive}) => (
+                    <button
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                      <PartnerIcon className="mr-2"/>
+                      Partners
+                    </button>
+                )}
+              </NavLink>
+              <NavLink to="/warehouses">
+                {({isActive}) => (
+                    <button
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                      <WarehouseIcon className="mr-2"/>
+                      Warehouses
+                    </button>
+                )}
+              </NavLink>
+
+            </div>
+            <div className='absolute bottom-10 left-0'>
+              <NavLink to="/profile">
+                {({isActive}) => (
+                    <button
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                      <ProfileIcon className="mr-2"/>
+                      Profile
+                    </button>
+                )}
+              </NavLink>
+              <button className={`flex mt-50 items-start w-full text-left mt-4 text-white`} onClick={handleLogout}>
+                < ExitIcon className="mr-2"/>
+                Log out
+              </button>
+            </div>
+          </div>
+    </>
+
+    );
+    } else if (['/merchants/new'].includes(location.pathname)){
+  return (
     <>
 
       {showPopup && (
@@ -154,11 +249,11 @@ const SideBar = () => {
             </div>
           </div>
     </>
-    )
-      ;
-    }
-};
-
+  );
+} else {
+      return null;
+  }
+ }
 export default SideBar;
 
 
