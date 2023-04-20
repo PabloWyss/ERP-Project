@@ -1,7 +1,9 @@
 from django.db.models import Q
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
 from item.models import Item
-from item.serializers import ItemSerializer
+from item.serializers import ItemSerializer, UpdateItemSerializer
 
 
 class ListItemView(ListAPIView):
@@ -75,9 +77,26 @@ class RetrieveUpdateDestroyItemView(RetrieveUpdateDestroyAPIView):
     Retrieve and update a specific item of the merchant
     """
 
-    serializer_class = ItemSerializer
+    serializer_class = UpdateItemSerializer
     lookup_url_kwarg = 'item_id'
 
     def get_queryset(self):
         merchant = self.request.user.merchant
         return Item.objects.filter(merchant__id=merchant.id)
+
+
+class ListItemChoiceStatusView(APIView):
+    """
+    get:
+    List all available status
+
+    # subtitle
+    List all available status related to the item
+    """
+
+    def get(self, request, *args, **kwargs):
+        status_options = list(Item.status.field.choices)
+        choices = []
+        for status in status_options:
+            choices.append(status[1])
+        return Response({"status": choices})

@@ -3,11 +3,7 @@ from django.db import models
 from item.models import Item
 
 
-def item_directory_path(instance, filename):
-    return f"items/{instance.id}/{filename}"
-
-
-class ItemVariantSpecification(models.Model):
+class ItemSpecification(models.Model):
 
     SIZES = [
         ('S', 'S'),
@@ -32,9 +28,9 @@ class ItemVariantSpecification(models.Model):
     ]
 
     # id
-    item = models.ForeignKey(to=Item, on_delete=models.PROTECT, related_name="item_variant_specifications")
     valid_from = models.DateTimeField(blank=True)
     valid_to = models.DateTimeField(blank=True, null=True)
+    item = models.ForeignKey(to=Item, on_delete=models.PROTECT, related_name="item_specifications")
     weight_net_kg = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
     weight_gross_kg = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
     length_cm = models.FloatField(validators=[MinValueValidator(0)], blank=True, null=True)
@@ -48,4 +44,4 @@ class ItemVariantSpecification(models.Model):
     item_changes = models.CharField(max_length=150)
 
     def __str__(self):
-        return f'{self.id} - Item Variant specifications of Item {self.item.name}'
+        return f'{self.id} - Item specifications of {self.item.name}'

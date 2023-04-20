@@ -35,9 +35,11 @@ urlpatterns = [
 
     path('backend/api/items/', include('item.urls')),
 
-    path('backend/api/items/variants/', include('item_variant_specification.urls')),
+    path('backend/api/item_specifications/', include('item_specification.urls')),
 
-    path('backend/api/items/models/', include('item_model_specification.urls')),
+    path('backend/api/item_models/', include('item_model.urls')),
+
+    path('backend/api/item_model_specifications/', include('item_model_specification.urls')),
 
     path('backend/api/item_tags/', include('item_tag.urls')),
 
