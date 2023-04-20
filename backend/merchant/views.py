@@ -1,6 +1,8 @@
-from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.response import Response
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
 from merchant.models import Merchant
 from merchant.serializers import MerchantSerializer
+from user.models import User
 from project.global_permissions import IsSameUser
 
 
@@ -30,3 +32,23 @@ class MyMerchantRetrieveUpdateDeleteView(RetrieveUpdateDestroyAPIView):
             return self.request.user.merchant
         except Merchant.DoesNotExist:
             pass
+
+
+class SignInMerchantRetrieveUpdateDeleteView(ListAPIView):
+
+    serializer_class = MerchantSerializer
+
+    def get(self, request, *args, **kwargs):
+        data = self.request.data
+        user_exists = user = User.objects.filter(email=data['email']).exists()
+        if user_exists:
+            user = User.objects.filter(email=data['email']).first()
+            merchant_exists = Merchant.objects.filter(user__id=user.id).exists()
+            if merchant_exists:
+                merchant = Merchant.objects.filter(user__id=user.id).first()
+                serializer = self.get_serializer(merchant)
+                return Response(serializer.data)
+            else:
+                return Response({'Error': 'User has not merchant assigned'})
+        else:
+            return Response({'Error': 'User does not exist'})

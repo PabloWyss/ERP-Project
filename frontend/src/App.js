@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SideBar from "./Components/SideBar";
 import Profile from "./Pages/Profile";
 import Tags from "./Pages/Tags";
@@ -19,23 +19,23 @@ import CreateItemModel from "./Pages/CreateModel";
 import CreateItem from "./Pages/CreateItem";
 import Item from "./Pages/Items/Item";
 
+import MerchantNEW from "./Pages/Merchant/merchantNEW";
 function App() {
   const currentUser = useSelector((store) => store.currentuser.currentuser);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const dispatch = useDispatch();
+  const [, setIsLoggedIn] = useState(false);
+    useDispatch();
 
-  useEffect(() => {
-    if (currentUser === {}) {
-      setIsLoggedIn(false);
-    } else {
-      const token = localStorage.getItem("token");
-      if (token) {
-        setIsLoggedIn(true);
-      }
-    }
-  }, [currentUser]);
-
-  useEffect(() => {
+    useEffect(() => {
+        if (currentUser === {}) {
+            setIsLoggedIn(false);
+        } else {
+            const token = localStorage.getItem("token");
+            if (token) {
+                setIsLoggedIn(true);
+            }
+        }
+    }, [currentUser]);
+    useEffect(() => {
     if (currentUser === {}) {
       setIsLoggedIn(false);
     } else {
@@ -44,7 +44,7 @@ function App() {
   }, [currentUser]);
 
 
-  //const isPathExcluded = ['/signin', '/signup/verification', '/congratulations'].includes(location.pathname);
+
 
   return (
       <Router>
@@ -65,7 +65,8 @@ function App() {
                   <Route path="/reports" element={<Reports/>}/>
                   <Route path="/tags" element={<Tags/>}/>
                   <Route path="/profile" element={<Profile/>}/>
-                  <Route path="/merchants" element={<Merchant/>}/>
+                  <Route path="/merchants/me" element={<Merchant/>}/>
+                  <Route path="/merchants/new" element={<MerchantNEW/>}/>
                   <Route path="/partners" element={<Partners/>}/>
                   <Route path="/" element={<Items/>}/>
               </Routes>

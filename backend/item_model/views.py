@@ -46,6 +46,29 @@ class CreateItemModelView(CreateAPIView):
             )
 
 
+class CreateAssignItemModelView(CreateAPIView):
+    """
+    post:
+    Create and assign a new item model
+
+    # subtitle
+    Create a new item model and assign it to an item of the merchant
+    """
+
+    serializer_class = ItemModelSerializer
+
+    def perform_create(self, serializer):
+        merchant = self.request.user.merchant
+        item = Item.objects.filter(pk=self.kwargs.get('item_id'))
+        serializer.save(merchant=merchant, items=item)
+        images = self.request.FILES.getlist('images')
+        for image in images:
+            Attachment.objects.create(
+                item_model_id=serializer.instance.id,
+                image=image
+            )
+
+
 class SearchItemModelView(ListAPIView):
     """
     get:
@@ -107,12 +130,12 @@ class AssignItemToItemModelView(UpdateAPIView):
         item_model = ItemModel.objects.get(pk=self.kwargs.get('item_model_id'))
         item_ids = self.request.data['item_ids']
         for item_id in item_ids:
-            is_item_id_assigned = item_model.items.filter(id=item_id).exists()
-            if is_item_id_assigned:
+            is_item_assigned = item_model.items.filter(id=item_id).exists()
+            if is_item_assigned:
                 item_model.items.remove(item_id)
             else:
                 item_model.items.add(item_id)
-        return Response({'status': 'Item model successfully updated'})
+        return Response({'status': 'Item model updated successfully'})
 
 
 class ListItemInItemModelView(ListAPIView):
