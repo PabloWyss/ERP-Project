@@ -1,40 +1,41 @@
 import React, {useEffect, useState} from "react";
-import arrow_left_image from "../../Assets/Icons/arrow_left_orange.svg";
-import PrimaryDetails from "./PrimaryDetails";
-import ItemVariant from "./ItemVariant";
-import ItemModel from "./ItemModel";
-import ItemTag from "./ItemTag";
-import ItemPartners from "./ItemPartners";
 import callAPI from "../../Axios/callAPI";
+import ItemsTable from "./ItemsTable";
 
-function Items() {
+const Items = () => {
+  const [itemList, setItemList] = useState([])
 
+  const obtainItemsInfo = async () => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            };
 
+            const response = await callAPI.get(`/items/`, config)
+            setItemList(response.data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(() => {
+        obtainItemsInfo()
+    }, [])
 
-
+    const data_if_empty = [{
+      sku: ""
+    }]
   return (
-    <div className="flex h-screen w-full justify-center overflow-y-scroll">
-      <div className="flex flex-col h-screen w-11/12 pt-10 pb-10 gap-4">
-          <div className="flex justify-start w-2/5">
-              <div className="flex items-center gap-4 w-full">
-                  <div >
-                      <img src={arrow_left_image}/>
-                  </div>
-                  <h1 className="text-2xl">
-                      Espadilla Fomentera Yellow
-                  </h1>
-              </div>
-          </div>
-          <div className="flex flex-col w-full gap-4 justify-between">
-              <PrimaryDetails/>
-              <ItemVariant/>
-              <ItemModel/>
-              <ItemTag/>
-              <ItemPartners/>
-          </div>
-      </div>
+    <div className="flex w-full">
+        {
+            itemList.length > 0 ?
+                <ItemsTable tableData={itemList}/>:
+                ""
+        }
     </div>
-);
+  );
 }
 
-export default Items;
+export default Items
