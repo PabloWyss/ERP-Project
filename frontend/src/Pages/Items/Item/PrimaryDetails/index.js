@@ -181,7 +181,7 @@ const PrimaryDetails = ({fromCreate, obtainNameFromChildren}) => {
     return (
         <form className="flex flex-col w-full justify-between gap-4" onSubmit={handleSubmitButton}>
             <div className="flex items-center justify-between bg-backgroundGrey px-4 h-10">
-                <h2 className="text-xl">
+                <h2 className="text-title">
                     Primary Details
                 </h2>
                 {
