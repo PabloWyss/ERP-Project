@@ -23,7 +23,7 @@ function SignUpRight() {
 
     if (!userEmail) {
       setError("Please enter email");
-      return;
+
     } else {
       let emessage = "";
       dispatch(setSignUpEmail(userEmail));
@@ -46,7 +46,7 @@ function SignUpRight() {
 
       if (!emessage) {
         navigate("/congratulations");
-        return;
+
       } else {
         alert("Please check your email");
       }

@@ -76,7 +76,7 @@ function VerificationRight() {
       !lastName
     ) {
       setError("Every field is required.");
-      return;
+
     } else {
       let emessage = "";
 
@@ -96,7 +96,7 @@ function VerificationRight() {
         )
         .catch((error) => (emessage = error.message));
 
-;
+
       if (!emessage) {
 
         navigate("/signin");
