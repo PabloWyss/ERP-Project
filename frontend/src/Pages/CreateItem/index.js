@@ -18,7 +18,7 @@ const CreateItem = () => {
                         <div >
                           <img className="cursor-pointer" src={arrow_left_image} alt={"go back"} onClick={handleClickGoBack}/>
                         </div>
-                        <h1 className="text-2xl">
+                        <h1 className="text-title">
                           Create New Item
                         </h1>
                     </div>
