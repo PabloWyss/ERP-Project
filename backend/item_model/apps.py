@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ItemVariantSpecificationConfig(AppConfig):
+class ItemModelConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'item_variant_specification'
+    name = 'item_model'

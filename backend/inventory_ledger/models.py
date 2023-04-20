@@ -24,4 +24,4 @@ class InventoryLedger(models.Model):
     item = models.ForeignKey(to=Item, on_delete=models.PROTECT, related_name="inventory_ledgers")
 
     def __str__(self):
-        return f'{self.id} - Date {self.event_date}'
+        return f'{self.id} - Date {self.event_date} - Warehouse {self.warehouse} - Item {self.item}'

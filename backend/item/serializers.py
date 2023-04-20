@@ -10,3 +10,10 @@ class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
         fields = '__all__'
+
+
+class UpdateItemSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Item
+        exclude = ('release_date', 'is_archived', 'archiving_date')

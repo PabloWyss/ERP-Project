@@ -1,20 +1,20 @@
 from django.db import models
-from item_model_specification.models import ItemModelSpecification
+from item_model.models import ItemModel
 
 
-def item_image_directory_path(instance, filename):
-    return f"item-models/{instance.item_model_specification_id}/{filename}"
+def item_model_image_directory_path(instance, filename):
+    return f"item-models/{instance.item_model_id}/{filename}"
 
 
 class Attachment(models.Model):
 
-    item_model_specification = models.ForeignKey(
-        to=ItemModelSpecification,
+    item_model = models.ForeignKey(
+        to=ItemModel,
         on_delete=models.CASCADE,
         related_name='images'
     )
     image = models.ImageField(
-        upload_to=item_image_directory_path,
+        upload_to=item_model_image_directory_path,
         null=True,
         blank=True
     )
