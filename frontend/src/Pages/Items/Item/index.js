@@ -17,6 +17,7 @@ function Item() {
     const [fromUpdate, setFromUpdate] = useState(false)
     const [itemVariant, setItemVariant] = useState({})
     const [itemName, setItemName] = useState("")
+    const [updateClicked, setUpdateClicked] = useState(true)
     const navigate = useNavigate()
     const { itemID } = useParams();
     const handleShowVariantDetails = (e) =>{
@@ -34,7 +35,7 @@ function Item() {
     }
 
     const handleClickUpdateVariant = () => {
-        // navigate(`/items/itemVariant/update/${itemID}`)
+        setUpdateClicked(!updateClicked)
         setFromUpdate(!fromUpdate)
     }
 
@@ -69,7 +70,7 @@ function Item() {
                 },
             };
 
-            const response = await callAPI.get(`/items/variants/current/${itemID}/`, config)
+            const response = await callAPI.get(`/item_specifications/current/${itemID}/`, config)
             setItemVariant(response.data[0])
         } catch (error) {
             console.log(error);
@@ -81,7 +82,8 @@ function Item() {
 
   return (
     <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-6">
-      <div className="flex flex-col h-full w-full rounded-ifRadius py-6 px-8 bg-white  overflow-y-scroll">
+      <div className="flex flex-col h-full w-full rounded-ifRadius py-6 px-8 bg-white  overflow-y-auto scrollbar-thin scrollbar-track-transparent
+        scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey">
           <div className="flex flex-col h-full rounded-ifRadius bg-white gap-4">
               <div className="flex justify-start w-2/5">
                   <div className="flex w-full content-start items-center gap-4 px-4">
@@ -96,15 +98,19 @@ function Item() {
               <div className="flex flex-col w-full gap-4 justify-between">
                   <PrimaryDetails obtainNameFromChildren={obtainNameFromChildren}/>
                   <div className="flex flex-col gap-4">
-                      <div className="flex justify-between items-center  bg-backgroundGrey px-4">
+                      <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
                           <div className="text-xl">
-                              Item variants Specifications (Current)
+                              Item Specifications (Current)
                           </div>
                           <div className="items-center flex gap-4 justify-items-center">
                               {
                                   showVariantDetails ?
-                                      [<button className="p-0" onClick={handleClickCreateVariant } key="1">Create Variant</button>,
-                                      <button className="p-0" onClick={handleClickUpdateVariant} key="2">Update Variant</button>]:
+                                      <button className="p-0 p-0 bg-ifOrange w-40 text-white" onClick={handleClickUpdateVariant} key="2">Update Variant</button>:
+                                      ""
+                              }
+                              {
+                                  showVariantDetails ?
+                                      <button className="p-0 p-0 bg-ifOrange w-40 text-white" onClick={handleClickCreateVariant} key="1">Create Variant</button>:
                                       ""
                               }
                               <button className="p-0" onClick={handleShowVariantDetails}>
@@ -119,7 +125,7 @@ function Item() {
                           ""
                   }
                   <div className="flex flex-col gap-4">
-                      <div className="flex justify-between items-center  bg-backgroundGrey px-4">
+                      <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
                           <div className="text-xl">
                               Item model Specifications (Current)
                           </div>
@@ -130,7 +136,6 @@ function Item() {
                                       <button className="p-0" onClick={handleClickUpdateVariant} key="4">Update Model</button>]:
                                       ""
                               }
-
                               <button className="p-0" onClick={handleShowModelDetails}>
                                   {showModelDetails ? <FaChevronUp className="h-6 w-6" /> : <FaChevronDown className="h-6 w-6"/>}
                               </button>

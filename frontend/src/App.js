@@ -15,7 +15,7 @@ import Warehouse from "./Pages/Warehouse";
 import Partners from "./Pages/Partners";
 import { useDispatch, useSelector } from "react-redux";
 import CreateItemVariant from "./Pages/CreateItemVariant";
-import CreateItemModel from "./Pages/CreateItemModel";
+import CreateItemModel from "./Pages/CreateModel";
 import CreateItem from "./Pages/CreateItem";
 import Item from "./Pages/Items/Item";
 

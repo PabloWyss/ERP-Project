@@ -9,7 +9,7 @@ const PrimaryDetails = ({fromCreate, obtainNameFromChildren}) => {
     const [editClicked, setEditClicked] = useState(false)
     const [disableInput, setDisableInput] = useState(true)
     const [name, setName] = useState("")
-    const [status, setStatus] = useState("")
+    const [status, setStatus] = useState("Active")
     const [series, setSeries] = useState("")
     const [SKU, setSKU] = useState("")
     const [EAN, setEAN] = useState("")
@@ -62,7 +62,7 @@ const PrimaryDetails = ({fromCreate, obtainNameFromChildren}) => {
             setAASIN(response.data.amazon_asin)
             setAFNSKU(response.data.amazon_fnsku)
         } catch (error) {
-            console.log(error);
+            console.log(error.data);
         }
 
     }
@@ -160,11 +160,16 @@ const PrimaryDetails = ({fromCreate, obtainNameFromChildren}) => {
             navigate(`/items/${response.data.id}/`)
 
         } catch (error) {
-            console.log(error)
+            const values = Object.values(error.response.data)
+            let message = ""
+            values?.forEach((errorMessage)=>{
+                message += errorMessage + "\n"
+            })
+            alert(message)
         }
       }
 
-      const date = new Date(item.release_date).toString().slice(0,15)
+      const date = new Date(item.valid_from).toString().slice(0,15)
 
     return (
         <form className="flex flex-col w-full justify-between gap-4" onSubmit={handleSubmitButton}>
@@ -175,7 +180,7 @@ const PrimaryDetails = ({fromCreate, obtainNameFromChildren}) => {
                 {
                     fromCreate ?
                         "":
-                        <button className="text-xl p-0 bg-ifOrange w-20 text-white" onClick={handleEditButton}>
+                        <button className="p-0 bg-ifOrange w-20 text-white" onClick={handleEditButton}>
                             {
                                 editClicked ?
                                     "Save" :
@@ -204,7 +209,9 @@ const PrimaryDetails = ({fromCreate, obtainNameFromChildren}) => {
                         <ItemDetailsInput value={status}
                                           disableInput={!fromCreate & disableInput}
                                           handleInput={handleStatusInput}
-                                          description={"Item Status: "}/>
+                                          description={"Item Status: "}
+                                          choicesEnabeled={true}
+                                          choices={["Active",'No restock']}/>
                         <ItemDetailsInput value={series}
                                           disableInput={!fromCreate & disableInput}
                                           handleInput={handleSeriesInput}
@@ -244,7 +251,6 @@ const PrimaryDetails = ({fromCreate, obtainNameFromChildren}) => {
                         </div>:
                         ""
                 }
-
             </div>
         </form>
     )

@@ -27,14 +27,12 @@ const Items = () => {
     const data_if_empty = [{
       sku: ""
     }]
-
-
   return (
     <div className="flex w-full">
         {
             itemList.length > 0 ?
                 <ItemsTable tableData={itemList}/>:
-                <ItemsTable tableData={data_if_empty}/>
+                ""
         }
     </div>
   );

@@ -1,13 +1,10 @@
 import React, {useEffect, useState} from "react";
 import callAPI from "../../../../Axios/callAPI";
-import ItemVariantInput from "./itemVariantInput";
 import {useNavigate, useParams} from "react-router-dom";
-import {isValidDateValue} from "@testing-library/user-event/dist/utils";
+import ItemDetailsInput from "../PrimaryDetails/ItemDetailsInput";
 
 const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
-    const [disableInput, setDisableInput] = useState(true)
     const [validFrom, setValidFrom] = useState(fromCreate ? "" : formatDate(new Date(itemVariant?.valid_from)))
-    const [validTo, setValidTo] = useState(fromCreate ? "" : formatDate(new Date(itemVariant?.valid_to)))
     const [purchasePrice, setPurchasePrice] = useState(fromCreate ? "" : itemVariant?.purchase_price_net_eur)
     const [salePrice, setSalePrice] = useState(fromCreate ? "" : itemVariant?.sale_price_net_eur)
     const [stockMinimum, setStockMinimum] = useState(fromCreate ? "" : itemVariant?.stock_level_minimum)
@@ -20,19 +17,17 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
     const [size, setSize] = useState(fromCreate ? "" : itemVariant?.size)
     const [changes, setChanges] = useState(fromCreate ? "" : itemVariant?.item_changes)
     const [comesFromUpdate, setComesFromUpdate] = useState(fromUpdate)
+    const [sizeOptions, setSizeOptions] = useState(fromUpdate)
     const navigate = useNavigate()
 
     useEffect(()=>{
-
+        getSizeOptions()
         if(fromUpdate){
             setComesFromUpdate(!comesFromUpdate)
         }
     },[fromCreate,fromUpdate])
     const handleInitialDateInput = (e) =>{
         setValidFrom(e.target.value)
-    }
-    const handleFinalDateInput = (e) =>{
-        setValidTo(e.target.value)
     }
 
     const handlePurchasePriceInput = (e) =>{
@@ -109,8 +104,6 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
         }
         try {
             const data = {
-                // valid_from: validFrom,
-                // valid_to: validTo,
                 weight_net_kg: weightNet,
                 weight_gross_kg: weightGross,
                 length_cm: length,
@@ -129,7 +122,7 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
             };
-            const response = await callAPI.post(`/items/variants/new/${itemID}/`, data, config)
+            const response = await callAPI.post(`/item_specifications/new/${itemID}/`, data, config)
         } catch (error) {
             console.log(error)
         }
@@ -142,8 +135,6 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
         }
         try {
             const data = {
-                // valid_from: validFrom,
-                // valid_to: validTo,
                 weight_net_kg: weightNet,
                 weight_gross_kg: weightGross,
                 length_cm: length,
@@ -162,10 +153,26 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
             };
-            const response = await callAPI.patch(`/items/variants/update/${itemID}/`, data, config)
+            const response = await callAPI.patch(`/item_specifications/update/${itemVariant.id}/`, data, config)
+            console.log(response)
         } catch (error) {
             console.log(error)
         }
+      }
+       const getSizeOptions = async () => {
+          try {
+              const config = {
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                  },
+              };
+
+              const response = await callAPI.get(`/item_specifications/choices/sizes/`, config)
+              setSizeOptions(response.data.sizes)
+          } catch (error) {
+              console.log(error);
+          }
       }
 
       function padTo2Digits(num) {
@@ -187,64 +194,62 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
                     {
                         (fromCreate || comesFromUpdate) ?
                             "":
-                            <ItemVariantInput description={"Item Variant ID:"}
+                            [<ItemDetailsInput description={"Item Variant ID:"}
                                       value={itemVariant?.id}
-                                      disabled={disableInput} placeholder={itemVariant?.id}/>
-                    }
-                    <ItemVariantInput description={"Valid From:"}
+                                      disableInput={true} placeholder={itemVariant?.id}/>,
+                                <ItemDetailsInput description={"Valid From:"}
                                       value={validFrom}
-                                      disabled={!comesFromUpdate & !fromCreate}
+                                      disableInput={true}
                                       type={"date"}
-                                      handleInput={handleInitialDateInput}/>
-                    <ItemVariantInput description={"Valid To:"}
-                                      value={validTo}
-                                      disabled={!comesFromUpdate & !fromCreate}
-                                      type={"date"}
-                                      handleInput={handleFinalDateInput}/>
-                    <ItemVariantInput description={"Purchase Price [eur]:"}
+                                      handleInput={handleInitialDateInput}/>]
+                    }
+
+                    <ItemDetailsInput description={"Purchase Price [eur]:"}
                                       value={purchasePrice}
-                                      disabled={!comesFromUpdate & !fromCreate}
+                                      disableInput={!comesFromUpdate & !fromCreate}
                                       handleInput={handlePurchasePriceInput}/>
-                    <ItemVariantInput description={"Sale Price [eur]:"}
+                    <ItemDetailsInput description={"Sale Price [eur]:"}
                                       value={salePrice}
                                       handleInput={handleSalePriceInput}
-                                      disabled={!comesFromUpdate & !fromCreate}/>
-                    <ItemVariantInput description={"Stock level minimum [qty]:"}
+                                      disableInput={!comesFromUpdate & !fromCreate}/>
+                    <ItemDetailsInput description={"Stock level minimum [qty]:"}
                                       value={stockMinimum}
                                       handleInput={handleStockMinimumInput}
-                                      disabled={!comesFromUpdate & !fromCreate}/>
-                    <ItemVariantInput description={"Stock level reorder [qty]:"}
+                                      disableInput={!comesFromUpdate & !fromCreate}/>
+                    <ItemDetailsInput description={"Stock level reorder [qty]:"}
                                       value={stockReorder}
                                       handleInput={handleStockReorderInput}
-                                      disabled={!comesFromUpdate & !fromCreate}/>
+                                      disableInput={!comesFromUpdate & !fromCreate}/>
                 </div>
                 <div className="flex flex-col w-1/2 gap-1">
-                    <ItemVariantInput description={"Length [cm]:"}
+                    <ItemDetailsInput description={"Length [cm]:"}
                                       value={length}
                                       handleInput={handleLengthInput}
                                       type={"number"}
                                       step={0.01}
-                                      disabled={!comesFromUpdate & !fromCreate}/>
-                    <ItemVariantInput description={"Width [cm]:"}
+                                      disableInput={!comesFromUpdate & !fromCreate}/>
+                    <ItemDetailsInput description={"Width [cm]:"}
                                       value={width}
                                       handleInput={handleWidthInput}
-                                      disabled={!comesFromUpdate & !fromCreate}/>
-                    <ItemVariantInput description={"Height [cm]:"}
+                                      disableInput={!comesFromUpdate & !fromCreate}/>
+                    <ItemDetailsInput description={"Height [cm]:"}
                                       value={height}
                                       handleInput={handleHeightInput}
-                                      disabled={!comesFromUpdate & !fromCreate}/>
-                    <ItemVariantInput description={"Weight gross [kg]:"}
+                                      disableInput={!comesFromUpdate & !fromCreate}/>
+                    <ItemDetailsInput description={"Weight gross [kg]:"}
                                       value={weightGross}
                                       handleInput={handleWeightGrossInput}
-                                      disabled={!comesFromUpdate & !fromCreate}/>
-                    <ItemVariantInput description={"Weight net [kg]:"}
+                                      disableInput={!comesFromUpdate & !fromCreate}/>
+                    <ItemDetailsInput description={"Weight net [kg]:"}
                                       value={weightNet}
                                       handleInput={handleWeightNetInput}
-                                      disabled={!comesFromUpdate & !fromCreate}/>
-                    <ItemVariantInput description={"Size:"}
+                                      disableInput={!comesFromUpdate & !fromCreate}/>
+                    <ItemDetailsInput description={"Size:"}
                                       value={size}
                                       handleInput={handleSizeInput}
-                                      disabled={!comesFromUpdate & !fromCreate}/>
+                                      disableInput={!comesFromUpdate & !fromCreate}
+                                      choicesEnabeled={true}
+                                      choices={sizeOptions}/>
                 </div>
             </div>
             <div className="flex items-center">
@@ -253,10 +258,10 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
                        id="item_variant_changes" name="item_variant_changes"
                        value={changes} onChange={handleChangesInput} disabled={!comesFromUpdate & !fromCreate}/>
             </div>
-            <div>
+            <div className="flex w-full justify-center">
                 {
                  (fromCreate || comesFromUpdate) ?
-                     <button type={"submit"}>
+                     <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"}>
                         Submit
                      </button>:
                      ""
