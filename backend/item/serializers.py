@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from item.models import Item
 from merchant.serializers import MerchantSerializer
+from item_specification.serializers import ItemSpecificationSerializer
+from partner.serializers import PartnerSerializer
 from warehouse.models import WarehouseItemInventory
 from item_specification.models import ItemSpecification
 
@@ -23,6 +25,8 @@ class ItemWarehouseInventorySerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
 
     merchant = MerchantSerializer(read_only=True)
+    item_specifications = ItemSpecificationSerializer(read_only=True, many=True)
+    partners = PartnerSerializer(read_only=True, many=True)
     item_warehouse_inventory = ItemWarehouseInventorySerializer(source='warehouseiteminventory_set', many=True)
     stock_level_total_current = serializers.SerializerMethodField()
     stock_level_total_value_current = serializers.SerializerMethodField()
