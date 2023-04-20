@@ -1,6 +1,6 @@
 from django.db.models import Q
 from rest_framework.response import Response
-from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
 from merchant.models import MerchantPartnerRelationship
 from partner.models import Partner
 from partner.serializers import PartnerSerializer
@@ -46,7 +46,7 @@ class CreatePartnerView(CreateAPIView):
     serializer_class = PartnerSerializer
 
     def post(self, request, *args, **kwargs):
-        merchant = request.user.merchant
+        merchant = self.request.user.merchant
         partner_name = request.data['name']
         is_supplier = request.data['is_supplier']
         is_customer = request.data['is_customer']
@@ -60,7 +60,7 @@ class CreatePartnerView(CreateAPIView):
             partner = Partner.objects.filter(name=partner_name).get()
             MerchantPartnerRelationship.objects.create(merchant=merchant, partner=partner, is_supplier=is_supplier,
                                                        is_customer=is_customer)
-            return Response({'status': 'Partner successfully created'})
+            return Response({'status': 'Partner created successfully'})
 
 
 class SearchPartnerView(ListAPIView):
@@ -114,7 +114,8 @@ class ListSupplierView(ListAPIView):
 
     def get_queryset(self):
         merchant = self.request.user.merchant
-        return Partner.objects.filter(merchants__id=merchant.id).filter(is_supplier=True).order_by('name')
+        return Partner.objects.filter(merchants__id=merchant.id).filter(merchantpartnerrelationship__is_supplier=True)\
+            .order_by('name')
 
 
 class SearchSupplierView(ListAPIView):
@@ -130,9 +131,29 @@ class SearchSupplierView(ListAPIView):
 
     def get_queryset(self):
         merchant = self.request.user.merchant
-        queryset = Partner.objects.filter(merchants__id=merchant.id).filter(is_supplier=True)
+        queryset = Partner.objects.filter(merchants__id=merchant.id)\
+            .filter(merchantpartnerrelationship__is_supplier=True)
         queryset_filtered = search_by_search_string(self, queryset)
         return queryset_filtered
+
+
+class UpdateIsSupplierView(UpdateAPIView):
+
+    serializer_class = PartnerSerializer
+
+    def update(self, request, *args, **kwargs):
+        merchant = self.request.user.merchant
+        partner = Partner.objects.filter(id=self.kwargs['partner_id']).first()
+        if partner:
+            is_supplier = MerchantPartnerRelationship.objects.filter(Q(merchant=merchant) & Q(partner=partner) &
+                                                                     Q(is_supplier=True))
+            if is_supplier:
+                MerchantPartnerRelationship.objects.update(merchant=merchant, partner=partner, is_supplier=False)
+            else:
+                MerchantPartnerRelationship.objects.update(merchant=merchant, partner=partner, is_supplier=True)
+            return Response({'status': 'Partner updated successfully'})
+        else:
+            return Response({'status': 'Partner does not exist'})
 
 
 class ListCustomerView(ListAPIView):
@@ -148,7 +169,8 @@ class ListCustomerView(ListAPIView):
 
     def get_queryset(self):
         merchant = self.request.user.merchant
-        return Partner.objects.filter(merchants__id=merchant.id).filter(is_customer=True).order_by('name')
+        return Partner.objects.filter(merchants__id=merchant.id).filter(merchantpartnerrelationship__is_customer=True)\
+            .order_by('name')
 
 
 class SearchCustomerView(ListAPIView):
@@ -164,6 +186,26 @@ class SearchCustomerView(ListAPIView):
 
     def get_queryset(self):
         merchant = self.request.user.merchant
-        queryset = Partner.objects.filter(merchants__id=merchant.id).filter(is_customer=True)
+        queryset = Partner.objects.filter(merchants__id=merchant.id)\
+            .filter(merchantpartnerrelationship__is_customer=True)
         queryset_filtered = search_by_search_string(self, queryset)
         return queryset_filtered
+
+
+class UpdateIsCustomerView(UpdateAPIView):
+
+    serializer_class = PartnerSerializer
+
+    def update(self, request, *args, **kwargs):
+        merchant = self.request.user.merchant
+        partner = Partner.objects.filter(id=self.kwargs['partner_id']).first()
+        if partner:
+            is_customer = MerchantPartnerRelationship.objects.filter(Q(merchant=merchant) & Q(partner=partner) &
+                                                                     Q(is_customer=True))
+            if is_customer:
+                MerchantPartnerRelationship.objects.update(merchant=merchant, partner=partner, is_customer=False)
+            else:
+                MerchantPartnerRelationship.objects.update(merchant=merchant, partner=partner, is_customer=True)
+            return Response({'status': 'Partner updated successfully'})
+        else:
+            return Response({'status': 'Partner does not exist'})

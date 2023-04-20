@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "../../Assets/Logos/logo_white.svg";
 import SignInRight from "../../Components/AuthComp/SignInRight";
 import SignInLeft from "../../Components/AuthComp/SignInLeft";
 

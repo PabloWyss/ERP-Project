@@ -19,7 +19,7 @@ class ListItemTagView(ListAPIView):
 
     def get_queryset(self):
         merchant = self.request.user.merchant
-        return ItemTag.objects.filter(items__merchant=merchant).order_by('tag_name')
+        return ItemTag.objects.filter(merchant=merchant).order_by('tag_name')
 
 
 class CreateItemTagView(CreateAPIView):
@@ -31,7 +31,6 @@ class CreateItemTagView(CreateAPIView):
     Create a new item tag related to the merchant
     """
 
-    queryset = ItemTag.objects.all()
     serializer_class = ItemTagSerializer
 
     def perform_create(self, serializer):
@@ -47,15 +46,12 @@ class CreateAssignItemTagView(CreateAPIView):
     Create a new item tag and assign it to an item of the merchant
     """
 
-    queryset = ItemTag.objects.all()
     serializer_class = ItemTagSerializer
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+    def perform_create(self, serializer):
+        merchant = self.request.user.merchant
         item = Item.objects.filter(pk=self.kwargs.get('item_id'))
-        serializer.save(items=item)
-        return Response(serializer.data)
+        serializer.save(merchant=merchant, items=item)
 
 
 class SearchItemTagView(ListAPIView):
@@ -95,6 +91,7 @@ class RetrieveUpdateDestroyItemTagView(RetrieveUpdateDestroyAPIView):
     Retrieve, update and delete a specific item tag of the merchant
     """
 
+    queryset = ItemTag.objects.all()
     serializer_class = ItemTagSerializer
     lookup_url_kwarg = 'item_tag_id'
 
@@ -131,7 +128,7 @@ class AssignItemToItemTagView(UpdateAPIView):
                 item_tag.items.remove(item_id)
             else:
                 item_tag.items.add(item_id)
-        return Response({'status': 'Item tag successfully updated'})
+        return Response({'status': 'Item tag updated successfully'})
 
 
 class ListItemAssignedToItemTagView(ListAPIView):
@@ -147,7 +144,7 @@ class ListItemAssignedToItemTagView(ListAPIView):
 
     def get_queryset(self):
         item_tag_id = self.kwargs.get('item_tag_id')
-        return Item.objects.filter(item_tag__id=item_tag_id).order_by('sku')
+        return Item.objects.filter(item_tags__id=item_tag_id).order_by('sku')
 
 
 class ListItemTagAssignedToItemView(ListAPIView):
