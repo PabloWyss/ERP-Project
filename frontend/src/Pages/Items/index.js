@@ -32,7 +32,7 @@ const Items = () => {
         {
             itemList.length > 0 ?
                 <ItemsTable tableData={itemList}/>:
-                <ItemsTable tableData={data_if_empty}/>
+                ""
         }
     </div>
   );

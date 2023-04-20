@@ -130,12 +130,7 @@ const PrimaryDetails = ({fromCreate, obtainNameFromChildren}) => {
             };
             const response = await callAPI.patch(`/items/${itemID}/`, data, config)
         } catch (error) {
-            const values = Object.values(error.response.data)
-            let message = ""
-            values?.forEach((errorMessage)=>{
-                message += errorMessage + "\n"
-            })
-            alert(message)
+            console.log(error)
         }
       }
 
@@ -165,12 +160,10 @@ const PrimaryDetails = ({fromCreate, obtainNameFromChildren}) => {
             navigate(`/items/${response.data.id}/`)
 
         } catch (error) {
-            console.log(error)
-            const keys = Object.keys(error.response.data)
             const values = Object.values(error.response.data)
             let message = ""
             values?.forEach((errorMessage)=>{
-                message += errorMessage + " " + keys + "\n"
+                message += errorMessage + "\n"
             })
             alert(message)
         }
