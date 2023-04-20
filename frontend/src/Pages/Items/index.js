@@ -1,4 +1,3 @@
-import ListTable from "../../Components/ListTable/ListTable";
 import React, {useEffect, useState} from "react";
 import callAPI from "../../Axios/callAPI";
 import ItemsTable from "./ItemsTable";
@@ -25,13 +24,17 @@ const Items = () => {
         obtainItemsInfo()
     }, [])
 
+    const data_if_empty = [{
+      sku: ""
+    }]
+
 
   return (
     <div className="flex w-full">
         {
             itemList.length > 0 ?
                 <ItemsTable tableData={itemList}/>:
-                ""
+                <ItemsTable tableData={data_if_empty}/>
         }
     </div>
   );
