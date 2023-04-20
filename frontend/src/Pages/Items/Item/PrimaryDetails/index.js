@@ -160,10 +160,11 @@ const PrimaryDetails = ({fromCreate, obtainNameFromChildren}) => {
             navigate(`/items/${response.data.id}/`)
 
         } catch (error) {
+            const keys = Object.keys(error.response.data)
             const values = Object.values(error.response.data)
             let message = ""
-            values?.forEach((errorMessage)=>{
-                message += errorMessage + "\n"
+            values?.forEach((errorMessage, index)=>{
+                message += `${errorMessage} ${keys[index]} \n`
             })
             alert(message)
         }
