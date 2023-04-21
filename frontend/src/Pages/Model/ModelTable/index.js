@@ -1,4 +1,3 @@
-import React, {useEffect, useState} from "react";
 import ListTable from "../../../Components/ListTable/ListTable";
 import addButton from "../../../Assets/Icons/plus_orange.png"
 import {useNavigate} from "react-router-dom";
@@ -27,10 +26,6 @@ const ModelTable = ({tableData}) => {
     {
       Header: "Color",
       accessor: "color",
-    },
-    {
-      Header: "Image",
-      accessor: "images[0].image",
     },
   ];
 

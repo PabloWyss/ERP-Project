@@ -15,12 +15,15 @@ function Item() {
     const [showTagsDetails, setShowTagsDetails] = useState(false)
     const [showPartnersDetails, setShowPartnersDetails] = useState(false)
     const [fromUpdate, setFromUpdate] = useState(false)
+    const [item, setItem] = useState({})
     const [itemVariant, setItemVariant] = useState({})
     const [itemName, setItemName] = useState("")
     const [updateClicked, setUpdateClicked] = useState(true)
     const [modelIdFromChildren, setModelIdFromChildren] = useState("")
     const navigate = useNavigate()
     const { itemID } = useParams();
+
+    // Handle Inputs
 
 
     const handleShowVariantDetails = (e) =>{
@@ -68,8 +71,22 @@ function Item() {
         setModelIdFromChildren(id)
     }
 
+    // Fecth Data
+    const obtainItemInfo = async () => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            };
 
-
+            const response = await callAPI.get(`/items/${itemID}/`, config)
+            setItem(response.data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const obtainItemsCurrentVariantInfo = async () => {
         try {
@@ -90,6 +107,7 @@ function Item() {
 
     useEffect(() => {
         obtainItemsCurrentVariantInfo()
+        obtainItemInfo()
     }, [])
 
   return (
@@ -108,7 +126,7 @@ function Item() {
                   </div>
               </div>
               <div className="flex flex-col w-full gap-4 justify-between">
-                  <PrimaryDetails obtainNameFromChildren={obtainNameFromChildren} obtainModelIdFromChildren={obtainModelIdFromChildren}/>
+                  <PrimaryDetails fromItem={true} itemFromItem={item} obtainNameFromChildren={obtainNameFromChildren} obtainModelIdFromChildren={obtainModelIdFromChildren}/>
                   <div className="flex flex-col gap-4">
                       <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
                           <div className="text-xl">
@@ -157,7 +175,7 @@ function Item() {
                   </div>
                   {
                       showModelDetails ?
-                          <ItemModel modelID={modelIdFromChildren}/>:
+                          <ItemModel fromItem={true} modelFromItem={item.item_model} modelID={modelIdFromChildren}/>:
                           ""
                   }
                   <div className="flex flex-col gap-4">
