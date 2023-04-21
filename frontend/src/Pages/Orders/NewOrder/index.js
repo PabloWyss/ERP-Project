@@ -2,57 +2,12 @@ import React, { useEffect, useState } from "react";
 import SelectPartner from "./SelectPartner";
 
 function NewOrder() {
-  //fake data for table testing
-  const data = [
-    {
-      name: "Kim Parrish",
-      address: "4420 Valley Street, Garnerville, NY 10923",
-      date: "07/11/2020",
-      order: "87349585892118",
-      partner: "supplier",
-      id: "8",
-    },
-    {
-      name: "Michele Castillo",
-      address: "637 Kyle Street, Fullerton, NE 68638",
-      date: "07/11/2020",
-      order: "58418278790810",
-      partner: "customer",
-      id: "2",
-    },
-  ];
-
-  //create columns model
-  const columns = [
-    {
-      Header: "Name",
-      accessor: "name",
-    },
-    {
-      Header: "Address",
-      accessor: "address",
-    },
-    {
-      Header: "Date",
-      accessor: "date",
-    },
-    {
-      Header: "Order No.",
-      accessor: "order",
-    },
-    {
-      Header: "Partner Type",
-      accessor: "partner",
-    },
-  ];
-
   //handle choice buy or sell
   const [isBuy, setIsBuy] = useState(true);
   let supplierOrCustomer = "Supplier";
   const changeOrderType = () => {
     setIsBuy(!isBuy);
     supplierOrCustomer = isBuy ? "Supplier" : "Customer";
-    console.log(supplierOrCustomer);
     //TODO trigger fetching list of suppliers or customers
   };
   useEffect(() => {}, [isBuy]);
