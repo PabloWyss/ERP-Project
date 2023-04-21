@@ -6,7 +6,7 @@ import ItemDetailsInput from "../PrimaryDetails/ItemDetailsInput";
 import ItemsToAssign from "./ItemsToAssign";
 import {useSelector} from "react-redux";
 
-const ItemModel = ({fromCreate, model, fromList}) => {
+const ItemModel = ({fromCreate, model, fromList, modelID}) => {
 
     const [itemModel, setItemModel] = useState({})
     const [name, setName] = useState("")
@@ -25,13 +25,14 @@ const ItemModel = ({fromCreate, model, fromList}) => {
     const navigate = useNavigate()
     const {modelId} = useParams()
     const listItemsChecked = useSelector((store) => store.checkeditems.checkeditems )
-    console.log(modelId)
+
 
     useEffect(() => {
         getColorOptions()
         getConditionsOptions()
         getCategoryOptions()
         obtainItemsInfo()
+        getModel()
 
          if(fromList){
             setItemModel(model)
@@ -46,7 +47,28 @@ const ItemModel = ({fromCreate, model, fromList}) => {
 
     }, [fromCreate, model, fromList])
 
+     const getModel = async () => {
+          try {
+              const config = {
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                  },
+              };
 
+              const response = await callAPI.get(`/item_models/${modelID}/`, config)
+              setItemModel(response.data)
+              setName(response.data.name)
+              setStatus(response.data.status)
+              setCondition(response.data.condition)
+              setCategory(response.data.category)
+              setColor(response.data.color)
+              setBrandName(response.data.brand_name)
+              setImages(response.data.images)
+          } catch (error) {
+              console.log(error);
+          }
+      }
 
     const handleNameInput = (e) =>{
         setName(e.target.value)
@@ -67,7 +89,6 @@ const ItemModel = ({fromCreate, model, fromList}) => {
     const handleBrandNameInput = (e) =>{
         setBrandName(e.target.value)
     }
-
 
     const handleStatusInput = (e) =>{
         setStatus(e.target.value)
@@ -224,6 +245,8 @@ const ItemModel = ({fromCreate, model, fromList}) => {
         assignItemsToModel(listItemsChecked)
     }
 
+
+
     return (
           <form className="flex flex-col gap-4 " onSubmit={handleOnSubmit}>
               <div className="flex w-full gap-10 justify-around">
@@ -326,20 +349,25 @@ const ItemModel = ({fromCreate, model, fromList}) => {
                      ""
                 }
             </div>
-              <div>
-                  <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
-                      <p>
-                          Itmes
-                      </p>
-                      <button onClick={handleAssignToModel}>
-                          Assign to Model
-                      </button>
-                  </div>
+              {
+                  fromList ?
+                  <div>
+                      <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
+                          <p>
+                              Items
+                          </p>
+                          <button onClick={handleAssignToModel}>
+                              Assign to Model
+                          </button>
+                      </div>
 
-                  <div className="flex w-full">
-                      <ItemsToAssign/>
-                  </div>
-              </div>
+                      <div className="flex w-full">
+                          <ItemsToAssign/>
+                      </div>
+                  </div>:
+                      ""
+              }
+
           </form>
     )
 }

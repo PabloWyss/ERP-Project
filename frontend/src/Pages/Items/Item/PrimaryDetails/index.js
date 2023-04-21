@@ -3,7 +3,7 @@ import callAPI from "../../../../Axios/callAPI";
 import ItemDetailsInput from "./ItemDetailsInput";
 import {useNavigate, useParams} from "react-router-dom";
 
-const PrimaryDetails = ({fromCreate, obtainNameFromChildren}) => {
+const PrimaryDetails = ({fromCreate, obtainNameFromChildren, obtainModelIdFromChildren}) => {
 
     const [item, setItem] = useState({})
     const [editClicked, setEditClicked] = useState(false)
@@ -171,6 +171,8 @@ const PrimaryDetails = ({fromCreate, obtainNameFromChildren}) => {
       }
 
       const date = new Date(item.release_date).toString().slice(0,15)
+
+    obtainModelIdFromChildren(item.item_model)
 
     return (
         <form className="flex flex-col w-full justify-between gap-4" onSubmit={handleSubmitButton}>

@@ -18,8 +18,11 @@ function Item() {
     const [itemVariant, setItemVariant] = useState({})
     const [itemName, setItemName] = useState("")
     const [updateClicked, setUpdateClicked] = useState(true)
+    const [modelIdFromChildren, setModelIdFromChildren] = useState("")
     const navigate = useNavigate()
     const { itemID } = useParams();
+
+
     const handleShowVariantDetails = (e) =>{
         e.preventDefault()
         setShowVariantDetails(!showVariantDetails)
@@ -61,6 +64,13 @@ function Item() {
         setItemName(name)
     }
 
+    const obtainModelIdFromChildren = (id) => {
+        setModelIdFromChildren(id)
+    }
+
+
+
+
     const obtainItemsCurrentVariantInfo = async () => {
         try {
             const config = {
@@ -76,6 +86,8 @@ function Item() {
             console.log(error);
         }
     }
+
+
     useEffect(() => {
         obtainItemsCurrentVariantInfo()
     }, [])
@@ -96,7 +108,7 @@ function Item() {
                   </div>
               </div>
               <div className="flex flex-col w-full gap-4 justify-between">
-                  <PrimaryDetails obtainNameFromChildren={obtainNameFromChildren}/>
+                  <PrimaryDetails obtainNameFromChildren={obtainNameFromChildren} obtainModelIdFromChildren={obtainModelIdFromChildren}/>
                   <div className="flex flex-col gap-4">
                       <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
                           <div className="text-xl">
@@ -127,7 +139,7 @@ function Item() {
                   <div className="flex flex-col gap-4">
                       <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
                           <div className="text-xl">
-                              Item model Specifications (Current)
+                              Item Model
                           </div>
                           <div className="items-center flex gap-4 justify-items-center">
                               {
@@ -145,7 +157,7 @@ function Item() {
                   </div>
                   {
                       showModelDetails ?
-                          <ItemModel/>:
+                          <ItemModel modelID={modelIdFromChildren}/>:
                           ""
                   }
                   <div className="flex flex-col gap-4">
