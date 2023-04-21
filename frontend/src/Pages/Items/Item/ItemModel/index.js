@@ -4,6 +4,7 @@ import ItemModelImages from "./ItemModelImages";
 import {useNavigate, useParams} from "react-router-dom";
 import ItemDetailsInput from "../PrimaryDetails/ItemDetailsInput";
 import ItemsToAssign from "./ItemsToAssign";
+import {useSelector} from "react-redux";
 
 const ItemModel = ({fromCreate, model, fromList}) => {
 
@@ -23,6 +24,8 @@ const ItemModel = ({fromCreate, model, fromList}) => {
     const [itemList, setItemList] = useState([])
     const navigate = useNavigate()
     const {modelId} = useParams()
+    const listItemsChecked = useSelector((store) => store.checkeditems.checkeditems )
+    console.log(modelId)
 
     useEffect(() => {
         getColorOptions()
@@ -192,11 +195,33 @@ const ItemModel = ({fromCreate, model, fromList}) => {
           }
       }
 
+      const assignItemsToModel = async (itemsList) => {
+          try {
+              const data = {
+                  item_ids: itemsList,
+              }
+              const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    },
+                };
+              const response = await callAPI.patch(`/item_models/assign/${model.id}/`, data, config)
+          } catch (error) {
+              console.log(error);
+          }
+      }
+
 
     const handleOnSubmit = (e) => {
         e.preventDefault()
         createModel()
         navigate(-1)
+    }
+
+    const handleAssignToModel = (e) => {
+        e.preventDefault()
+        assignItemsToModel(listItemsChecked)
     }
 
     return (
@@ -304,9 +329,13 @@ const ItemModel = ({fromCreate, model, fromList}) => {
               <div>
                   <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
                       <p>
-                          Itmes assigned to model
+                          Itmes
                       </p>
+                      <button onClick={handleAssignToModel}>
+                          Assign to Model
+                      </button>
                   </div>
+
                   <div className="flex w-full">
                       <ItemsToAssign/>
                   </div>

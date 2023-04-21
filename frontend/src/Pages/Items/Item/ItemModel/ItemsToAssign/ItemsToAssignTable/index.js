@@ -50,7 +50,6 @@ const ItemsToAssignTable = ({tableData}) => {
     }]
 
   return (
-
         <div>
         {
           tableData?.length > 0 ?
