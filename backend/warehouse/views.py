@@ -5,6 +5,9 @@ from inventory_ledger.models import InventoryLedger
 from item.models import Item
 from warehouse.models import Warehouse, WarehouseItemInventory
 from warehouse.serializers import WarehouseSerializer
+from warehouse.formulas import get_stock_level_total_current, get_stock_level_total_purchase_value_current, \
+    get_stock_level_total_sale_value_current, get_error_item_not_assigned_item_specifications, \
+    get_error_item_not_assigned_purchase_price_net_eur, get_error_item_not_assigned_sale_price_net_eur
 
 
 class ListWarehouseView(ListAPIView):
@@ -172,6 +175,16 @@ class RetrieveUpdateDestroyWarehouseView(RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         merchant = self.request.user.merchant
         return Warehouse.objects.filter(merchants__id=merchant.id)
+
+    def get_object(self):
+        warehouse = Warehouse.objects.get(pk=self.kwargs.get('warehouse_id'))
+        warehouse.stock_level_total_current = get_stock_level_total_current(warehouse)
+        warehouse.stock_level_total_purchase_value_current = get_stock_level_total_purchase_value_current(warehouse)
+        warehouse.stock_level_total_sale_value_current = get_stock_level_total_sale_value_current(warehouse)
+        warehouse.error_item_not_assigned_item_specifications = get_error_item_not_assigned_item_specifications(warehouse)
+        warehouse.error_item_not_assigned_purchase_price_net_eur = get_error_item_not_assigned_purchase_price_net_eur(warehouse)
+        warehouse.error_item_not_assigned_sale_price_net_eur = get_error_item_not_assigned_sale_price_net_eur(warehouse)
+        return warehouse
 
 
 class ListWarehouseAssignedToItemView(ListAPIView):
