@@ -51,13 +51,15 @@ const ItemsTable = ({tableData}) => {
         overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey"
       >
-        <h1 className="text-title mb-2">Items</h1>
+        <div>
+          <h1 className="text-title mb-2">Items</h1>
+          <button>Go to Models</button>
+        </div>
         <ListTable data={tableData} columns={columns}></ListTable>
         <div>
           <img className="cursor-pointer" src={addButton} alt={"create new item"} onClick={handleCreateButton}/>
         </div>
       </div>
-
     </div>
   );
 }
