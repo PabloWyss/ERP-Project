@@ -18,8 +18,9 @@ import CreateItemVariant from "./Pages/CreateItemVariant";
 import CreateItemModel from "./Pages/CreateModel";
 import CreateItem from "./Pages/CreateItem";
 import Item from "./Pages/Items/Item";
-
 import MerchantNEW from "./Pages/Merchant/merchantNEW";
+import Models from "./Pages/Model";
+import ModelPage from "./Pages/Model/ModelPage";
 function App() {
   const currentUser = useSelector((store) => store.currentuser.currentuser);
   const [, setIsLoggedIn] = useState(false);
@@ -55,6 +56,8 @@ function App() {
                   <Route path="/signup" element={<SignUp/>}/>
                   <Route path="/congratulations" element={<Congratulations/>}/>
                   <Route path="/verification" element={<Verification/>}/>
+                 <Route path="/models" element={<Models/>}/>
+                 <Route path="/models/:modelID" element={<ModelPage/>}/>
                   <Route path="/items" element={<Items/>}/>
                  <Route path="/items/:itemID" element={<Item />} />
                  <Route path="/items/new/" element={<CreateItem />} />

@@ -4,7 +4,9 @@ import {useNavigate, useParams} from "react-router-dom";
 import ItemDetailsInput from "../PrimaryDetails/ItemDetailsInput";
 
 const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
-    const [validFrom, setValidFrom] = useState(fromCreate ? "" : formatDate(new Date(itemVariant?.valid_from)))
+
+    // const to handle input and display information
+    const [validFrom, setValidFrom] = useState(fromCreate ? "" : itemVariant?.valid_from)
     const [purchasePrice, setPurchasePrice] = useState(fromCreate ? "" : itemVariant?.purchase_price_net_eur)
     const [salePrice, setSalePrice] = useState(fromCreate ? "" : itemVariant?.sale_price_net_eur)
     const [stockMinimum, setStockMinimum] = useState(fromCreate ? "" : itemVariant?.stock_level_minimum)
@@ -26,6 +28,8 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
             setComesFromUpdate(!comesFromUpdate)
         }
     },[fromCreate,fromUpdate])
+
+    // input handlers
     const handleInitialDateInput = (e) =>{
         setValidFrom(e.target.value)
     }
@@ -85,6 +89,7 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
         setChanges(e.target.value)
     }
 
+    // submit handler
     const handleOnSubmit = (e) =>{
         e.preventDefault()
         if (fromCreate){
@@ -96,7 +101,7 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
         }
 
     }
-
+    // fetches
     const createItemVariant = async () => {
 
         if (!localStorage.getItem('token')) {
@@ -156,9 +161,17 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
             const response = await callAPI.patch(`/item_specifications/update/${itemVariant.id}/`, data, config)
             console.log(response)
         } catch (error) {
-            console.log(error)
+            const keys = Object.keys(error.response.data)
+            const values = Object.values(error.response.data)
+            let message = ""
+            values?.forEach((errorMessage, index)=>{
+                message += `${errorMessage} ${keys[index]} \n`
+            })
+            alert(message)
         }
       }
+
+      //fetching options
        const getSizeOptions = async () => {
           try {
               const config = {
@@ -169,6 +182,7 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
               };
 
               const response = await callAPI.get(`/item_specifications/choices/sizes/`, config)
+              const options = response.data.sizes.unshift("")
               setSizeOptions(response.data.sizes)
           } catch (error) {
               console.log(error);
@@ -186,7 +200,7 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
               padTo2Digits(date.getDate()),
           ].join('-');
         }
-
+    const date = new Date(validFrom).toString().slice(0,15)
     return (
         <form className="flex flex-col gap-4 " onSubmit={handleOnSubmit}>
             <div className="flex w-full gap-10 justify-around">
@@ -198,7 +212,7 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
                                       value={itemVariant?.id}
                                       disableInput={true} placeholder={itemVariant?.id}/>,
                                 <ItemDetailsInput description={"Valid From:"}
-                                      value={validFrom}
+                                      value={date}
                                       disableInput={true}
                                       type={"date"}
                                       handleInput={handleInitialDateInput}/>]

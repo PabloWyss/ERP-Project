@@ -17,6 +17,7 @@ class ItemModelSerializer(serializers.ModelSerializer):
 
 
 class UpdateItemModelSerializer(serializers.ModelSerializer):
+    images = ItemImageSerializer(read_only=True, many=True)
 
     class Meta:
         model = ItemModel

@@ -9,7 +9,7 @@ const PrimaryDetails = ({fromCreate, obtainNameFromChildren}) => {
     const [editClicked, setEditClicked] = useState(false)
     const [disableInput, setDisableInput] = useState(true)
     const [name, setName] = useState("")
-    const [status, setStatus] = useState("Active")
+    const [status, setStatus] = useState("")
     const [series, setSeries] = useState("")
     const [SKU, setSKU] = useState("")
     const [EAN, setEAN] = useState("")
@@ -170,7 +170,7 @@ const PrimaryDetails = ({fromCreate, obtainNameFromChildren}) => {
         }
       }
 
-      const date = new Date(item.valid_from).toString().slice(0,15)
+      const date = new Date(item.release_date).toString().slice(0,15)
 
     return (
         <form className="flex flex-col w-full justify-between gap-4" onSubmit={handleSubmitButton}>
@@ -212,7 +212,7 @@ const PrimaryDetails = ({fromCreate, obtainNameFromChildren}) => {
                                           handleInput={handleStatusInput}
                                           description={"Item Status: "}
                                           choicesEnabeled={true}
-                                          choices={["Active",'No restock']}/>
+                                          choices={["","Active",'No restock']}/>
                         <ItemDetailsInput value={series}
                                           disableInput={!fromCreate & disableInput}
                                           handleInput={handleSeriesInput}
@@ -249,8 +249,7 @@ const PrimaryDetails = ({fromCreate, obtainNameFromChildren}) => {
                             <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"}>
                                 Submit
                             </button>
-                        </div>:
-                        ""
+                        </div>: ""
                 }
             </div>
         </form>

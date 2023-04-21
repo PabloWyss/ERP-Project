@@ -3,26 +3,49 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import ItemModelInput from "./IitemModelInput";
 import callAPI from "../../../../Axios/callAPI";
 import ItemModelImages from "./ItemModelImages";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import ItemDetailsInput from "../PrimaryDetails/ItemDetailsInput";
 
-const ItemModel = ({fromCreate}) => {
+const ItemModel = ({fromCreate, model, fromList}) => {
 
     const [itemModel, setItemModel] = useState({})
     const [name, setName] = useState("")
-    const [archived, setArchived] = useState("")
     const [status, setStatus] = useState("")
     const [color, setColor] = useState("")
     const [condition, setCondition] = useState("")
     const [category, setCategory] = useState("")
     const [brandName, setBrandName] = useState("")
-    const [brandCollection, setBrandCollection] = useState("")
     const [images, setImages] = useState([])
     const [pictures, setPictures] = useState([]);
     const [colorOptions, setColorOptions] = useState([])
     const [conditionOptions, setConditionOptions] = useState([])
     const [categoryOptions, setCategoryOptions] = useState([])
     const [comesFromCreate, setComesFromCreate] = useState(fromCreate ? fromCreate : false)
+    const [itemList, setItemList] = useState([])
+    const navigate = useNavigate()
+    const {modelId} = useParams()
+
+
+    useEffect(() => {
+        getColorOptions()
+        getConditionsOptions()
+        getCategoryOptions()
+        obtainItemsInfo()
+
+         if(fromList){
+            setItemModel(model)
+            setName(model.name)
+            setStatus(model.status)
+            setCondition(model.condition)
+            setCategory(model.category)
+            setColor(model.color)
+            setBrandName(model.brand_name)
+             setImages(model.images)
+    }
+
+    }, [fromCreate, model, fromList])
+
+
 
     const handleNameInput = (e) =>{
         setName(e.target.value)
@@ -44,13 +67,6 @@ const ItemModel = ({fromCreate}) => {
         setBrandName(e.target.value)
     }
 
-    const handleBrandCollectionInput = (e) =>{
-        setBrandCollection(e.target.value)
-    }
-
-    const handleArchivedInput = (e) =>{
-        setArchived(e.target.value)
-    }
 
     const handleStatusInput = (e) =>{
         setStatus(e.target.value)
@@ -73,6 +89,25 @@ const ItemModel = ({fromCreate}) => {
       };
     }
   };
+
+    const obtainItemsInfo = async () => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            };
+
+            const response = await callAPI.get(`/items/`, config)
+            let itemsNameList = response.data?.map((item)=>{
+                return item.name
+            })
+            setItemList(itemsNameList)
+        } catch (error) {
+            console.log(error);
+        }
+    }
     const createModel = async () => {
         if (!localStorage.getItem('token')) {
             return;
@@ -103,7 +138,6 @@ const ItemModel = ({fromCreate}) => {
                 },
             };
             const response = await callAPI.post(`/item_models/new/`, formData, config)
-            console.log(response)
         } catch (error) {
             console.log(error)
         }
@@ -161,50 +195,11 @@ const ItemModel = ({fromCreate}) => {
       }
 
 
-    // const obtainItemsModelVariantInfo = async () => {
-    //     try {
-    //         const config = {
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
-    //             },
-    //         };
-    //
-    //         const response = await callAPI.get(`/items/models/current/`, config);
-    //         setItemModel(response.data[0])
-    //         setName(response.data[0].name)
-    //         setColor(response.data[0].color)
-    //         setCondition(response.data[0].condition)
-    //         setCategory(response.data[0].category)
-    //         setBrandName(response.data[0].brand_name)
-    //         setBrandCollection(response.data[0].brand_collection)
-    //         setArchived(response.data.category)
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    //
-    // }
-
     const handleOnSubmit = (e) => {
         e.preventDefault()
         createModel()
+        navigate(-1)
     }
-
-
-
-    useEffect(() => {
-        getColorOptions()
-        getConditionsOptions()
-        getCategoryOptions()
-        if(!fromCreate){
-            getColorOptions()
-            getConditionsOptions()
-            getCategoryOptions()
-        }
-
-    }, [])
-
-    console.log(fromCreate)
 
     return (
           <form className="flex flex-col gap-4 " onSubmit={handleOnSubmit}>
@@ -287,9 +282,14 @@ const ItemModel = ({fromCreate}) => {
                           ""
                   }
               </div>
+              <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
+                  <p>
+                      Images
+                  </p>
+              </div>
               <div className="flex flex-wrap gap-4">
                   {
-                      itemModel?.images?.map((image)=>{
+                      images?.map((image)=>{
                           return <ItemModelImages image={image.image} disabled/>
                       })
                   }
