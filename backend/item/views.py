@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
 from item.models import Item
-from item.serializers import ItemSerializer, UpdateItemSerializer
+from item.serializers import CreateItemSerializer, ItemSerializer, UpdateItemSerializer
 
 
 class ListItemView(ListAPIView):
@@ -31,7 +31,7 @@ class CreateItemView(CreateAPIView):
     Create a new item related to the merchant
     """
 
-    serializer_class = ItemSerializer
+    serializer_class = CreateItemSerializer
 
     def perform_create(self, serializer):
         serializer.save(merchant=self.request.user.merchant)
