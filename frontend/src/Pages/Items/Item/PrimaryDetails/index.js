@@ -18,6 +18,8 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChild
     const [UPC, setUPC] = useState("")
     const [AASIN, setAASIN] = useState("")
     const [AFNSKU, setAFNSKU] = useState("")
+    const [createQRCodeClicked, setCreateQRCodeClicked] = useState(false)
+    const [createBarcodeClicked, setCreateBarcodeClicked] = useState(false)
     const [newItemID, setNewItemID] = useState("")
     const navigate = useNavigate()
 
@@ -42,6 +44,7 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChild
           }
         }
         generateQR()
+        setCreateQRCodeClicked(!createQRCodeClicked)
     }
 
 
@@ -50,6 +53,7 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChild
     const handleCreateBarcode = (e) => {
         e.preventDefault()
         JsBarcode(".barcode").init();
+        setCreateBarcodeClicked(!createBarcodeClicked)
     }
 
 
@@ -270,23 +274,26 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChild
                                 Submit
                             </button>
                         </div>:
-                        ""
+                        <div className="flex justify-around">
+                            <div className="flex flex-col items-center">
+                                <button className="p-0 bg-ifOrange w-40 text-white" onClick={handleCreateQRCode}> Create Barcode </button>
+                                {
+                                    createQRCodeClicked ?
+                                        <img alt={"Barcode"} src={qrcode}/> :
+                                        ""
+                                }
+                            </div>
+                            <div className="flex flex-col items-center">
+                                <button className="p-0 bg-ifOrange w-40 text-white" onClick={handleCreateBarcode}> Create QRCode </button>
+                                <svg className="barcode"
+                                     jsbarcode-format="EAN13"
+                                     jsbarcode-value={item.ean}
+                                     jsbarcode-textmargin="0"
+                                     jsbarcode-fontoptions="bold">
+                                </svg>
+                            </div>
+                        </div>
                 }
-            </div>
-            <div>
-                <h2>QRCode</h2>
-                <img alt={"Barcode"} src={qrcode}/>
-                <button onClick={handleCreateQRCode}> Create </button>
-            </div>
-            <div>
-                <h2>Barcode</h2>
-                <button onClick={handleCreateBarcode}> Create </button>
-                <svg className="barcode"
-                     // jsbarcode-format="EAN13"
-                     jsbarcode-value={item.ean}
-                     jsbarcode-textmargin="0"
-                     jsbarcode-fontoptions="bold">
-                </svg>
             </div>
         </form>
     )
