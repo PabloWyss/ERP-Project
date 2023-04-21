@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ListTable from "../../Components/ListTable/ListTable";
 import addButton from "../../Assets/Icons/plus_orange.png";
 import { useNavigate } from "react-router-dom";
+import callAPI from "../../Axios/callAPI";
 
 function Orders() {
   //TODO fetch orders
+  const [orderList, setOrderList] = useState([])
+
+  const obtainItemsInfo = async () => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            },
+        };
+
+        const response = await callAPI.get(`/items/`, config)
+        setOrderList(response.data)
+    } catch (error) {
+        console.log(error);
+    }
+}
+useEffect(() => {
+    obtainItemsInfo()
+}, [])
+
 
   //fake data for table testing
   const data = [
@@ -59,7 +81,6 @@ function Orders() {
   ];
 
   //create columns model
-
   //convert is_merchant_supplier to order type
   const BoolToOrderType = ({ value }) => {
     return value ? "Supply" : "Purchase";
@@ -132,7 +153,7 @@ function Orders() {
       >
         <div>
           <h1 className="text-title mb-2">Orders</h1>
-          <ListTable data={data} columns={columns}></ListTable>
+          <ListTable data={orderList} columns={columns}></ListTable>
         </div>
         <div>
           <img
