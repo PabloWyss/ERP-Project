@@ -136,27 +136,14 @@ class AssignItemToItemModelView(UpdateAPIView):
         item_ids = self.request.data['item_ids']
         for item_id in item_ids:
             item = Item.objects.filter(id=item_id).first()
-            if item.item_model.exists():
-                if item_model.items.filter(id=item_id).exists():
+            if item.item_model:
+                if item.item_model == item_model:
                     item_model.items.remove(item)
+                else:
+                    pass
             else:
                 item_model.items.add(item)
         return Response({'status': 'Item model updated successfully'})
-
-
-    """
-    def update(self, request, *args, **kwargs):
-        item_model = ItemModel.objects.get(pk=self.kwargs.get('item_model_id'))
-        item_ids = self.request.data['item_ids']
-        for item_id in item_ids:
-            item = Item.objects.filter(id=item_id).first()
-            is_item_assigned = item_model.items.filter(id=item_id).exists()
-            if is_item_assigned:
-                item_model.items.remove(item)
-            else:
-                item_model.items.add(item)
-        return Response({'status': 'Item model updated successfully'})
-    """
 
 
 class ListItemInItemModelView(ListAPIView):
