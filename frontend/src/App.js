@@ -58,6 +58,10 @@ function App() {
           <Route path="/verification" element={<Verification />} />
           <Route path="/models" element={<Models/>}/>
           <Route path="/models/:modelID" element={<ModelPage/>}/>
+          <Route
+            path="/models/create/"
+            element={<CreateItemModel />}
+          />
           <Route path="/items" element={<Items />} />
           <Route path="/items/:itemID" element={<Item />} />
           <Route path="/items/new/" element={<CreateItem />} />
@@ -65,10 +69,7 @@ function App() {
             path="/items/itemVariant/create/:itemID"
             element={<CreateItemVariant />}
           />
-          <Route
-            path="/items/itemModel/create/"
-            element={<CreateItemModel />}
-          />
+
           <Route path="/orders" element={<Orders />} />
           <Route path="/orders/:orderID" element={<OrderDetails />} />
           <Route path="/orders/new" element={<NewOrder />} />

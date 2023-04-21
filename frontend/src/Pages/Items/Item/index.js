@@ -31,7 +31,7 @@ function Item() {
 
     const handleClickCreateModel = (e) => {
         e.preventDefault()
-        navigate(`/items/itemModel/create/`)
+        navigate(`/models/create/`)
     }
 
     const handleClickUpdateVariant = () => {

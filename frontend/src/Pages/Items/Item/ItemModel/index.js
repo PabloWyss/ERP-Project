@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from "react";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import ItemModelInput from "./IitemModelInput";
 import callAPI from "../../../../Axios/callAPI";
 import ItemModelImages from "./ItemModelImages";
 import {useNavigate, useParams} from "react-router-dom";
 import ItemDetailsInput from "../PrimaryDetails/ItemDetailsInput";
+import ItemsToAssign from "./ItemsToAssign";
 
 const ItemModel = ({fromCreate, model, fromList}) => {
 
@@ -24,7 +23,6 @@ const ItemModel = ({fromCreate, model, fromList}) => {
     const [itemList, setItemList] = useState([])
     const navigate = useNavigate()
     const {modelId} = useParams()
-
 
     useEffect(() => {
         getColorOptions()
@@ -303,6 +301,16 @@ const ItemModel = ({fromCreate, model, fromList}) => {
                      ""
                 }
             </div>
+              <div>
+                  <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
+                      <p>
+                          Itmes assigned to model
+                      </p>
+                  </div>
+                  <div className="flex w-full">
+                      <ItemsToAssign/>
+                  </div>
+              </div>
           </form>
     )
 }
