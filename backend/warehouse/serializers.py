@@ -1,4 +1,4 @@
-from rest_framework.response import Response
+# from rest_framework.response import Response
 from rest_framework import serializers
 from warehouse.models import WarehouseItemInventory
 from item.serializers import ItemSerializer
@@ -34,6 +34,7 @@ class WarehouseSerializer(serializers.ModelSerializer):
         except WarehouseItemInventory.DoesNotExist:
             pass
 
+    """
     def get_stock_level_total_value_current(self, obj):
         try:
             inventories = obj.warehouseiteminventory_set.filter(warehouse=obj)
@@ -43,11 +44,10 @@ class WarehouseSerializer(serializers.ModelSerializer):
                 purchase_price_net_eur = inventory.item.item_specifications.latest('valid_from').purchase_price_net_eur
                 if purchase_price_net_eur:
                     stock_level_value_current = round(stock_level_current * purchase_price_net_eur, 2)
-                    stock_level_total_value_current += stock_level_value_current
-                    return stock_level_total_value_current
                 else:
-                    return Response('Information missing')
-            else:
-                pass
+                    stock_level_value_current = 0
+                stock_level_total_value_current += stock_level_value_current
+            return stock_level_total_value_current
         except WarehouseItemInventory.DoesNotExist:
-            pass
+            return stock_level_total_value_current
+    """
