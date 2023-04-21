@@ -15,6 +15,8 @@ const CreateItemVariant = () => {
         obtainItemInfo()
     }, [])
 
+
+
     const obtainItemInfo = async () => {
         try {
             const config = {
@@ -46,13 +48,13 @@ const CreateItemVariant = () => {
                           <img className="cursor-pointer" src={arrow_left_image} alt={"go back"} onClick={handleClickGoBack}/>
                         </div>
                         <h1 className="text-title">
-                          Create New Item
+                            {`Create  New Item Specifications for ${item.name}`}
                         </h1>
                     </div>
                 </div>
                 <div className="flex h-screen w-full justify-center">
                     <div className="flex flex-col h-full w-11/12 pt-10 pb-10 gap-4">
-                        <ItemVariant fromCreate={true}/>
+                        <ItemVariant fromCreate={true} itemID={item.id}/>
                     </div>
                 </div>
             </div>

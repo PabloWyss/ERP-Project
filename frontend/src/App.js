@@ -20,6 +20,8 @@ import CreateItemModel from "./Pages/CreateModel";
 import CreateItem from "./Pages/CreateItem";
 import Item from "./Pages/Items/Item";
 import MerchantNEW from "./Pages/Merchant/merchantNEW";
+import Models from "./Pages/Model";
+import ModelPage from "./Pages/Model/ModelPage";
 import NewOrder from "./Pages/Orders/NewOrder";
 
 function App() {
@@ -54,6 +56,12 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/congratulations" element={<Congratulations />} />
           <Route path="/verification" element={<Verification />} />
+          <Route path="/models" element={<Models/>}/>
+          <Route path="/models/:modelID" element={<ModelPage/>}/>
+          <Route
+            path="/models/create/"
+            element={<CreateItemModel />}
+          />
           <Route path="/items" element={<Items />} />
           <Route path="/items/:itemID" element={<Item />} />
           <Route path="/items/new/" element={<CreateItem />} />
@@ -61,10 +69,7 @@ function App() {
             path="/items/itemVariant/create/:itemID"
             element={<CreateItemVariant />}
           />
-          <Route
-            path="/items/itemModel/create/"
-            element={<CreateItemModel />}
-          />
+
           <Route path="/orders" element={<Orders />} />
           <Route path="/orders/:orderID" element={<OrderDetails />} />
           <Route path="/orders/new" element={<NewOrder />} />
