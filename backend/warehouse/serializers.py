@@ -1,5 +1,5 @@
-# from rest_framework.response import Response
 from rest_framework import serializers
+from item_specification.models import ItemSpecification
 from warehouse.models import WarehouseItemInventory
 from item.serializers import ItemSerializer
 from merchant.serializers import MerchantSerializer
@@ -19,6 +19,8 @@ class WarehouseSerializer(serializers.ModelSerializer):
     warehouse_item_inventory = WarehouseItemInventorySerializer(source='warehouseiteminventory_set', many=True)
     stock_level_total_current = serializers.SerializerMethodField()
     stock_level_total_value_current = serializers.SerializerMethodField()
+    error_item_not_assigned_item_specifications = serializers.SerializerMethodField()
+    error_item_not_assigned_purchase_price_net = serializers.SerializerMethodField()
 
     class Meta:
         model = Warehouse
@@ -34,20 +36,49 @@ class WarehouseSerializer(serializers.ModelSerializer):
         except WarehouseItemInventory.DoesNotExist:
             pass
 
-    """
     def get_stock_level_total_value_current(self, obj):
         try:
             inventories = obj.warehouseiteminventory_set.filter(warehouse=obj)
             stock_level_total_value_current = 0
             for inventory in inventories:
                 stock_level_current = inventory.stock_level_current
-                purchase_price_net_eur = inventory.item.item_specifications.latest('valid_from').purchase_price_net_eur
-                if purchase_price_net_eur:
+                try:
+                    purchase_price_net_eur = inventory.item.item_specifications.latest('valid_from')\
+                        .purchase_price_net_eur
+                    if purchase_price_net_eur is None:
+                        purchase_price_net_eur = 0
                     stock_level_value_current = round(stock_level_current * purchase_price_net_eur, 2)
-                else:
+                except ItemSpecification.DoesNotExist:
                     stock_level_value_current = 0
                 stock_level_total_value_current += stock_level_value_current
             return stock_level_total_value_current
         except WarehouseItemInventory.DoesNotExist:
-            return stock_level_total_value_current
-    """
+            pass
+
+    def get_error_item_not_assigned_item_specifications(self, obj):
+        try:
+            inventories = obj.warehouseiteminventory_set.filter(warehouse=obj)
+            for inventory in inventories:
+                try:
+                    item_specifications = inventory.item.item_specifications.latest('valid_from')
+                    error_item_not_assigned_item_specifications = False
+                except ItemSpecification.DoesNotExist:
+                    error_item_not_assigned_item_specifications = True
+            return error_item_not_assigned_item_specifications
+        except WarehouseItemInventory.DoesNotExist:
+            pass
+
+    def get_error_item_not_assigned_purchase_price_net(self, obj):
+        try:
+            inventories = obj.warehouseiteminventory_set.filter(warehouse=obj)
+            for inventory in inventories:
+                try:
+                    purchase_price_net_eur = inventory.item.item_specifications.latest('valid_from')\
+                        .purchase_price_net_eur
+                    if purchase_price_net_eur is None:
+                        error_assignment_purchase_price_net = True
+                except ItemSpecification.DoesNotExist:
+                    pass
+            return error_assignment_purchase_price_net
+        except WarehouseItemInventory.DoesNotExist:
+            pass
