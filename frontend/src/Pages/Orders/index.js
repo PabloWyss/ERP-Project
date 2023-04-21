@@ -1,5 +1,7 @@
 import React from "react";
 import ListTable from "../../Components/ListTable/ListTable";
+import addButton from "../../Assets/Icons/plus_orange.png";
+import { useNavigate } from "react-router-dom";
 
 function Orders() {
   //TODO fetch orders
@@ -105,9 +107,16 @@ function Orders() {
     },
     // {
     //   Header: "Total",
-    //   accessor: "quantity", //TODO how is the field called?
+    //   accessor: "total", //TODO how is the field called?
     // },
   ];
+
+  //handle click on plus button to add a new order
+  const navigate = useNavigate();
+  const handleAddButton = (e) => {
+    e.preventDefault();
+    navigate(`/orders/new/`);
+  };
 
   return (
     <div
@@ -123,6 +132,14 @@ function Orders() {
       >
         <h1 className="text-title mb-2">Orders</h1>
         <ListTable data={data} columns={columns}></ListTable>
+        <div>
+          <img
+            className="cursor-pointer float-right"
+            src={addButton}
+            alt={"create new item"}
+            onClick={handleAddButton}
+          />
+        </div>
       </div>
     </div>
   );
