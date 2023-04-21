@@ -23,6 +23,7 @@ import MerchantNEW from "./Pages/Merchant/merchantNEW";
 import Models from "./Pages/Model";
 import ModelPage from "./Pages/Model/ModelPage";
 import NewOrder from "./Pages/Orders/NewOrder";
+import QRReader from "./Pages/QRReader";
 
 function App() {
   const currentUser = useSelector((store) => store.currentuser.currentuser);
@@ -58,6 +59,7 @@ function App() {
           <Route path="/verification" element={<Verification />} />
           <Route path="/models" element={<Models/>}/>
           <Route path="/models/:modelID" element={<ModelPage/>}/>
+          <Route path="/readqr/" element={<QRReader/>}/>
           <Route
             path="/models/create/"
             element={<CreateItemModel />}

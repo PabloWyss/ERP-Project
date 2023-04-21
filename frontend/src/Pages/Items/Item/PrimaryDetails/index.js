@@ -29,11 +29,16 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChild
     // QRCODE GENERATOR
 
     const [qrcode, setQrcode] = useState("")
-
+    console.log(item)
     const handleCreateQRCode = (e) => {
         e.preventDefault()
         const data = {
-        ean: item.ean,
+            id: item.id,
+            amazon_asin : item.amazon_asin,
+            amazon_fnsku : item.amazon_fnsku,
+            ean: item.ean,
+            sku: item.sku,
+            upc: item.upc,
         }
         const datJson = JSON.stringify(data)
         const generateQR = async text => {
@@ -52,8 +57,13 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChild
 
     const handleCreateBarcode = (e) => {
         e.preventDefault()
-        JsBarcode(".barcode").init();
         setCreateBarcodeClicked(!createBarcodeClicked)
+        if(createBarcodeClicked){
+            JsBarcode(".barcode").init();
+        }
+        else {
+        }
+        JsBarcode(".barcode").init();
     }
 
 
@@ -192,7 +202,13 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChild
         }
       }
 
-      const date = new Date(item.release_date).toString().slice(0,15)
+      let date = ""
+
+    if(item.release_date){
+        date = new Date(item.release_date).toString().slice(0,15)
+    }
+
+
 
 
 
@@ -274,23 +290,23 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChild
                                 Submit
                             </button>
                         </div>:
-                        <div className="flex justify-around">
+                        <div className="flex w-full justify-around">
                             <div className="flex flex-col items-center">
-                                <button className="p-0 bg-ifOrange w-40 text-white" onClick={handleCreateQRCode}> Create Barcode </button>
+                                <button className="p-0 bg-ifOrange w-40 text-white" onClick={handleCreateQRCode}> Create QRCode </button>
                                 {
                                     createQRCodeClicked ?
-                                        <img alt={"Barcode"} src={qrcode}/> :
+                                        <img alt={"QrCode"} src={qrcode}/> :
                                         ""
                                 }
                             </div>
                             <div className="flex flex-col items-center">
-                                <button className="p-0 bg-ifOrange w-40 text-white" onClick={handleCreateBarcode}> Create QRCode </button>
-                                <svg className="barcode"
-                                     jsbarcode-format="EAN13"
-                                     jsbarcode-value={item.ean}
-                                     jsbarcode-textmargin="0"
-                                     jsbarcode-fontoptions="bold">
-                                </svg>
+                                <button className="p-0 bg-ifOrange w-40 text-white" onClick={handleCreateBarcode}> Create Barcode </button>
+                                    <svg className="barcode"
+                                         //jsbarcode-format="EAN13"
+                                         jsbarcode-value={item.ean}
+                                         jsbarcode-textmargin="0"
+                                         jsbarcode-fontoptions="bold">
+                                    </svg>
                             </div>
                         </div>
                 }

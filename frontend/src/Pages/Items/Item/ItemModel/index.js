@@ -35,14 +35,16 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
         obtainItemsInfo()
 
         if(fromItem){
-            setItemModel(modelFromItem)
-            setName(modelFromItem.name)
-            setStatus(modelFromItem.status)
-            setCondition(modelFromItem.condition)
-            setCategory(modelFromItem.category)
-            setColor(modelFromItem.color)
-            setBrandName(modelFromItem.brand_name)
-            setImages(modelFromItem.images)
+            if(modelFromItem){
+                setItemModel(modelFromItem)
+                setName(modelFromItem.name)
+                setStatus(modelFromItem.status)
+                setCondition(modelFromItem.condition)
+                setCategory(modelFromItem.category)
+                setColor(modelFromItem.color)
+                setBrandName(modelFromItem.brand_name)
+                setImages(modelFromItem.images)
+            }
         }
 
         if(fromList){
