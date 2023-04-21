@@ -40,13 +40,11 @@ class SignInMerchantRetrieveUpdateDeleteView(ListAPIView):
     serializer_class = MerchantSerializer
     permission_classes = [AllowAny]
 
-    def get(self, request, *args, **kwargs):
-        data = self.request.data
-        user_exists = user = User.objects.filter(email=data['email']).exists()
-        if user_exists:
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        if User.objects.filter(email=data['email']).exists():
             user = User.objects.filter(email=data['email']).first()
-            merchant_exists = Merchant.objects.filter(user__id=user.id).exists()
-            if merchant_exists:
+            if Merchant.objects.filter(user__id=user.id).exists():
                 merchant = Merchant.objects.filter(user__id=user.id).first()
                 serializer = self.get_serializer(merchant)
                 return Response(serializer.data)

@@ -1,11 +1,8 @@
 from rest_framework import serializers
-from item.serializers import ItemSerializer
 from item_specification.models import ItemSpecification
 
 
 class ItemSpecificationSerializer(serializers.ModelSerializer):
-
-    item = ItemSerializer(read_only=True)
 
     class Meta:
         model = ItemSpecification

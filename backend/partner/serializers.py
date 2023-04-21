@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from merchant.models import MerchantPartnerRelationship
 from partner.models import Partner
-from merchant.serializers import MerchantSerializer
 
 
 class MerchantPartnerRelationshipSerializer(serializers.ModelSerializer):
@@ -13,7 +12,6 @@ class MerchantPartnerRelationshipSerializer(serializers.ModelSerializer):
 
 class PartnerSerializer(serializers.ModelSerializer):
 
-    merchants = MerchantSerializer(read_only=True, many=True)
     merchant_partner_relationship = MerchantPartnerRelationshipSerializer(source='merchantpartnerrelationship_set',
                                                                           many=True)
 
