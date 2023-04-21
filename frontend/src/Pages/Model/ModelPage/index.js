@@ -1,16 +1,37 @@
-import PrimaryDetails from "../Items/Item/PrimaryDetails";
-import React, {useState} from "react";
-import arrow_left_image from "../../Assets/Icons/arrow_left_orange.svg";
-import {useNavigate} from "react-router-dom";
+import arrow_left_image from "../../../Assets/Icons/arrow_left_orange.svg";
+import React, {useEffect, useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
+import callAPI from "../../../Axios/callAPI";
+import ItemModel from "../../Items/Item/ItemModel";
 
-const CreateItem = () => {
-    const [itemName,setItemName] = useState("")
+const ModelPage = () => {
     const navigate = useNavigate()
+    const {modelID} = useParams()
+    const [model, setModel] = useState("")
     const handleClickGoBack = (e) =>{
         e.preventDefault()
-        navigate(`/items`)
+        navigate(-1)
     }
 
+    useEffect(()=>{
+        getModel()
+    },[])
+
+     const getModel = async () => {
+          try {
+              const config = {
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                  },
+              };
+
+              const response = await callAPI.get(`/item_models/${modelID}/`, config)
+              setModel(response.data)
+          } catch (error) {
+              console.log(error);
+          }
+      }
 
     return (
         <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-5">
@@ -21,13 +42,13 @@ const CreateItem = () => {
                           <img className="cursor-pointer" src={arrow_left_image} alt={"go back"} onClick={handleClickGoBack}/>
                         </div>
                         <h1 className="text-title">
-                            Create New Item
+                            {`${model.name}`}
                         </h1>
                     </div>
                 </div>
                 <div className="flex h-screen w-full justify-center">
                     <div className="flex flex-col h-full w-11/12 pt-10 pb-10 gap-4">
-                        <PrimaryDetails fromCreate={true} />
+                        <ItemModel fromCreate={false} fromList={true} model={model}/>
                     </div>
                 </div>
             </div>
@@ -35,4 +56,4 @@ const CreateItem = () => {
 
     )
 }
-export default CreateItem
+export default ModelPage
