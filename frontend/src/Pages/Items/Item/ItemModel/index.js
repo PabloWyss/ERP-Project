@@ -6,7 +6,7 @@ import ItemDetailsInput from "../PrimaryDetails/ItemDetailsInput";
 import ItemsToAssign from "./ItemsToAssign";
 import {useSelector} from "react-redux";
 
-const ItemModel = ({fromCreate, model, fromList, modelID}) => {
+const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelID}) => {
 
     const [itemModel, setItemModel] = useState({})
     const [name, setName] = useState("")
@@ -22,6 +22,7 @@ const ItemModel = ({fromCreate, model, fromList, modelID}) => {
     const [categoryOptions, setCategoryOptions] = useState([])
     const [comesFromCreate, setComesFromCreate] = useState(fromCreate ? fromCreate : false)
     const [itemList, setItemList] = useState([])
+    const [clickedAssignToModel, setClickedAssignToModel] = useState(false)
     const navigate = useNavigate()
     const {modelId} = useParams()
     const listItemsChecked = useSelector((store) => store.checkeditems.checkeditems )
@@ -32,9 +33,19 @@ const ItemModel = ({fromCreate, model, fromList, modelID}) => {
         getConditionsOptions()
         getCategoryOptions()
         obtainItemsInfo()
-        getModel()
 
-         if(fromList){
+        if(fromItem){
+            setItemModel(modelFromItem)
+            setName(modelFromItem.name)
+            setStatus(modelFromItem.status)
+            setCondition(modelFromItem.condition)
+            setCategory(modelFromItem.category)
+            setColor(modelFromItem.color)
+            setBrandName(modelFromItem.brand_name)
+            setImages(modelFromItem.images)
+        }
+
+        if(fromList){
             setItemModel(model)
             setName(model.name)
             setStatus(model.status)
@@ -42,33 +53,9 @@ const ItemModel = ({fromCreate, model, fromList, modelID}) => {
             setCategory(model.category)
             setColor(model.color)
             setBrandName(model.brand_name)
-             setImages(model.images)
-    }
-
-    }, [fromCreate, model, fromList])
-
-     const getModel = async () => {
-          try {
-              const config = {
-                  headers: {
-                      'Content-Type': 'application/json',
-                      'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                  },
-              };
-
-              const response = await callAPI.get(`/item_models/${modelID}/`, config)
-              setItemModel(response.data)
-              setName(response.data.name)
-              setStatus(response.data.status)
-              setCondition(response.data.condition)
-              setCategory(response.data.category)
-              setColor(response.data.color)
-              setBrandName(response.data.brand_name)
-              setImages(response.data.images)
-          } catch (error) {
-              console.log(error);
-          }
-      }
+            setImages(model.images)
+        }
+    }, [modelFromItem, model])
 
     const handleNameInput = (e) =>{
         setName(e.target.value)
@@ -243,6 +230,7 @@ const ItemModel = ({fromCreate, model, fromList, modelID}) => {
     const handleAssignToModel = (e) => {
         e.preventDefault()
         assignItemsToModel(listItemsChecked)
+        setClickedAssignToModel(!clickedAssignToModel)
     }
 
 
@@ -356,8 +344,11 @@ const ItemModel = ({fromCreate, model, fromList, modelID}) => {
                           <p>
                               Items
                           </p>
-                          <button onClick={handleAssignToModel}>
-                              Assign to Model
+                          <button className="p-0 bg-ifOrange w-60 text-white"  onClick={handleAssignToModel}>
+                              {clickedAssignToModel ?
+                                  "Assigned/Unassigned":
+                                  "Assign/Unassign to Model"
+                              }
                           </button>
                       </div>
 

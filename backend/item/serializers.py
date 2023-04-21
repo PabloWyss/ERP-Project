@@ -6,6 +6,7 @@ from item_tag.models import ItemTag
 from warehouse.models import WarehouseItemInventory
 from merchant.serializers import MerchantSerializer
 from item_specification.serializers import ItemSpecificationSerializer
+from item_image.serializers import ItemImageSerializer
 from partner.serializers import PartnerSerializer
 
 
@@ -25,6 +26,8 @@ class ItemWarehouseInventorySerializer(serializers.ModelSerializer):
 
 
 class OnlyItemModelSerializer(serializers.ModelSerializer):
+
+    images = ItemImageSerializer(read_only=True, many=True)
 
     class Meta:
         model = ItemModel
