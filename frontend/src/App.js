@@ -14,6 +14,7 @@ import Verification from "./Pages/Auth/Verification";
 import Warehouse from "./Pages/Warehouse";
 import Partners from "./Pages/Partners";
 import { useDispatch, useSelector } from "react-redux";
+import OrderDetails from "./Pages/Orders/OrderDetails";
 import CreateItemVariant from "./Pages/CreateItemVariant";
 import CreateItemModel from "./Pages/CreateModel";
 import CreateItem from "./Pages/CreateItem";
@@ -61,6 +62,7 @@ function App() {
                  <Route path="/items/itemVariant/create/:itemID" element={<CreateItemVariant />} />
                  <Route path="/items/itemModel/create/" element={<CreateItemModel />} />
                   <Route path="/orders" element={<Orders/>}/>
+                  <Route path="/orders/:orderID/" element={<OrderDetails/>}/>
                   <Route path="/warehouses" element={<Warehouse/>}/>
                   <Route path="/reports" element={<Reports/>}/>
                   <Route path="/tags" element={<Tags/>}/>
