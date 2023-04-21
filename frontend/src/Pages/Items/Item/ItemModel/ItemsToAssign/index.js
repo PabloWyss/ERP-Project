@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
-import callAPI from "../../Axios/callAPI";
-import ItemsTable from "./ItemsTable";
+import callAPI from "../../../../../Axios/callAPI";
+import ItemsTable from "../../../ItemsTable";
+import ItemsToAssignTable from "./ItemsToAssignTable";
 
-const Items = () => {
+const ItemsToAssign = () => {
   const [itemList, setItemList] = useState([])
 
   const obtainItemsInfo = async () => {
@@ -24,14 +25,11 @@ const Items = () => {
         obtainItemsInfo()
     }, [])
 
-    const data_if_empty = [{
-      sku: ""
-    }]
   return (
     <div className="flex w-full">
-        <ItemsTable tableData={itemList}/>
+        <ItemsToAssignTable tableData={itemList}/>:
     </div>
   );
 }
 
-export default Items
+export default ItemsToAssign

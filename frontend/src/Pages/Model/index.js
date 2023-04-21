@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import callAPI from "../../Axios/callAPI";
-import ItemsTable from "./ItemsTable";
+import ModelTable from "./ModelTable";
 
-const Items = () => {
-  const [itemList, setItemList] = useState([])
+const Models = () => {
+  const [modelsList, setModelsList] = useState([])
 
-  const obtainItemsInfo = async () => {
+  const obtainModelsInfo = async () => {
         try {
             const config = {
                 headers: {
@@ -14,24 +14,26 @@ const Items = () => {
                 },
             };
 
-            const response = await callAPI.get(`/items/`, config)
-            setItemList(response.data)
+            const response = await callAPI.get(`/item_models/`, config)
+            setModelsList(response.data)
+
         } catch (error) {
             console.log(error);
         }
     }
+
+
+
     useEffect(() => {
-        obtainItemsInfo()
+        obtainModelsInfo()
     }, [])
 
-    const data_if_empty = [{
-      sku: ""
-    }]
+
   return (
     <div className="flex w-full">
-        <ItemsTable tableData={itemList}/>
+        <ModelTable tableData={modelsList}/>:
     </div>
   );
 }
 
-export default Items
+export default Models
