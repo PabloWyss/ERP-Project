@@ -61,6 +61,7 @@ class WarehouseSerializer(serializers.ModelSerializer):
             for inventory in inventories:
                 try:
                     item_specifications = inventory.item.item_specifications.latest('valid_from')
+                    print(item_specifications)
                     error_item_not_assigned_item_specifications = False
                 except ItemSpecification.DoesNotExist:
                     error_item_not_assigned_item_specifications = True
