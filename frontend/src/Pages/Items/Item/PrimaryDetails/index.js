@@ -254,6 +254,13 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
                                           disableInput={!fromCreate & fromItem & disableInput}
                                           handleInput={handleSeriesInput}
                                           description={"Series No.:"}/>
+                        {
+                            fromCreate ?
+                                "":
+                                <ItemDetailsInput value={item.stock_level_total_current}
+                                                   disableInput={true}
+                                                   description={"Current Stock:"}/>
+                        }
                     </div>
                     <div className="flex w-1/2 flex-col gap-1">
                         <ItemDetailsInput value={SKU}
@@ -276,6 +283,16 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
                                           disableInput={!fromCreate & fromItem & disableInput}
                                           handleInput={handleAFNSKUInput}
                                           description={"Amazon FNSKU No.:"}/>
+                        {
+                            fromCreate ?
+                                "":
+                                [<ItemDetailsInput value={item.stock_level_total_purchase_value_current}
+                                                   disableInput={true}
+                                                   description={"Total Purchase Value (eur):"}/>,
+                                <ItemDetailsInput value={item.stock_level_total_sale_value_current}
+                                                  disableInput={true}
+                                                  description={"Total Sale Value (eur):"}/>]
+                        }
                     </div>
                 </div>
             </div>
