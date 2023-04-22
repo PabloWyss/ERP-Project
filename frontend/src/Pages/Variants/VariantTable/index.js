@@ -2,30 +2,29 @@ import ListTable from "../../../Components/ListTable/ListTable";
 import addButton from "../../../Assets/Icons/plus_orange.png"
 import {useNavigate} from "react-router-dom";
 import ListTableIfEmpty from "../../../Components/ListTableIfEmpty/ListTable";
+import arrow_left_image from "../../../Assets/Icons/arrow_left_orange.svg";
+import React from "react";
 
-const ModelTable = ({tableData}) => {
+const VariantTable = ({tableData}) => {
   const navigate = useNavigate()
+
   //create columns model
   const columns = [
     {
-      Header: "Name",
-      accessor: "name",
+      Header: "Valid From",
+      accessor: "valid_from",
     },
     {
-      Header: "Status",
-      accessor: "status",
+      Header: "Valid To",
+      accessor: "valid_to",
     },
     {
-      Header: "Condition",
-      accessor: "condition",
+      Header: "Sale Price (eur)",
+      accessor: "sale_price_net_eur",
     },
     {
-      Header: "Category",
-      accessor: "category",
-    },
-    {
-      Header: "Color",
-      accessor: "color",
+      Header: "Purchase Price (eur)",
+      accessor: "purchase_price_net_eur",
     },
   ];
 
@@ -34,9 +33,9 @@ const ModelTable = ({tableData}) => {
     navigate(`/models/create/`)
   }
 
-  const handleGoToItems = (e) => {
+  const handleClickGoBack = (e) => {
     e.preventDefault()
-    navigate(`/items`)
+    navigate(-1)
   }
 
    const data_if_empty = [{
@@ -56,8 +55,8 @@ const ModelTable = ({tableData}) => {
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey"
       >
         <div className="flex gap-10">
-          <h1 className="text-title mb-2">Models</h1>
-          <button className="p-0 p-0 bg-ifOrange w-40 h-8 text-white" onClick={handleGoToItems}>Go to Items</button>
+          <img className="cursor-pointer" src={arrow_left_image} alt={"go back"} onClick={handleClickGoBack}/>
+          <h1 className="text-title mb-2">{`Variants of Item`}</h1>
         </div>
         {
           tableData?.length > 0 ?
@@ -74,4 +73,4 @@ const ModelTable = ({tableData}) => {
   );
 }
 
-export default ModelTable
+export default VariantTable

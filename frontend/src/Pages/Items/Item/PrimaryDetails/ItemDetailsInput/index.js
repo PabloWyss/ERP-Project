@@ -4,7 +4,7 @@ import ItemDetailsChoicesInput from "./ItemDetailsChoicesInput";
 const ItemDetailsInput = ({value, disableInput, handleInput, description, choicesEnabeled, choices}) => {
 
     return (
-        <div className="flex gap-1 items-center justify-between">
+        <div className="flex gap-1 items-center justify-between" key={description}>
             <label className="w-3/5" htmlFor="item_input"> {description} </label>
             {
                 choicesEnabeled ?

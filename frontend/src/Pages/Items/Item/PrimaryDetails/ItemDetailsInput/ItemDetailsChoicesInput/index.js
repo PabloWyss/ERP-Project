@@ -1,7 +1,7 @@
 const ItemDetailsChoicesInput = ({choices}) => {
     return (
             choices?.map((choice) => (
-              <option value={choice}>{choice}</option>
+              <option value={choice} key={choice}>{choice}</option>
             ))
     )
 }

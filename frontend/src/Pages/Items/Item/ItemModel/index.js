@@ -8,6 +8,7 @@ import {useSelector} from "react-redux";
 
 const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelID}) => {
 
+    //Def const
     const [itemModel, setItemModel] = useState({})
     const [name, setName] = useState("")
     const [status, setStatus] = useState("")
@@ -59,6 +60,7 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
         }
     }, [modelFromItem, model])
 
+    // handle inputs by user
     const handleNameInput = (e) =>{
         setName(e.target.value)
     }
@@ -101,6 +103,7 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
     }
   };
 
+    //fetch information
     const obtainItemsInfo = async () => {
         try {
             const config = {
@@ -217,12 +220,13 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
                     },
                 };
               const response = await callAPI.patch(`/item_models/assign/${model.id}/`, data, config)
+              setClickedAssignToModel(!clickedAssignToModel)
           } catch (error) {
               console.log(error);
           }
       }
 
-
+    //handle buttons
     const handleOnSubmit = (e) => {
         e.preventDefault()
         createModel()
@@ -232,7 +236,6 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
     const handleAssignToModel = (e) => {
         e.preventDefault()
         assignItemsToModel(listItemsChecked)
-        setClickedAssignToModel(!clickedAssignToModel)
     }
 
 
@@ -347,15 +350,20 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
                           </p>
                           <button className="p-0 bg-ifOrange w-60 text-white"  onClick={handleAssignToModel}>
                               {clickedAssignToModel ?
-                                  "Assigned/Unassigned":
-                                  "Assign/Unassign to Model"
+                                  "Assigned":
+                                  "Assign to Model"
                               }
                           </button>
                       </div>
-
-                      <div className="flex w-full">
-                          <ItemsToAssign/>
-                      </div>
+                      {
+                          clickedAssignToModel ?
+                              <div className="flex justify-center w-full mt-1">
+                                  {`Items succesfully assigned to Model`}
+                              </div>:
+                              <div className="flex w-full">
+                                  <ItemsToAssign/>
+                              </div>
+                      }
                   </div>:
                       ""
               }

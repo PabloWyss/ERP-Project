@@ -71,7 +71,7 @@ const ItemsTable = ({tableData}) => {
               <ListTableIfEmpty data={data_if_empty} columns={columns}></ListTableIfEmpty>
         }
         <div>
-          <img className="cursor-pointer" src={addButton} alt={"create new item"} onClick={handleCreateButton}/>
+          <img className="cursor-pointer absolute bottom-10 right-12" src={addButton} alt={"create new item"} onClick={handleCreateButton}/>
         </div>
       </div>
     </div>

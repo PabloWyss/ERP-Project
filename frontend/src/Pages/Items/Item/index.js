@@ -56,6 +56,11 @@ function Item() {
         setShowPartnersDetails(!showPartnersDetails)
     }
 
+    const handleShowVariantsDetails = (e) =>{
+        e.preventDefault()
+        navigate(`/variants/${itemID}`)
+    }
+
     const handleClickGoBack = (e) =>{
         e.preventDefault()
         navigate(`/items`)
@@ -125,12 +130,9 @@ function Item() {
                           <div className="items-center flex gap-4 justify-items-center">
                               {
                                   showVariantDetails ?
-                                      <button className="p-0 p-0 bg-ifOrange w-40 text-white" onClick={handleClickUpdateVariant} key="2">Update Variant</button>:
-                                      ""
-                              }
-                              {
-                                  showVariantDetails ?
-                                      <button className="p-0 p-0 bg-ifOrange w-40 text-white" onClick={handleClickCreateVariant} key="1">Create Variant</button>:
+                                      [<button className="p-0 p-0 bg-ifOrange w-40 text-white" onClick={handleClickCreateVariant} key="1">Create Specifications</button>,
+                                      <button className="p-0 p-0 bg-ifOrange w-40 text-white" onClick={handleClickUpdateVariant} key="2">Update Specifications</button>,
+                                      <button className="p-0 p-0 bg-ifOrange w-40 text-white" onClick={handleShowVariantsDetails} key="3">List Specs</button>]:
                                       ""
                               }
                               <button className="p-0" onClick={handleShowVariantDetails}>
