@@ -29,8 +29,6 @@ const AddFromQRCode = ({fileResult}) => {
 
     }, [fileResult])
 
-    console.log(item)
-
     return(
         <div>
             <div>

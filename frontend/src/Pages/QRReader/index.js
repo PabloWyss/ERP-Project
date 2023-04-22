@@ -2,11 +2,21 @@ import QrReader from "react-qr-reader"
 import React, {useEffect, useRef, useState} from "react";
 import AddFromQRCode from "./AddFromQRCode";
 import {useNavigate} from "react-router-dom";
+import callAPI from "../../Axios/callAPI";
+import {useTable} from "react-table";
+import AddToWarehouse from "./AddFromQRCode/addToWarehouse";
+import WarehouseTableQR from "./AddFromQRCode/warehouseTableQR";
 const QRReader = () => {
+
+    // define const
     const qrRef = useRef(null)
     const [fileResult, setFileResult] = useState()
     const navigate = useNavigate()
+    const [warehouses, setWarehouses] = useState([])
+    const [warehousesClicked, setWarehousesClicked] = useState(false)
 
+
+    // QRcode Reader
     const openDialog = () =>{
         qrRef.current.openImageDialog()
     }
@@ -26,6 +36,8 @@ const QRReader = () => {
 
     },[fileResult])
 
+    // handle buttons
+
     const handleGoToItemButton = (e) => {
         e.preventDefault()
         navigate(`/items/${fileResult.id}/`)
@@ -35,6 +47,31 @@ const QRReader = () => {
         e.preventDefault()
         setFileResult()
     }
+
+    const handleAddToWarehouseButton = (e) =>{
+        e.preventDefault()
+        setWarehousesClicked(!warehousesClicked)
+        obtainWarehouses()
+    }
+
+
+    // fetch
+    const obtainWarehouses = async () => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            };
+
+            const response = await callAPI.get(`/warehouses/`, config)
+            setWarehouses(response.data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 
     return (
         <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-5">
@@ -54,7 +91,7 @@ const QRReader = () => {
                                 [<button className="m-4 text-xl p-0 bg-ifOrange w-40 text-white"
                                         onClick={handleGoToItemButton}> Got to item</button>,
                                 <button className="m-4 text-xl p-0 bg-ifOrange w-60 text-white"
-                                        onClick={handleScanAgainButton}> Add to Warehouse </button>,
+                                        onClick={handleAddToWarehouseButton}> Add to Warehouse </button>,
                                 <button className="m-4 text-xl p-0 bg-ifOrange w-40 text-white"
                                         onClick={handleScanAgainButton}> Scan Again</button>]
                                 :
@@ -68,6 +105,15 @@ const QRReader = () => {
                                         facingMode={"user"}
                                     />
                                 </div>
+                            }
+                        </div>
+                        <div>
+                            {
+                            warehousesClicked ?
+                                <WarehouseTableQR tableData={warehouses}
+                                                  itemID={fileResult.id}
+                                                  />:
+                                ""
                             }
                         </div>
                         <div>
