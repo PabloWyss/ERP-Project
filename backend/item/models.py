@@ -27,10 +27,15 @@ class Item(models.Model):
     has_specifications = models.BooleanField(default=False)
     partners = models.ManyToManyField(to=Partner, blank=True, related_name="items")
     item_model = models.ForeignKey(to=ItemModel, on_delete=models.PROTECT, null=True, related_name="items")
+
     # warehouse (linked in warehouse.models.py)
     # item_specifications (linked in item_specification.models.py)
     # item_model (linked in item_model.models.py)
     # item_tags (linked in item_tag.models.py)
+
+    stock_level_total_current = models.IntegerField(default=0)
+    stock_level_total_purchase_value_current = models.FloatField(default=0)
+    stock_level_total_sale_value_current = models.FloatField(default=0)
 
     def __str__(self):
         return f'{self.id} - Item name {self.name}'
