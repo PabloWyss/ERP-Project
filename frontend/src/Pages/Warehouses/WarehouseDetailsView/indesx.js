@@ -1,10 +1,8 @@
 import React from "react";
-import MerchDetails from "../../Components/MerchComp/MerchDetails";
+import WarehouseDetails from "../../../Components/WarehouseComp/WarehouseDetails";
 
 
-function Merchant() {
-
-
+function WarehouseDetailsView() {
 
 
   return (
@@ -23,17 +21,17 @@ function Merchant() {
           <div className="flex justify-start w-2/5">
               <div className="flex items-center justify-between w-full">
                   <h1 className="text-2xl">
-                      Merchant
+                      Warehouse
                   </h1>
               </div>
           </div>
           <div className="flex flex-col w-full gap-4 justify-between">
-              <MerchDetails/>
+              <WarehouseDetails/>
           </div>
       </div>
     </div>
-                </div>
+ </div>
 );
 }
 
-export default Merchant;
+export default WarehouseDetailsView;
