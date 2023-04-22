@@ -1,12 +1,12 @@
 import callAPI from "../../../Axios/callAPI";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import ShowItemInfo from "./showItemInfo";
 
 const AddFromQRCode = ({fileResult}) => {
 
     const[item, setItem] = useState({})
     const navigate = useNavigate()
-
 
     const obtainItemInfo = async () => {
         try {
@@ -19,8 +19,6 @@ const AddFromQRCode = ({fileResult}) => {
 
             const response = await callAPI.get(`/items/${fileResult.id}/`, config)
             setItem(response.data)
-            console.log(item.id)
-            navigate(`/items/${response.data.id}`)
         } catch (error) {
             console.log(error);
         }
@@ -31,11 +29,16 @@ const AddFromQRCode = ({fileResult}) => {
 
     }, [fileResult])
 
-
+    console.log(item)
 
     return(
         <div>
             <div>
+                {
+                    item ?
+                        <ShowItemInfo item={item}/> :
+                        "item not found"
+                }
             </div>
         </div>
     )

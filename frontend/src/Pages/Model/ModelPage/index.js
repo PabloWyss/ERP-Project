@@ -53,7 +53,6 @@ const ModelPage = () => {
                 </div>
             </div>
         </div>
-
     )
 }
 export default ModelPage

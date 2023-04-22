@@ -289,6 +289,11 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
                                       handleInput={handleBrandNameInput}/>
                   </div>
               </div>
+              <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
+                  <p>
+                      Images
+                  </p>
+              </div>
               <div className="flex flex-col flex-wrap gap-4">
                   <div className="flex flex-wrap gap-4">
                     {pictures.map((picture, index) => (
@@ -315,19 +320,13 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
                                   onChange={handlePictureChange}/>
                       </div>
                           :
-                          ""
-                  }
-              </div>
-              <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
-                  <p>
-                      Images
-                  </p>
-              </div>
-              <div className="flex flex-wrap gap-4">
-                  {
-                      images?.map((image)=>{
-                          return <ItemModelImages image={image.image} disabled/>
-                      })
+                          <div className="flex flex-wrap gap-4">
+                              {
+                                  images?.map((image)=>{
+                                      return <ItemModelImages image={image.image} disabled/>
+                                  })
+                              }
+                          </div>
                   }
               </div>
               <div className="flex w-full justify-center">

@@ -17,9 +17,7 @@ function Item() {
     const [fromUpdate, setFromUpdate] = useState(false)
     const [item, setItem] = useState({})
     const [itemVariant, setItemVariant] = useState({})
-    const [itemName, setItemName] = useState("")
     const [updateClicked, setUpdateClicked] = useState(true)
-    const [modelIdFromChildren, setModelIdFromChildren] = useState("")
     const navigate = useNavigate()
     const { itemID } = useParams();
 
@@ -63,15 +61,7 @@ function Item() {
         navigate(`/items`)
     }
 
-    const obtainNameFromChildren = (name) => {
-        setItemName(name)
-    }
-
-    const obtainModelIdFromChildren = (id) => {
-        setModelIdFromChildren(id)
-    }
-
-    // Fecth Data
+    // Fetch Data
     const obtainItemInfo = async () => {
         try {
             const config = {
@@ -121,12 +111,12 @@ function Item() {
                           <img className="cursor-pointer" src={arrow_left_image} alt={"go back"} onClick={handleClickGoBack}/>
                       </div>
                       <h1 className="text-title">
-                          {itemName}
+                          {item.name}
                       </h1>
                   </div>
               </div>
               <div className="flex flex-col w-full gap-4 justify-between">
-                  <PrimaryDetails fromItem={true} itemFromItem={item} obtainNameFromChildren={obtainNameFromChildren} obtainModelIdFromChildren={obtainModelIdFromChildren}/>
+                  <PrimaryDetails fromItem={true} itemFromItem={item}/>
                   <div className="flex flex-col gap-4">
                       <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
                           <div className="text-xl">
@@ -175,7 +165,7 @@ function Item() {
                   </div>
                   {
                       showModelDetails ?
-                          <ItemModel fromItem={true} modelFromItem={item.item_model} modelID={modelIdFromChildren}/>:
+                          <ItemModel fromItem={true} modelFromItem={item.item_model} modelID={item.id}/>:
                           ""
                   }
                   <div className="flex flex-col gap-4">
