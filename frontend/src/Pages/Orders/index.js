@@ -5,80 +5,27 @@ import { useNavigate } from "react-router-dom";
 import callAPI from "../../Axios/callAPI";
 
 function Orders() {
-  //TODO fetch orders
-  const [orderList, setOrderList] = useState([])
+  //fetch orders
+  const [orderList, setOrderList] = useState([]);
 
   const obtainItemsInfo = async () => {
     try {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            },
-        };
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
 
-        const response = await callAPI.get(`/items/`, config)
-        setOrderList(response.data)
+      const response = await callAPI.get(`/orders/`, config);
+      setOrderList(response.data);
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-}
-useEffect(() => {
-    obtainItemsInfo()
-}, [])
-
-
-  //fake data for table testing
-  const data = [
-    {
-      partner: "Darren Daniels",
-      is_merchant_supplier: false,
-      is_refund: true,
-      address: "882 Hide A Way Road, Anaktuvuk Pass, AK 99721",
-      order_date: "07/07/2020",
-      shipment_date: "08/07/2020",
-      order_number: "22906126785176",
-      warehouse: "Amazon Warehouse",
-      quantity: 12,
-      id: "5",
-    },
-    {
-      partner: "Ted McDonald",
-      is_merchant_supplier: true,
-      is_refund: false,
-      address: "796 Bryan Avenue, Minneapolis, MN 55406",
-      order_date: "07/07/2020",
-      shipment_date: "08/07/2020",
-      order_number: "87574505851064",
-      warehouse: "Keller",
-      quantity: 8,
-      id: "6",
-    },
-    {
-      partner: "Abra Kebabra",
-      is_merchant_supplier: false,
-      is_refund: false,
-      address: "4420 Rua de la Paz, Toledo, NY 10923",
-      order_date: "07/11/2023",
-      shipment_date: "08/07/2020",
-      order_number: "67349585892118",
-      warehouse: "Lager 1",
-      quantity: 51,
-      id: "7",
-    },
-    {
-      partner: "Diane Keaton",
-      is_merchant_supplier: true,
-      is_refund: true,
-      address: "4420 4th Avenue, Anaheim, WY 10923",
-      order_date: "05/11/2023",
-      shipment_date: "08/07/2020",
-      order_number: "37349585892118",
-      warehouse: "Lager 1",
-      quantity: 3,
-      id: "9",
-    },
-  ];
+  };
+  useEffect(() => {
+    obtainItemsInfo();
+  }, []);
 
   //create columns model
   //convert is_merchant_supplier to order type
@@ -86,9 +33,9 @@ useEffect(() => {
     return value ? "Supply" : "Purchase";
   };
 
-  //convert is_refund to yes or empty string
+  //convert is_refund to yes or no
   const BoolToIsRefund = ({ value }) => {
-    return value ? "Yes" : "";
+    return value ? "Yes" : "No";
   };
 
   const columns = [
@@ -116,11 +63,11 @@ useEffect(() => {
     },
     {
       Header: "Partner",
-      accessor: "partner",
+      accessor: "partner.name",
     },
     {
       Header: "Warehouse",
-      accessor: "warehouse",
+      accessor: "warehouse.name",
     },
     {
       Header: "Qty.",
