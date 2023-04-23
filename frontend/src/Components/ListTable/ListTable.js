@@ -20,7 +20,7 @@ import { setCheckedItems } from "../../Redux/Slices/tableCheckedItems";
 import { useDispatch } from "react-redux";
 
 function ListTable(props) {
-  const data = useMemo(() => props.data, []);
+  const data = useMemo(() => props.data, [props.data]);
 
   const columns = useMemo(() => props.columns, []);
 
