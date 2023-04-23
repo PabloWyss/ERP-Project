@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import callAPI from "../../Axios/callAPI";
-
-
+import ItemDetailsInput from "../../Pages/Items/Item/PrimaryDetails/ItemDetailsInput";
 
 const WarehouseDetails = () => {
   const dispatch = useDispatch();
@@ -17,7 +16,7 @@ const WarehouseDetails = () => {
   const [email, setEmail] = useState("");
   const [isStandard, setIsStandard] = useState(false);
   const [status, setStatus] = useState("");
-  const [releaseDate, setReleaseDate] = useState("");
+  const [creationDate, setCreationDate] = useState("");
 
   const handleEditButton = async (e) => {
     e.preventDefault();
@@ -63,8 +62,9 @@ const WarehouseDetails = () => {
     setStatus(e.target.value);
   };
 
-  const handleReleaseDateInput = (e) => {
-    setReleaseDate(e.target.value);
+
+  const handleCreationDateInput = (e) => {
+    setCreationDate(e.target.value);
   };
 
   const getWarehouseByID = async () => {
@@ -86,7 +86,7 @@ const WarehouseDetails = () => {
       setEmail(response.data.email);
       setIsStandard(response.data.is_standard);
       setStatus(response.data.status);
-      setReleaseDate(response.data.release_date);
+      setCreationDate(response.data.creation_date);
     } catch (error) {
       console.log(error);
     }
@@ -106,7 +106,7 @@ const WarehouseDetails = () => {
         email: email,
         is_standard: isStandard,
         status: status,
-        release_date: releaseDate,
+        creation_date: creationDate,
       };
       const config = {
         headers: {
@@ -132,114 +132,67 @@ return (
             {editClicked ? "Save" : "Edit"}
           </button>
         </div>
-<div className="flex">
-  <div className="w-2/3 gap-4">
-    <div className="flex gap-4">
-      <div className="w-full">
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={name}
-          onChange={handleNameInput}
-          disabled={disableInput}
-          className="w-full"
-        />
-      </div>
-    </div>
-    <div className="flex gap-4">
-      <div className="w-1/2">
-        <label htmlFor="address">Address</label>
-        <input
-          type="text"
-          id="address"
-          name="address"
-          value={address}
-          onChange={handleAddressInput}
-          disabled={disableInput}
-          className="w-full"
-        />
-      </div>
-      <div className="w-1/2">
-        <label htmlFor="countryCode">Country Code</label>
-        <input
-          type="text"
-          id="countryCode"
-          name="countryCode"
-          value={countryCode}
-          onChange={handleCountryCodeInput}
-          disabled={disableInput}
-          className="w-full"
-        />
-      </div>
-    </div>
-    <div className="flex gap-4">
-      <div className="w-1/2">
-        <label htmlFor="phone">Phone</label>
-        <input
-          type="text"
-          id="phone"
-          name="phone"
-          value={phone}
-          onChange={handlePhoneInput}
-          disabled={disableInput}
-          className="w-full"
-        />
-      </div>
-      <div className="w-1/2">
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={email}
-          onChange={handleEmailInput}
-          disabled={disableInput}
-          className="w-full"
-        />
-      </div>
-    </div>
-  </div>
-  <div className="w-1/3 gap-4 ml-4">
-    <div className="w-full">
-      <label htmlFor="status">Status</label>
-      <input
-        type="text"
-        id="status"
-        name="status"
-        value={status}
-        onChange={handleStatusInput}
-        disabled={disableInput}
-        className="w-full"
-      />
-    </div>
-    <div className="w-full">
-      <label htmlFor="releaseDate">Release Date</label>
-      <input
-        type="date"
-        id="releaseDate"
-        name="releaseDate"
-        value={releaseDate}
-        onChange={handleReleaseDateInput}
-        disabled={disableInput}
-        className="w-full"
-      />
-    </div>
-   <div className="flex mt-6 items-center">
-    <input
-      type="checkbox"
-      id="isStandard"
-      name="isStandard"
-      checked={isStandard}
-      onChange={() => setIsStandard(!isStandard)}
-      disabled={disableInput}
-      className="h-7 w-7 border rounded-md "
-    />
-    <label htmlFor="isStandard" className="ml-3"> Is Standard </label>
-  </div>
-  </div>
-</div>
+          <div className="flex w-full justify-around gap-4">
+            <div className="flex w-1/2 flex-col gap-1">
+              <ItemDetailsInput
+                disableInput={disableInput}
+                handleInput={handleNameInput}
+                description={"Name"}
+                value={name}
+              />
+              <ItemDetailsInput
+                disableInput={disableInput}
+                handleInput={handleAddressInput}
+                description={"Address"}
+                value={address}
+              />
+              <ItemDetailsInput
+                disableInput={disableInput}
+                handleInput={handleCountryCodeInput}
+                description={"Country Code"}
+                value={countryCode}
+              />
+
+              <ItemDetailsInput
+                type="checkbox"
+                disableInput={disableInput}
+                handleInput={handleIsStandardInput}
+                description={"Is Standard: "}
+                value={isStandard}
+                checked={isStandard}
+              />
+            </div>
+            <div className="flex w-1/2 flex-col gap-1">
+              <ItemDetailsInput
+                disableInput={disableInput}
+                handleInput={handlePhoneInput}
+                description={"Phone: "}
+                value={phone}
+              />
+              <ItemDetailsInput
+                disableInput={disableInput}
+                handleInput={handleEmailInput}
+                description={"Email: "}
+                value={email}
+              />
+              <ItemDetailsInput value={status}
+                disableInput={disableInput}
+                handleInput={handleStatusInput}
+                description={"Status: "}
+                choicesEnabeled={true}
+                choices={["Active",'No restock']}/>
+
+              <ItemDetailsInput
+                value={creationDate}
+                type="date"
+                disableInput={true}
+               // handleInput={handleCreationDateInput}
+                description={"Creation Date: "}
+              />
+
+            </div>
+          </div>
+
 
 </div>
 );
