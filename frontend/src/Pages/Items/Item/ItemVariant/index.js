@@ -22,77 +22,78 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
     const [sizeOptions, setSizeOptions] = useState(fromUpdate)
     const navigate = useNavigate()
 
-    useEffect(()=>{
+    useEffect(() => {
         getSizeOptions()
-        if(fromUpdate){
+        if (fromUpdate) {
             setComesFromUpdate(!comesFromUpdate)
         }
-    },[fromCreate,fromUpdate])
+    }, [fromCreate, fromUpdate])
 
-    // input handlers
-    const handleInitialDateInput = (e) =>{
+    // input from user handlers
+    const handleInitialDateInput = (e) => {
         setValidFrom(e.target.value)
     }
 
-    const handlePurchasePriceInput = (e) =>{
+    const handlePurchasePriceInput = (e) => {
         e.preventDefault()
         setPurchasePrice(e.target.value)
     }
 
-    const handleSalePriceInput = (e) =>{
+    const handleSalePriceInput = (e) => {
         e.preventDefault()
         setSalePrice(e.target.value)
     }
 
-    const handleStockMinimumInput = (e) =>{
+    const handleStockMinimumInput = (e) => {
         e.preventDefault()
         setStockMinimum(e.target.value)
     }
 
-    const handleStockReorderInput = (e) =>{
+    const handleStockReorderInput = (e) => {
         e.preventDefault()
         setStockReorder(e.target.value)
     }
 
-    const handleLengthInput = (e) =>{
+    const handleLengthInput = (e) => {
         e.preventDefault()
         setLength(e.target.value)
     }
 
-    const handleWidthInput = (e) =>{
+    const handleWidthInput = (e) => {
         e.preventDefault()
         setWidth(e.target.value)
     }
 
-    const handleHeightInput = (e) =>{
+    const handleHeightInput = (e) => {
         e.preventDefault()
         setHeight(e.target.value)
     }
 
-    const handleWeightGrossInput = (e) =>{
+    const handleWeightGrossInput = (e) => {
         e.preventDefault()
         setWeightGross(e.target.value)
     }
 
-    const handleWeightNetInput = (e) =>{
+    const handleWeightNetInput = (e) => {
         e.preventDefault()
         setWeightNet(e.target.value)
     }
 
-    const handleSizeInput = (e) =>{
+    const handleSizeInput = (e) => {
         e.preventDefault()
         setSize(e.target.value)
     }
 
-   const handleChangesInput = (e) =>{
+    const handleChangesInput = (e) => {
         e.preventDefault()
         setChanges(e.target.value)
     }
 
     // submit handler
-    const handleOnSubmit = (e) =>{
+
+    const handleOnSubmit = (e) => {
         e.preventDefault()
-        if (fromCreate){
+        if (fromCreate) {
             createItemVariant()
             navigate(`/items/${itemID}/`)
         } else {
@@ -101,7 +102,8 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
         }
 
     }
-    // fetches
+
+    // fetches - Create Variant - Update Variant
     const createItemVariant = async () => {
 
         if (!localStorage.getItem('token')) {
@@ -131,9 +133,9 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
         } catch (error) {
             console.log(error)
         }
-      }
+    }
 
-      const updateItemVariant = async () => {
+    const updateItemVariant = async () => {
 
         if (!localStorage.getItem('token')) {
             return;
@@ -164,58 +166,60 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
             const keys = Object.keys(error.response.data)
             const values = Object.values(error.response.data)
             let message = ""
-            values?.forEach((errorMessage, index)=>{
+            values?.forEach((errorMessage, index) => {
                 message += `${errorMessage} ${keys[index]} \n`
             })
             alert(message)
         }
-      }
+    }
 
-      //fetching options
-       const getSizeOptions = async () => {
-          try {
-              const config = {
-                  headers: {
-                      'Content-Type': 'application/json',
-                      'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                  },
-              };
+    //fetching options
+    const getSizeOptions = async () => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            };
 
-              const response = await callAPI.get(`/item_specifications/choices/sizes/`, config)
-              const options = response.data.sizes.unshift("")
-              setSizeOptions(response.data.sizes)
-          } catch (error) {
-              console.log(error);
-          }
-      }
-
-      function padTo2Digits(num) {
-        return num.toString().padStart(2, '0');
-}
-
-      function formatDate(date) {
-          return [
-              date.getFullYear(),
-              padTo2Digits(date.getMonth() + 1),
-              padTo2Digits(date.getDate()),
-          ].join('-');
+            const response = await callAPI.get(`/item_specifications/choices/sizes/`, config)
+            const options = response.data.sizes.unshift("")
+            setSizeOptions(response.data.sizes)
+        } catch (error) {
+            console.log(error);
         }
-    const date = new Date(validFrom).toString().slice(0,15)
+    }
+
+    //Convert date into readable
+    // function padTo2Digits(num) {
+    //     return num.toString().padStart(2, '0');
+    // }
+    //
+    // function formatDate(date) {
+    //     return [
+    //         date.getFullYear(),
+    //         padTo2Digits(date.getMonth() + 1),
+    //         padTo2Digits(date.getDate()),
+    //     ].join('-');
+    // }
+
+    const date = new Date(validFrom).toString().slice(0, 15)
     return (
         <form className="flex flex-col gap-4 " onSubmit={handleOnSubmit}>
             <div className="flex w-full gap-10 justify-around">
                 <div className="flex flex-col w-1/2 gap-1">
                     {
                         (fromCreate || comesFromUpdate) ?
-                            "":
+                            "" :
                             [<ItemDetailsInput description={"Item Variant ID:"}
-                                      value={itemVariant?.id}
-                                      disableInput={true} placeholder={itemVariant?.id}/>,
+                                               value={itemVariant?.id}
+                                               disableInput={true} placeholder={itemVariant?.id}/>,
                                 <ItemDetailsInput description={"Valid From:"}
-                                      value={date}
-                                      disableInput={true}
-                                      type={"date"}
-                                      handleInput={handleInitialDateInput}/>]
+                                                  value={date}
+                                                  disableInput={true}
+                                                  type={"date"}
+                                                  handleInput={handleInitialDateInput}/>]
                     }
 
                     <ItemDetailsInput description={"Purchase Price [eur]:"}
@@ -274,11 +278,11 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
             </div>
             <div className="flex w-full justify-center">
                 {
-                 (fromCreate || comesFromUpdate) ?
-                     <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"}>
-                        Submit
-                     </button>:
-                     ""
+                    (fromCreate || comesFromUpdate) ?
+                        <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"}>
+                            Submit
+                        </button> :
+                        ""
                 }
             </div>
         </form>
