@@ -3,9 +3,11 @@ import callAPI from "../../Axios/callAPI";
 import ModelTable from "./ModelTable";
 
 const Models = () => {
-  const [modelsList, setModelsList] = useState([])
+    //define const
+    const [modelsList, setModelsList] = useState([])
 
-  const obtainModelsInfo = async () => {
+    // fetch data
+    const obtainModelsInfo = async () => {
         try {
             const config = {
                 headers: {
@@ -23,17 +25,16 @@ const Models = () => {
     }
 
 
-
     useEffect(() => {
         obtainModelsInfo()
     }, [])
 
 
-  return (
-    <div className="flex w-full">
-        <ModelTable tableData={modelsList}/>:
-    </div>
-  );
+    return (
+        <div className="flex w-full">
+            <ModelTable tableData={modelsList}/>:
+        </div>
+    );
 }
 
 export default Models

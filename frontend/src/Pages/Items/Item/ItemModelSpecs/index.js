@@ -1,6 +1,7 @@
+//for the moment no model specs are shown
+
 import React, {useEffect, useState} from "react";
 import callAPI from "../../../../Axios/callAPI";
-import {useNavigate, useParams} from "react-router-dom";
 import ItemDetailsInput from "../PrimaryDetails/ItemDetailsInput";
 
 const ItemModelSpecs = ({itemModel, itemModelID, fromList}) => {
@@ -18,75 +19,74 @@ const ItemModelSpecs = ({itemModel, itemModelID, fromList}) => {
     const [weightNet, setWeightNet] = useState()
     const [size, setSize] = useState()
     const [changes, setChanges] = useState()
-    const navigate = useNavigate()
 
-    useEffect(()=>{
+    useEffect(() => {
         getSizeOptions()
 
-    },[])
+    }, [])
 
     // input handlers
-    const handleInitialDateInput = (e) =>{
+    const handleInitialDateInput = (e) => {
         setValidFrom(e.target.value)
     }
 
-    const handlePurchasePriceInput = (e) =>{
+    const handlePurchasePriceInput = (e) => {
         e.preventDefault()
         setPurchasePrice(e.target.value)
     }
 
-    const handleSalePriceInput = (e) =>{
+    const handleSalePriceInput = (e) => {
         e.preventDefault()
         setSalePrice(e.target.value)
     }
 
-    const handleStockMinimumInput = (e) =>{
+    const handleStockMinimumInput = (e) => {
         e.preventDefault()
         setStockMinimum(e.target.value)
     }
 
-    const handleStockReorderInput = (e) =>{
+    const handleStockReorderInput = (e) => {
         e.preventDefault()
         setStockReorder(e.target.value)
     }
 
-    const handleLengthInput = (e) =>{
+    const handleLengthInput = (e) => {
         e.preventDefault()
         setLength(e.target.value)
     }
 
-    const handleWidthInput = (e) =>{
+    const handleWidthInput = (e) => {
         e.preventDefault()
         setWidth(e.target.value)
     }
 
-    const handleHeightInput = (e) =>{
+    const handleHeightInput = (e) => {
         e.preventDefault()
         setHeight(e.target.value)
     }
 
-    const handleWeightGrossInput = (e) =>{
+    const handleWeightGrossInput = (e) => {
         e.preventDefault()
         setWeightGross(e.target.value)
     }
 
-    const handleWeightNetInput = (e) =>{
+    const handleWeightNetInput = (e) => {
         e.preventDefault()
         setWeightNet(e.target.value)
     }
 
-    const handleSizeInput = (e) =>{
+    const handleSizeInput = (e) => {
         e.preventDefault()
         setSize(e.target.value)
     }
 
-   const handleChangesInput = (e) =>{
+    const handleChangesInput = (e) => {
         e.preventDefault()
         setChanges(e.target.value)
     }
 
     // submit handler
-    const handleOnSubmit = (e) =>{
+    const handleOnSubmit = (e) => {
         e.preventDefault()
 
 
@@ -121,9 +121,9 @@ const ItemModelSpecs = ({itemModel, itemModelID, fromList}) => {
         } catch (error) {
             console.log(error)
         }
-      }
+    }
 
-      const updateItemVariant = async () => {
+    const updateItemVariant = async () => {
 
         if (!localStorage.getItem('token')) {
             return;
@@ -154,43 +154,44 @@ const ItemModelSpecs = ({itemModel, itemModelID, fromList}) => {
             const keys = Object.keys(error.response.data)
             const values = Object.values(error.response.data)
             let message = ""
-            values?.forEach((errorMessage, index)=>{
+            values?.forEach((errorMessage, index) => {
                 message += `${errorMessage} ${keys[index]} \n`
             })
             alert(message)
         }
-      }
+    }
 
-      //fetching options
-       const getSizeOptions = async () => {
-          try {
-              const config = {
-                  headers: {
-                      'Content-Type': 'application/json',
-                      'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                  },
-              };
+    //fetching options
+    const getSizeOptions = async () => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            };
 
-              const response = await callAPI.get(`/item_specifications/choices/sizes/`, config)
-              const options = response.data.sizes.unshift("")
+            const response = await callAPI.get(`/item_specifications/choices/sizes/`, config)
+            const options = response.data.sizes.unshift("")
 
-          } catch (error) {
-              console.log(error);
-          }
-      }
-
-      function padTo2Digits(num) {
-        return num.toString().padStart(2, '0');
-}
-
-      function formatDate(date) {
-          return [
-              date.getFullYear(),
-              padTo2Digits(date.getMonth() + 1),
-              padTo2Digits(date.getDate()),
-          ].join('-');
+        } catch (error) {
+            console.log(error);
         }
-    const date = new Date(validFrom).toString().slice(0,15)
+    }
+
+    function padTo2Digits(num) {
+        return num.toString().padStart(2, '0');
+    }
+
+    function formatDate(date) {
+        return [
+            date.getFullYear(),
+            padTo2Digits(date.getMonth() + 1),
+            padTo2Digits(date.getDate()),
+        ].join('-');
+    }
+
+    const date = new Date(validFrom).toString().slice(0, 15)
     return (
         <form className="flex flex-col gap-4 " onSubmit={handleOnSubmit}>
             <div className="flex w-full gap-10 justify-around">
@@ -210,11 +211,11 @@ const ItemModelSpecs = ({itemModel, itemModelID, fromList}) => {
             </div>
             <div className="flex w-full justify-center">
                 {
-                 (fromList) ?
-                     <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"}>
-                        Submit
-                     </button>:
-                     ""
+                    (fromList) ?
+                        <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"}>
+                            Submit
+                        </button> :
+                        ""
                 }
             </div>
         </form>

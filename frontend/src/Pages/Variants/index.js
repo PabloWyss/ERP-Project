@@ -4,10 +4,12 @@ import VariantTable from "./VariantTable";
 import {useParams} from "react-router-dom";
 
 const Variants = () => {
-  const [variantsList, setVariantsList] = useState([])
-    const { itemID } = useParams();
+    //define const
+    const [variantsList, setVariantsList] = useState([])
+    const {itemID} = useParams();
 
-  const obtainVariantsInfo = async () => {
+    //fetch variants information
+    const obtainVariantsInfo = async () => {
         try {
             const config = {
                 headers: {
@@ -28,11 +30,11 @@ const Variants = () => {
     }, [])
 
 
-  return (
-    <div className="flex w-full">
-        <VariantTable tableData={variantsList}/>:
-    </div>
-  );
+    return (
+        <div className="flex w-full">
+            <VariantTable tableData={variantsList}/>:
+        </div>
+    );
 }
 
 export default Variants

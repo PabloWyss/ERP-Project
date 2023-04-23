@@ -1,38 +1,33 @@
-import arrow_left_image from "../../../Assets/Icons/arrow_left_orange.svg";
 import React, {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import callAPI from "../../../Axios/callAPI";
 import ItemModel from "../../Items/Item/ItemModel";
 
 const ModelPage = () => {
-    const navigate = useNavigate()
+    // define const
     const {modelID} = useParams()
     const [model, setModel] = useState("")
-    const [fromEdit, setFromEdit] = useState(false)
-    const handleClickGoBack = (e) =>{
-        e.preventDefault()
-        navigate(-1)
-    }
 
-    useEffect(()=>{
+    useEffect(() => {
         getModel()
-    },[])
+    }, [])
 
-     const getModel = async () => {
-          try {
-              const config = {
-                  headers: {
-                      'Content-Type': 'application/json',
-                      'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                  },
-              };
+    // fetch model information
+    const getModel = async () => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            };
 
-              const response = await callAPI.get(`/item_models/${modelID}/`, config)
-              setModel(response.data)
-          } catch (error) {
-              console.log(error);
-          }
-      }
+            const response = await callAPI.get(`/item_models/${modelID}/`, config)
+            setModel(response.data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-5">

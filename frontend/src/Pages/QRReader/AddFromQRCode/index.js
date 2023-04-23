@@ -1,13 +1,12 @@
 import callAPI from "../../../Axios/callAPI";
 import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
 import ShowItemInfo from "./showItemInfo";
 
 const AddFromQRCode = ({fileResult}) => {
+    //define const
+    const [item, setItem] = useState({})
 
-    const[item, setItem] = useState({})
-    const navigate = useNavigate()
-
+    //fetch data of Item
     const obtainItemInfo = async () => {
         try {
             const config = {
@@ -29,7 +28,7 @@ const AddFromQRCode = ({fileResult}) => {
 
     }, [fileResult])
 
-    return(
+    return (
         <div>
             <div>
                 {
