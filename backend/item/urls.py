@@ -1,6 +1,6 @@
 from django.urls import path
 from item.views import ListItemView, CreateItemView, SearchItemView, RetrieveUpdateDestroyItemView, \
-    ListItemChoiceStatusView, ListItemWithStockView
+    ListItemChoiceStatusView, ListItemWithStockView, ListItemForOrderInboundView, ListItemForOrderOutboundView
 
 urlpatterns = [
     # backend/api/items/
@@ -11,4 +11,6 @@ urlpatterns = [
     path('choices/status/', ListItemChoiceStatusView().as_view()),
 
     path('stock/', ListItemWithStockView.as_view()),
+    path('order_inbound/', ListItemForOrderInboundView.as_view()),
+    path('order_outbound/', ListItemForOrderOutboundView.as_view()),
 ]
