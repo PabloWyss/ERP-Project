@@ -9,6 +9,10 @@ const ItemsToAssignTable = ({tableData}) => {
   const navigate = useNavigate()
   //create columns model
   const columns = [
+      {
+      Header: "Model",
+      accessor: "item_model.name",
+    },
     {
       Header: "Name",
       accessor: "name",
@@ -20,18 +24,6 @@ const ItemsToAssignTable = ({tableData}) => {
     {
       Header: "SKU",
       accessor: "sku",
-    },
-    {
-      Header: "EAN",
-      accessor: "ean",
-    },
-    {
-      Header: "UPC",
-      accessor: "upc",
-    },
-    {
-      Header: "Series",
-      accessor: "series",
     },
   ];
 
@@ -48,6 +40,8 @@ const ItemsToAssignTable = ({tableData}) => {
   const data_if_empty = [{
       name: ""
     }]
+
+  console.log(tableData)
 
   return (
         <div>

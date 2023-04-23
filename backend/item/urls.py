@@ -1,6 +1,6 @@
 from django.urls import path
 from item.views import ListItemView, CreateItemView, SearchItemView, RetrieveUpdateDestroyItemView, \
-    ListItemChoiceStatusView
+    ListItemChoiceStatusView, ListItemWithStockView
 
 urlpatterns = [
     # backend/api/items/
@@ -8,5 +8,7 @@ urlpatterns = [
     path('new/', CreateItemView.as_view()),
     path('search/', SearchItemView.as_view()),
     path('<int:item_id>/', RetrieveUpdateDestroyItemView.as_view()),
-    path('choices/status/', ListItemChoiceStatusView().as_view())
+    path('choices/status/', ListItemChoiceStatusView().as_view()),
+
+    path('stock/', ListItemWithStockView.as_view()),
 ]

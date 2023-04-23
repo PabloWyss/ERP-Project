@@ -4,6 +4,25 @@ from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
 from item.models import Item
 from item.serializers import CreateItemSerializer, ItemSerializer, UpdateItemSerializer
+from item.formulas import get_stock_level_total_current, get_stock_level_total_purchase_value_current, \
+    get_stock_level_total_sale_value_current
+
+
+def get_updated_queryset(self):
+    merchant = self.request.user.merchant
+    items = Item.objects.filter(merchant_id=merchant.id).order_by('sku')
+    for item in items:
+        item.stock_level_total_current = get_stock_level_total_current(item)
+        item.stock_level_total_purchase_value_current = get_stock_level_total_purchase_value_current(item)
+        item.stock_level_total_sale_value_current = get_stock_level_total_sale_value_current(item)
+    return items
+
+
+def get_updated_item_information(item):
+    item.stock_level_total_current = get_stock_level_total_current(item)
+    item.stock_level_total_purchase_value_current = get_stock_level_total_purchase_value_current(item)
+    item.stock_level_total_sale_value_current = get_stock_level_total_sale_value_current(item)
+    return item
 
 
 class ListItemView(ListAPIView):
@@ -18,8 +37,7 @@ class ListItemView(ListAPIView):
     serializer_class = ItemSerializer
 
     def get_queryset(self):
-        merchant = self.request.user.merchant
-        return Item.objects.filter(merchant_id=merchant.id).order_by('sku')
+        return get_updated_queryset(self)
 
 
 class CreateItemView(CreateAPIView):
@@ -89,6 +107,13 @@ class RetrieveUpdateDestroyItemView(RetrieveUpdateDestroyAPIView):
         elif self.request.method == 'PATCH':
             return UpdateItemSerializer
 
+    def get_object(self):
+        item = Item.objects.get(pk=self.kwargs.get('item_id'))
+        item.stock_level_total_current = get_stock_level_total_current(item)
+        item.stock_level_total_purchase_value_current = get_stock_level_total_purchase_value_current(item)
+        item.stock_level_total_sale_value_current = get_stock_level_total_sale_value_current(item)
+        return item
+
 
 class ListItemChoiceStatusView(APIView):
     """
@@ -105,3 +130,25 @@ class ListItemChoiceStatusView(APIView):
         for status in status_options:
             choices.append(status[1])
         return Response({"status": choices})
+
+
+class ListItemWithStockView(ListAPIView):
+    """
+    get:
+    List all items with stock
+
+    # subtitle
+    Lists all items with stock available of the merchant in alphabetical order of SKU number
+    """
+
+    serializer_class = ItemSerializer
+
+    def get_queryset(self):
+        merchant = self.request.user.merchant
+        items = Item.objects.filter(merchant_id=merchant.id).order_by('sku')
+        filtered_items = []
+        for item in items:
+            item = get_updated_item_information(item)
+            if get_stock_level_total_current(item) > 0:
+                filtered_items.append(item)
+        return filtered_items
