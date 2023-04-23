@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import callAPI from "../../Axios/callAPI";
 import ItemDetailsInput from "../../Pages/Items/Item/PrimaryDetails/ItemDetailsInput";
+import {useNavigate, useParams} from "react-router-dom";
 
-const WarehouseDetails = () => {
+const WarehouseDetails = ({fromCreate}) => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
-  const [merchant, setMerchant] = useState({});
+  const [warehouse, setWarehouse] = useState({});
   const [editClicked, setEditClicked] = useState(false);
   const [disableInput, setDisableInput] = useState(true);
   const [name, setName] = useState("");
@@ -17,6 +19,7 @@ const WarehouseDetails = () => {
   const [isStandard, setIsStandard] = useState(false);
   const [status, setStatus] = useState("");
   const [creationDate, setCreationDate] = useState("");
+  const { warehouseID } = useParams();
 
   const handleEditButton = async (e) => {
     e.preventDefault();
@@ -29,7 +32,11 @@ const WarehouseDetails = () => {
       setDisableInput(!disableInput);
     }
   };
-
+    const handleSubmitButton = (e) => {
+        e.preventDefault()
+        createWarehouse()
+        // navigate(`/warehouses/${newWarehouseID}/`)
+    }
   const handleNameInput = (e) => {
     setName(e.target.value);
   };
@@ -77,7 +84,7 @@ const WarehouseDetails = () => {
       };
 
       const response = await callAPI.get(`/warehouses/`, config);
-      setMerchant(response.data);
+      setWarehouse(response.data);
       setName(response.data.name);
       setAddress(response.data.address);
       setCountryCode(response.data.country_code);
@@ -119,13 +126,57 @@ const WarehouseDetails = () => {
       console.log(error);
     }
   };
+  const createWarehouse = async () => {
+    if (!localStorage.getItem("token")) {
+      return;
+    }
+    try {
+      const data = {
+        name: name,
+        address: address,
+        country_code: countryCode,
+        contact: contact,
+        phone: phone,
+        email: email,
+        is_standard: isStandard,
+        status: status,
+        creation_date: creationDate,
+      };
+         const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            };
+            const response = await callAPI.post(`/warehouse/new/`, data, config)
+            navigate(`/warehouse/${response.data.id}/`)
+
+        } catch (error) {
+            const keys = Object.keys(error.response.data)
+            const values = Object.values(error.response.data)
+            let message = ""
+            values?.forEach((errorMessage, index)=>{
+                message += `${errorMessage} ${keys[index]} \n`
+            })
+            alert(message)
+        }
+      }
+
+      let date = ""
+
+    if(warehouse.creation_date){
+        date = new Date(warehouse.creation_date).toString().slice(0,15)
+    }
+
+
 
   useEffect(() => {
     getWarehouseByID();
   }, []);
 
+
 return (
-      <div className="flex flex-col w-full justify-between gap-4">
+      <div className="flex flex-col w-full justify-between gap-4" onSubmit={handleSubmitButton}>
         <div className="flex items-center justify-between bg-backgroundGrey px-4">
           <h2 className="text-xl">Warehouse Details</h2>
           <button onClick={handleEditButton}>
@@ -134,6 +185,16 @@ return (
         </div>
           <div className="flex w-full justify-around gap-4">
             <div className="flex w-1/2 flex-col gap-1">
+               {
+               fromCreate ?
+                   "":
+               [<ItemDetailsInput value={warehouse.id}
+               disableInput={true}
+               description={"Warehouse ID:"}/>,
+               <ItemDetailsInput value={date}
+               disableInput={true}
+               description={"Creation Date:"}/>]
+               }
               <ItemDetailsInput
                 disableInput={disableInput}
                 handleInput={handleNameInput}
@@ -183,7 +244,7 @@ return (
                 choices={["Active",'No restock']}/>
 
               <ItemDetailsInput
-                value={creationDate}
+                value={date}
                 type="date"
                 disableInput={true}
                // handleInput={handleCreationDateInput}
@@ -196,8 +257,6 @@ return (
 
 </div>
 );
-
-
 
 }
 
