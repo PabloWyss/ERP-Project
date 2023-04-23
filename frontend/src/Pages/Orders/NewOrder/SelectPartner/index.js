@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import ListTable from "../../../../Components/ListTable/ListTable.js";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import OrderSelectItem from "./OrderSelectItem/index.js";
+import { setCheckedItems } from "../../../../Redux/Slices/tableCheckedItems.js";
 
 function SelectPartner() {
   //fake data for table testing
@@ -98,6 +99,7 @@ function SelectPartner() {
   ];
 
   //show the partner list or the selected partner
+  const dispatch = useDispatch(); //used later to reset redux store
   //retrieve id of selected partner from redux
   const selectedPartner = useSelector(
     (store) => store.checkeditems.checkeditems
@@ -110,8 +112,10 @@ function SelectPartner() {
       selectedPartnerData.current = {
         name: "Manifactura Zapatera",
         address: "Callecita Muy Linda, 5 - Alcorcon",
+        id: 5,
       };
       setIsPartnerSelected(true);
+      dispatch(setCheckedItems([])); //reset redux store for item selection
     }
   };
   useEffect(handleSelectPartner, [selectedPartner]);
@@ -150,7 +154,7 @@ function SelectPartner() {
         {isPartnerSelected ? (
           <div>
             <h2 className=" bg-backgroundGrey text-section px-4 mt-4">Items</h2>
-            < OrderSelectItem/>
+            <OrderSelectItem partnerid={selectedPartnerData.current.id} />
           </div>
         ) : (
           ""
