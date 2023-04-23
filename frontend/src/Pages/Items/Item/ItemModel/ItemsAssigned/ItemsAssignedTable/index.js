@@ -1,7 +1,9 @@
 import ListTable from "../../../../../../Components/ListTable/ListTable";
 import ListTableIfEmpty from "../../../../../../Components/ListTableIfEmpty/ListTable";
+import React from "react";
 
-const ItemsToAssignTable = ({tableData}) => {
+const ItemsAssignedTable = ({tableData}) => {
+
 
     //create columns model
     const columns = [
@@ -24,7 +26,6 @@ const ItemsToAssignTable = ({tableData}) => {
     ];
 
     //table data if empy in order to avoid rendering problems
-
     const data_if_empty = [{
         name: ""
     }]
@@ -32,7 +33,7 @@ const ItemsToAssignTable = ({tableData}) => {
     return (
         <div>
             {
-                (tableData?.length > 0) ?
+                tableData?.length > 0 ?
                     <ListTable data={tableData} columns={columns}></ListTable> :
                     <ListTableIfEmpty data={data_if_empty} columns={columns}></ListTableIfEmpty>
             }
@@ -40,4 +41,4 @@ const ItemsToAssignTable = ({tableData}) => {
     );
 }
 
-export default ItemsToAssignTable
+export default ItemsAssignedTable

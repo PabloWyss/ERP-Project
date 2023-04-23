@@ -4,10 +4,12 @@ import ItemModelImages from "./ItemModelImages";
 import {useNavigate, useParams} from "react-router-dom";
 import ItemDetailsInput from "../PrimaryDetails/ItemDetailsInput";
 import ItemsToAssign from "./ItemsToAssign";
-import {useSelector} from "react-redux";
+import arrow_left_image from "../../../../Assets/Icons/arrow_left_orange.svg";
+import ItemsAssigned from "./ItemsAssigned";
 
-const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelID}) => {
+const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, fromEdit}) => {
 
+    //Def const
     const [itemModel, setItemModel] = useState({})
     const [name, setName] = useState("")
     const [status, setStatus] = useState("")
@@ -20,22 +22,20 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
     const [colorOptions, setColorOptions] = useState([])
     const [conditionOptions, setConditionOptions] = useState([])
     const [categoryOptions, setCategoryOptions] = useState([])
-    const [comesFromCreate, setComesFromCreate] = useState(fromCreate ? fromCreate : false)
-    const [itemList, setItemList] = useState([])
-    const [clickedAssignToModel, setClickedAssignToModel] = useState(false)
+    const [editClicked, setEditClicked] = useState(false)
+    // for the moment no model specs are shown
+    // const [showModelSpecs, setShowModelSpecs] = useState(false)
     const navigate = useNavigate()
-    const {modelId} = useParams()
-    const listItemsChecked = useSelector((store) => store.checkeditems.checkeditems )
 
 
     useEffect(() => {
         getColorOptions()
         getConditionsOptions()
         getCategoryOptions()
-        obtainItemsInfo()
 
-        if(fromItem){
-            if(modelFromItem){
+
+        if (fromItem) {
+            if (modelFromItem) {
                 setItemModel(modelFromItem)
                 setName(modelFromItem.name)
                 setStatus(modelFromItem.status)
@@ -46,8 +46,7 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
                 setImages(modelFromItem.images)
             }
         }
-
-        if(fromList){
+        if (fromList) {
             setItemModel(model)
             setName(model.name)
             setStatus(model.status)
@@ -59,89 +58,67 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
         }
     }, [modelFromItem, model])
 
-    const handleNameInput = (e) =>{
+
+    // handle inputs by user
+    const handleNameInput = (e) => {
         setName(e.target.value)
     }
 
-    const handleColorInput = (e) =>{
+    const handleColorInput = (e) => {
         setColor(e.target.value)
     }
 
-    const handleConditionInput = (e) =>{
+    const handleConditionInput = (e) => {
         setCondition(e.target.value)
     }
 
-    const handleCategoryInput = (e) =>{
+    const handleCategoryInput = (e) => {
         setCategory(e.target.value)
     }
 
-    const handleBrandNameInput = (e) =>{
+    const handleBrandNameInput = (e) => {
         setBrandName(e.target.value)
     }
 
-    const handleStatusInput = (e) =>{
+    const handleStatusInput = (e) => {
         setStatus(e.target.value)
     }
 
     const handlePictureChange = (e) => {
-    const files = e.target.files;
-    const fileList = Array.from(e.target.files);
-    setImages(fileList);
+        const files = e.target.files;
+        const fileList = Array.from(e.target.files);
+        setImages(fileList);
 
-    const newPictures = [];
+        const newPictures = [];
 
-    for (let i = 0; i < files.length; i++) {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(files[i]);
+        for (let i = 0; i < files.length; i++) {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(files[i]);
 
-      fileReader.onload = (event) => {
-        newPictures.push(event.target.result);
-        setPictures([...newPictures]);
-      };
-    }
-  };
-
-    const obtainItemsInfo = async () => {
-        try {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
+            fileReader.onload = (event) => {
+                newPictures.push(event.target.result);
+                setPictures([...newPictures]);
             };
-
-            const response = await callAPI.get(`/items/`, config)
-            let itemsNameList = response.data?.map((item)=>{
-                return item.name
-            })
-            setItemList(itemsNameList)
-        } catch (error) {
-            console.log(error);
         }
-    }
+    };
+
+
+    // Create / update model
     const createModel = async () => {
         if (!localStorage.getItem('token')) {
             return;
         }
         try {
-            console.log(images)
-            console.log(pictures)
-
             const formData = new FormData();
-                formData.append("color", color);
-                formData.append("name", name);
-                formData.append("status", status);
-                formData.append("condition", condition);
-                formData.append("category", category);
-                formData.append("brandName", brandName);
-                images.forEach((image) => {
-                  formData.append("images", image);
-                });
-
-
-            for (let pair of formData.entries()){
-                console.log(pair)
-            }
+            formData.append("color", color);
+            formData.append("name", name);
+            formData.append("status", status);
+            formData.append("condition", condition);
+            formData.append("category", category);
+            formData.append("brand_name", brandName);
+            images.forEach((image) => {
+                formData.append("images", image);
+            });
             const config = {
                 headers: {
                     'Content-Type': 'multipart/formdata',
@@ -152,216 +129,278 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
         } catch (error) {
             console.log(error)
         }
-  };
+    };
+
+    const udpateModel = async () => {
+        if (!localStorage.getItem('token')) {
+            return;
+        }
+        try {
+
+            const formData = new FormData();
+            formData.append("color", color);
+            formData.append("name", name);
+            formData.append("status", status);
+            formData.append("condition", condition);
+            formData.append("category", category);
+            formData.append("brand_name", brandName);
+            images.forEach((image) => {
+                formData.append("images", image);
+            });
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/formdata',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            };
+            const response = await callAPI.patch(`/item_models/${itemModel.id}/`, formData, config)
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+
+    //fetch options information
 
     const getColorOptions = async () => {
-          try {
-              const config = {
-                  headers: {
-                      'Content-Type': 'application/json',
-                      'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                  },
-              };
-
-              const response = await callAPI.get(`/item_models/choices/colors/`, config)
-              const options = response.data.colors.unshift("")
-              setColorOptions(response.data.colors)
-          } catch (error) {
-              console.log(error);
-          }
-      }
-
-      const getConditionsOptions = async () => {
-          try {
-              const config = {
-                  headers: {
-                      'Content-Type': 'application/json',
-                      'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                  },
-              };
-
-              const response = await callAPI.get(`/item_models/choices/conditions/`, config)
-              const options = response.data.conditions.unshift("")
-              setConditionOptions(response.data.conditions)
-          } catch (error) {
-              console.log(error);
-          }
-      }
-
-      const getCategoryOptions = async () => {
-          try {
-              const config = {
-                  headers: {
-                      'Content-Type': 'application/json',
-                      'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                  },
-              };
-
-              const response = await callAPI.get(`/item_models/choices/categories/`, config)
-              const options = response.data.categories.unshift("")
-              setCategoryOptions(response.data.categories)
-          } catch (error) {
-              console.log(error);
-          }
-      }
-
-      const assignItemsToModel = async (itemsList) => {
-          try {
-              const data = {
-                  item_ids: itemsList,
-              }
-              const config = {
+        try {
+            const config = {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    },
-                };
-              const response = await callAPI.patch(`/item_models/assign/${model.id}/`, data, config)
-          } catch (error) {
-              console.log(error);
-          }
-      }
+                },
+            };
+
+            const response = await callAPI.get(`/item_models/choices/colors/`, config)
+            const options = response.data.colors.unshift("")
+            setColorOptions(response.data.colors)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const getConditionsOptions = async () => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            };
+
+            const response = await callAPI.get(`/item_models/choices/conditions/`, config)
+            const options = response.data.conditions.unshift("")
+            setConditionOptions(response.data.conditions)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const getCategoryOptions = async () => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            };
+
+            const response = await callAPI.get(`/item_models/choices/categories/`, config)
+            const options = response.data.categories.unshift("")
+            setCategoryOptions(response.data.categories)
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 
+    //handle buttons
     const handleOnSubmit = (e) => {
         e.preventDefault()
         createModel()
         navigate(-1)
     }
 
-    const handleAssignToModel = (e) => {
+
+    const handleEditButton = (e) => {
         e.preventDefault()
-        assignItemsToModel(listItemsChecked)
-        setClickedAssignToModel(!clickedAssignToModel)
+        if (editClicked) {
+            setEditClicked(!editClicked)
+            udpateModel()
+        } else {
+            setEditClicked(!editClicked)
+        }
     }
 
+    const handleClickGoBack = (e) => {
+        e.preventDefault()
+        navigate(-1)
+    }
+
+    // const handleShowModelSpecs = (e) => {
+    //     e.preventDefault()
+    //     setShowModelSpecs(!showModelSpecs)
+    // }
 
 
     return (
-          <form className="flex flex-col gap-4 " onSubmit={handleOnSubmit}>
-              <div className="flex w-full gap-10 justify-around">
-                  <div className="flex flex-col w-1/2 gap-1">
-                      <ItemDetailsInput description={"Name:"}
-                                      disableInput={!comesFromCreate}
+        <form className="flex flex-col gap-4 " onSubmit={handleOnSubmit}>
+            {
+                fromItem ?
+                    "" :
+                    <div className="flex items-center justify-between bg-backgroundGrey px-4 h-10">
+                        <div>
+                            <img className="cursor-pointer" src={arrow_left_image} alt={"go back"}
+                                 onClick={handleClickGoBack}/>
+                        </div>
+                        <h2 className="text-title">
+                            {name}
+                        </h2>
+                        {
+                            (fromCreate) ?
+                                "" :
+                                <button className="p-0 bg-ifOrange w-20 text-white" onClick={handleEditButton}>
+                                    {
+                                        editClicked ?
+                                            "Save" :
+                                            "Edit"
+                                    }
+                                </button>
+                        }
+                    </div>
+            }
+            <div className="flex w-full gap-10 justify-around">
+                <div className="flex flex-col w-1/2 gap-1">
+                    <ItemDetailsInput description={"Name:"}
+                                      disableInput={!fromCreate & !editClicked}
                                       value={name}
                                       type={"text"}
                                       handleInput={handleNameInput}/>
-                      <ItemDetailsInput description={"Color:"}
-                                      disableInput={!comesFromCreate}
+                    <ItemDetailsInput description={"Color:"}
+                                      disableInput={!fromCreate & !editClicked}
                                       value={color}
                                       type={"text"}
                                       handleInput={handleColorInput}
-                                        choicesEnabeled={true}
+                                      choicesEnabeled={true}
                                       choices={colorOptions}/>
-                      {/*<ItemDetailsInput description={"Archived:"}*/}
-                      {/*                disabled={!fromCreate}*/}
-                      {/*                value={archived}*/}
-                      {/*                type={"text"}*/}
-                      {/*                handleInput={handleArchivedInput}*/}
-                      {/*                  choicesEnabeled={true}*/}
-                      {/*                choices={[true,false]}/>*/}
-                      <ItemDetailsInput value={status}
-                                        disableInput={!fromCreate}
-                                        handleInput={handleStatusInput}
-                                        description={"Item Status: "}
-                                        choicesEnabeled={true}
-                                        choices={["","Active",'No restock']}/>
-                  </div>
-                  <div className="flex flex-col gap-1 w-1/2">
-                      <ItemDetailsInput description={"Condition:"}
-                                      disableInput={!fromCreate}
+                    {/*<ItemDetailsInput description={"Archived:"}*/}
+                    {/*                disabled={!fromCreate}*/}
+                    {/*                value={archived}*/}
+                    {/*                type={"text"}*/}
+                    {/*                handleInput={handleArchivedInput}*/}
+                    {/*                  choicesEnabeled={true}*/}
+                    {/*                choices={[true,false]}/>*/}
+                    <ItemDetailsInput value={status}
+                                      disableInput={!fromCreate & !editClicked}
+                                      handleInput={handleStatusInput}
+                                      description={"Item Status: "}
+                                      choicesEnabeled={true}
+                                      choices={["", "Active", 'No restock']}/>
+                </div>
+                <div className="flex flex-col gap-1 w-1/2">
+                    <ItemDetailsInput description={"Condition:"}
+                                      disableInput={!fromCreate & !editClicked}
                                       value={condition}
                                       type={"text"}
                                       handleInput={handleConditionInput}
-                                        choicesEnabeled={true}
+                                      choicesEnabeled={true}
                                       choices={conditionOptions}/>
-                      <ItemDetailsInput description={"Category:"}
-                                      disableInput={!fromCreate}
+                    <ItemDetailsInput description={"Category:"}
+                                      disableInput={!fromCreate & !editClicked}
                                       value={category}
                                       type={"text"}
                                       handleInput={handleCategoryInput}
-                                        choicesEnabeled={true}
+                                      choicesEnabeled={true}
                                       choices={categoryOptions}/>
-                      <ItemDetailsInput description={"Brand name:"}
-                                      disableInput={!fromCreate}
+                    <ItemDetailsInput description={"Brand name:"}
+                                      disableInput={!fromCreate & !editClicked}
                                       value={brandName}
                                       type={"text"}
                                       handleInput={handleBrandNameInput}/>
-                  </div>
-              </div>
-              <div className="flex flex-col flex-wrap gap-4">
-                  <div className="flex flex-wrap gap-4">
+                </div>
+            </div>
+            <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
+                <p>
+                    Images
+                </p>
+            </div>
+            <div className="flex flex-col flex-wrap gap-4">
+                <div className="flex flex-wrap gap-4">
                     {pictures.map((picture, index) => (
-                      <img className="flex flex-wrap gap-4"
-                        key={index}
-                        src={picture}
-                        alt={`Picture ${index}`}
-                        style={{ maxWidth: "200px" }}
-                      />
+                        <img className="flex flex-wrap gap-4"
+                             key={index}
+                             src={picture}
+                             alt={`Picture ${index}`}
+                             style={{maxWidth: "200px"}}
+                        />
                     ))}
-                  </div>
-                  {
-                      fromCreate ?
-
-                      <div>
-                          <label className="flex flex-wrap" htmlFor="pictures">
-                                </label>
-                                <input
-                                  type="file"
-                                  id="pictures"
-                                  name="pictures"
-                                  accept="image/*"
-                                  multiple
-                                  onChange={handlePictureChange}/>
-                      </div>
-                          :
-                          ""
-                  }
-              </div>
-              <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
-                  <p>
-                      Images
-                  </p>
-              </div>
-              <div className="flex flex-wrap gap-4">
-                  {
-                      images?.map((image)=>{
-                          return <ItemModelImages image={image.image} disabled/>
-                      })
-                  }
-              </div>
-              <div className="flex w-full justify-center">
+                </div>
                 {
-                 (fromCreate) ?
-                     <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"}>
-                        Submit
-                     </button>:
-                     ""
+                    fromCreate ?
+
+                        <div>
+                            <label className="flex flex-wrap" htmlFor="pictures">
+                            </label>
+                            <input
+                                type="file"
+                                id="pictures"
+                                name="pictures"
+                                accept="image/*"
+                                multiple
+                                onChange={handlePictureChange}/>
+                        </div>
+                        :
+                        <div className="flex flex-wrap gap-4">
+                            {
+                                images?.map((image) => {
+                                    return <ItemModelImages image={image.image} disabled/>
+                                })
+                            }
+                        </div>
                 }
             </div>
-              {
-                  fromList ?
-                  <div>
-                      <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
-                          <p>
-                              Items
-                          </p>
-                          <button className="p-0 bg-ifOrange w-60 text-white"  onClick={handleAssignToModel}>
-                              {clickedAssignToModel ?
-                                  "Assigned/Unassigned":
-                                  "Assign/Unassign to Model"
-                              }
-                          </button>
-                      </div>
-
-                      <div className="flex w-full">
-                          <ItemsToAssign/>
-                      </div>
-                  </div>:
-                      ""
-              }
-
-          </form>
+            {/*FETCH IS NOT WORKING*/}
+            {/*<div>*/}
+            {/*    <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">*/}
+            {/*        <p>*/}
+            {/*            Model Specifications*/}
+            {/*        </p>*/}
+            {/*        <button className="p-0" onClick={handleShowModelSpecs}>*/}
+            {/*                    {showModelSpecs ? <FaChevronUp className="h-6 w-6" /> : <FaChevronDown className="h-6 w-6"/>}*/}
+            {/*        </button>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
+            {/*{*/}
+            {/*        showModelSpecs ?*/}
+            {/*            <ItemVariant itemModel={itemModel} itemModelID={itemModel.id} formList={true}/>:*/}
+            {/*            ""*/}
+            {/*}*/}
+            <div className="flex w-full justify-center">
+                {
+                    (fromCreate) ?
+                        <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"}>
+                            Submit
+                        </button> :
+                        ""
+                }
+            </div>
+            {
+                fromList ?
+                    <div className="flex flex-col w-full gap-4">
+                        <div>
+                            <div className="flex w-full">
+                                <ItemsAssigned itemModelID={itemModel.id}/>
+                            </div>
+                        </div>
+                        <div>
+                            <div className="flex w-full">
+                                <ItemsToAssign itemModelID={itemModel.id}/>
+                            </div>
+                        </div>
+                    </div> :
+                    ""
+            }
+        </form>
     )
 }
 
