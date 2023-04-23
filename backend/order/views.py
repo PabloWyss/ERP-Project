@@ -1,6 +1,6 @@
 from django.db.models import Q
 from rest_framework.response import Response
-from rest_framework.generics import ListAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
 from inventory_ledger.models import InventoryLedger
 from item.models import Item
 from order.models import Order
@@ -152,6 +152,26 @@ class SearchOrderView(ListAPIView):
         queryset = Order.objects.filter(merchant__id=merchant.id)
         queryset_filtered = search_by_search_string(self, queryset)
         return queryset_filtered
+
+
+class RetrieveUpdateDestroyOrderView(RetrieveUpdateDestroyAPIView):
+    """
+    get:
+    Retrieve a specific partner
+
+    patch:
+    Update a specific partner
+
+    # subtitle
+    Retrieve and update a specific partner of the merchant
+    """
+
+    serializer_class = OrderSerializer
+    lookup_url_kwarg = 'order_id'
+
+    def get_queryset(self):
+        merchant = self.request.user.merchant
+        return Order.objects.filter(merchant__id=merchant.id)
 
 
 class ListOrderSupplyView(ListAPIView):
