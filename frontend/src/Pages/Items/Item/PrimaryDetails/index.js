@@ -4,6 +4,7 @@ import ItemDetailsInput from "./ItemDetailsInput";
 import {useNavigate, useParams} from "react-router-dom";
 import QRCode from "qrcode";
 import JsBarcode from "jsbarcode";
+import moment from "moment/moment";
 
 const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
 
@@ -204,9 +205,8 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
     let date = ""
 
     if (item.release_date) {
-        date = new Date(item.release_date).toString().slice(0, 15)
+        date =  moment(item.release_date).format("dddd, MMMM Do YYYY")
     }
-
 
     return (
         <form className="flex flex-col w-full justify-between gap-4" onSubmit={handleSubmitButton}>
