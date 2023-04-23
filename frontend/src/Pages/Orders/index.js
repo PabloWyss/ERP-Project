@@ -125,16 +125,18 @@ function Orders() {
     >
       <div
         className="w-full h-full py-6 px-8
-        flex flex-col
+        flex flex-col space-around
       bg-white rounded-ifRadius
         overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey"
       >
-        <h1 className="text-title mb-2">Orders</h1>
-        <ListTable data={data} columns={columns}></ListTable>
+        <div>
+          <h1 className="text-title mb-2">Orders</h1>
+          <ListTable data={data} columns={columns}></ListTable>
+        </div>
         <div>
           <img
-            className="cursor-pointer float-right"
+            className="cursor-pointer absolute bottom-10 right-12"
             src={addButton}
             alt={"create new item"}
             onClick={handleAddButton}

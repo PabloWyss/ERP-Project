@@ -1,11 +1,9 @@
-import React, {useEffect, useState} from "react";
 import ListTable from "../../../Components/ListTable/ListTable";
 import addButton from "../../../Assets/Icons/plus_orange.png"
 import {useNavigate} from "react-router-dom";
 import ListTableIfEmpty from "../../../Components/ListTableIfEmpty/ListTable";
 
-const ItemsTable = ({tableData}) => {
-
+const ModelTable = ({tableData}) => {
   const navigate = useNavigate()
   //create columns model
   const columns = [
@@ -18,40 +16,36 @@ const ItemsTable = ({tableData}) => {
       accessor: "status",
     },
     {
-      Header: "SKU",
-      accessor: "sku",
+      Header: "Condition",
+      accessor: "condition",
     },
     {
-      Header: "EAN",
-      accessor: "ean",
+      Header: "Category",
+      accessor: "category",
     },
     {
-      Header: "UPC",
-      accessor: "upc",
-    },
-    {
-      Header: "Series",
-      accessor: "series",
+      Header: "Color",
+      accessor: "color",
     },
   ];
 
   const handleCreateButton = (e) => {
     e.preventDefault()
-    navigate(`/items/new/`)
+    navigate(`/models/create/`)
   }
 
-  const handleGoToModels = (e) => {
+  const handleGoToItems = (e) => {
     e.preventDefault()
-    navigate(`/models`)
+    navigate(`/items`)
   }
 
-  const data_if_empty = [{
+   const data_if_empty = [{
       name: ""
     }]
 
   return (
     <div
-      className="flex h-full w-full py-6 px-6 justify-center
+      className="flex h-full w-full py-6 px-6 justify-between
     bg-backgroundGrey"
     >
       <div
@@ -62,20 +56,22 @@ const ItemsTable = ({tableData}) => {
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey"
       >
         <div className="flex gap-10">
-          <h1 className="text-title mb-2">Items</h1>
-          <button className="p-0 p-0 bg-ifOrange w-40 h-8 text-white" onClick={handleGoToModels}>Go to Models</button>
+          <h1 className="text-title mb-2">Models</h1>
+          <button className="p-0 p-0 bg-ifOrange w-40 h-8 text-white" onClick={handleGoToItems}>Go to Items</button>
         </div>
         {
           tableData?.length > 0 ?
               <ListTable data={tableData} columns={columns}></ListTable>:
               <ListTableIfEmpty data={data_if_empty} columns={columns}></ListTableIfEmpty>
         }
-        <div>
-          <img className="cursor-pointer" src={addButton} alt={"create new item"} onClick={handleCreateButton}/>
+
+        <div className="flex">
+          <img className="cursor-pointer" src={addButton} alt={"create new model"} onClick={handleCreateButton}/>
         </div>
       </div>
+
     </div>
   );
 }
 
-export default ItemsTable
+export default ModelTable

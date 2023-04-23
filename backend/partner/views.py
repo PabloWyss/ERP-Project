@@ -209,3 +209,77 @@ class UpdateIsCustomerView(UpdateAPIView):
             return Response({'status': 'Partner updated successfully'})
         else:
             return Response({'status': 'Partner does not exist'})
+
+
+class AssignItemToPartnerView(UpdateAPIView):
+    """
+    patch:
+    Assign one or many items to the partner
+
+    # subtitle
+    Assign one or many items to the partner of the merchant
+    """
+
+    serializer_class = PartnerSerializer
+    lookup_url_kwarg = 'item_partner_id'
+
+    def update(self, request, *args, **kwargs):
+        partner = Partner.objects.get(pk=self.kwargs.get('item_partner_id'))
+        item_ids = self.request.data['item_ids']
+        for item_id in item_ids:
+            is_item_assigned = partner.items.filter(id=item_id).exists()
+            if is_item_assigned:
+                partner.items.remove(item_id)
+            else:
+                partner.items.add(item_id)
+        return Response({'status': 'Partner updated successfully'})
+
+
+class ListPartnerAssignedToItemView(ListAPIView):
+    """
+    get:
+    List all partners assigned to the specific item
+
+    # subtitle
+    List all partners assigned to the specific item of the merchant in alphabetical order of name
+    """
+
+    serializer_class = PartnerSerializer
+
+    def get_queryset(self):
+        item_id = self.kwargs.get('item_id')
+        return Partner.objects.filter(items__id=item_id).order_by('name')
+
+
+class ListSupplierAssignedToItemView(ListAPIView):
+    """
+    get:
+    List all suppliers assigned to the specific item
+
+    # subtitle
+    List all suppliers assigned to the specific item of the merchant in alphabetical order of name
+    """
+
+    serializer_class = PartnerSerializer
+
+    def get_queryset(self):
+        item_id = self.kwargs.get('item_id')
+        return Partner.objects.filter(Q(items__id=item_id) & Q(merchantpartnerrelationship__is_supplier=True))\
+            .order_by('name')
+
+
+class ListCustomerAssignedToItemView(ListAPIView):
+    """
+    get:
+    List all customers assigned to the specific item
+
+    # subtitle
+    List all customers assigned to the specific item of the merchant in alphabetical order of name
+    """
+
+    serializer_class = PartnerSerializer
+
+    def get_queryset(self):
+        item_id = self.kwargs.get('item_id')
+        return Partner.objects.filter(Q(items__id=item_id) & Q(merchantpartnerrelationship__is_customer=True))\
+            .order_by('name')
