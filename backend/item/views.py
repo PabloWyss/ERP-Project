@@ -8,21 +8,19 @@ from item.formulas import get_stock_level_total_current, get_stock_level_total_p
     get_stock_level_total_sale_value_current
 
 
-def get_updated_queryset(self):
-    merchant = self.request.user.merchant
-    items = Item.objects.filter(merchant_id=merchant.id).order_by('sku')
-    for item in items:
-        item.stock_level_total_current = get_stock_level_total_current(item)
-        item.stock_level_total_purchase_value_current = get_stock_level_total_purchase_value_current(item)
-        item.stock_level_total_sale_value_current = get_stock_level_total_sale_value_current(item)
-    return items
-
-
-def get_updated_item_information(item):
+def get_updated_data(item):
     item.stock_level_total_current = get_stock_level_total_current(item)
     item.stock_level_total_purchase_value_current = get_stock_level_total_purchase_value_current(item)
     item.stock_level_total_sale_value_current = get_stock_level_total_sale_value_current(item)
     return item
+
+
+def get_updated_queryset(self):
+    merchant = self.request.user.merchant
+    items = Item.objects.filter(merchant_id=merchant.id).order_by('sku')
+    for item in items:
+        get_updated_data(item)
+    return items
 
 
 class ListItemView(ListAPIView):
@@ -109,9 +107,7 @@ class RetrieveUpdateDestroyItemView(RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         item = Item.objects.get(pk=self.kwargs.get('item_id'))
-        item.stock_level_total_current = get_stock_level_total_current(item)
-        item.stock_level_total_purchase_value_current = get_stock_level_total_purchase_value_current(item)
-        item.stock_level_total_sale_value_current = get_stock_level_total_sale_value_current(item)
+        get_updated_data(item)
         return item
 
 
@@ -148,7 +144,7 @@ class ListItemWithStockView(ListAPIView):
         items = Item.objects.filter(merchant_id=merchant.id).order_by('sku')
         filtered_items = []
         for item in items:
-            item = get_updated_item_information(item)
+            item = get_updated_data(item)
             if get_stock_level_total_current(item) > 0:
                 filtered_items.append(item)
         return filtered_items

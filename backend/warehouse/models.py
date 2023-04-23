@@ -26,12 +26,15 @@ class Warehouse(models.Model):
     status = models.CharField(choices=STATUS_OPTIONS, default="Active")
     is_standard = models.BooleanField(blank=True, null=True)
 
+    # linkages:
     # inventory_ledgers (linked in inventory_ledger.models.py)
 
+    # processed values:
     stock_level_total_current = models.IntegerField(default=0)
     stock_level_total_purchase_value_current = models.FloatField(default=0)
     stock_level_total_sale_value_current = models.FloatField(default=0)
 
+    # processed errors:
     error_item_not_assigned_item_specifications = models.BooleanField(default=True)
     error_item_not_assigned_purchase_price_net_eur = models.BooleanField(default=True)
     error_item_not_assigned_sale_price_net_eur = models.BooleanField(default=True)

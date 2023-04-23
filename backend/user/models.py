@@ -8,10 +8,10 @@ def user_directory_path(instance, filename):
 
 class User(AbstractUser):
 
-    # Field used for authentication
+    # field used for authentication
     USERNAME_FIELD = 'email'
 
-    # Additional fields required when using createsuperuser (USERNAME_FIELD and passwords are always required)
+    # additional fields required when using createsuperuser (USERNAME_FIELD and passwords always required)
     REQUIRED_FIELDS = ['username']
 
     # id
@@ -21,6 +21,8 @@ class User(AbstractUser):
     phone = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(unique=True)
     profile_picture = models.ImageField(upload_to=user_directory_path, null=True, blank=True)
+
+    # linkages:
     # registration (linked in registration.models.py)
     # merchant (linked in merchant.models.py)
 
