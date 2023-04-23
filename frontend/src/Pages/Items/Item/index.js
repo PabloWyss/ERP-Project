@@ -8,6 +8,7 @@ import ItemPartners from "./ItemPartners";
 import callAPI from "../../../Axios/callAPI";
 import {FaChevronDown, FaChevronUp} from "react-icons/fa";
 import {useNavigate, useParams} from "react-router-dom";
+import ItemModelSpecs from "./ItemModelSpecs";
 
 function Item() {
     const [showVariantDetails, setShowVariantDetails] = useState(false)
@@ -33,9 +34,14 @@ function Item() {
         navigate(`/items/itemVariant/create/${itemID}`)
     }
 
-    const handleClickCreateModel = (e) => {
+    const handleClickListOfModel = (e) => {
         e.preventDefault()
-        navigate(`/models/create/`)
+        navigate(`/models`)
+    }
+
+    const handleClickGoToModel = (e) => {
+        e.preventDefault()
+        navigate(`/models/${item.item_model.id}`)
     }
 
     const handleClickUpdateVariant = () => {
@@ -143,7 +149,7 @@ function Item() {
                   </div>
                   {
                       showVariantDetails ?
-                          <ItemVariant itemVariant={itemVariant} itemID={itemID} fromUpdate={fromUpdate}/>:
+                          <ItemModelSpecs itemVariant={itemVariant} itemID={itemID} fromUpdate={fromUpdate}/>:
                           ""
                   }
                   <div className="flex flex-col gap-4">
@@ -154,8 +160,8 @@ function Item() {
                           <div className="items-center flex gap-4 justify-items-center">
                               {
                                   showModelDetails ?
-                                      [<button className="p-0" onClick={handleClickCreateModel} key="3">Create Model</button>,
-                                      <button className="p-0" onClick={handleClickUpdateVariant} key="4">Update Model</button>]:
+                                      [<button className="p-0 p-0 bg-ifOrange w-40 text-white" onClick={handleClickListOfModel} key="3">Go to List of Models</button>,
+                                      <button className="p-0 p-0 bg-ifOrange w-40 text-white" onClick={handleClickGoToModel} key="4">Go to Model</button>]:
                                       ""
                               }
                               <button className="p-0" onClick={handleShowModelDetails}>

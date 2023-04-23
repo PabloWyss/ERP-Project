@@ -41,8 +41,6 @@ const ItemsToAssignTable = ({tableData}) => {
       name: ""
     }]
 
-  console.log(tableData)
-
   return (
         <div>
         {

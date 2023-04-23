@@ -5,6 +5,9 @@ import ListTableIfEmpty from "../../../Components/ListTableIfEmpty/ListTable";
 
 const ModelTable = ({tableData}) => {
   const navigate = useNavigate()
+
+
+
   //create columns model
   const columns = [
     {

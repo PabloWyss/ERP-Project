@@ -5,8 +5,11 @@ import {useNavigate, useParams} from "react-router-dom";
 import ItemDetailsInput from "../PrimaryDetails/ItemDetailsInput";
 import ItemsToAssign from "./ItemsToAssign";
 import {useSelector} from "react-redux";
+import arrow_left_image from "../../../../Assets/Icons/arrow_left_orange.svg";
+import {FaChevronDown, FaChevronUp} from "react-icons/fa";
+import ItemVariant from "../ItemVariant";
 
-const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelID}) => {
+const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, fromEdit}) => {
 
     //Def const
     const [itemModel, setItemModel] = useState({})
@@ -21,19 +24,19 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
     const [colorOptions, setColorOptions] = useState([])
     const [conditionOptions, setConditionOptions] = useState([])
     const [categoryOptions, setCategoryOptions] = useState([])
-    const [comesFromCreate, setComesFromCreate] = useState(fromCreate ? fromCreate : false)
-    const [itemList, setItemList] = useState([])
+    const [editClicked, setEditClicked] = useState(false)
     const [clickedAssignToModel, setClickedAssignToModel] = useState(false)
+    const [showModelSpecs, setShowModelSpecs] = useState(false)
     const navigate = useNavigate()
-    const {modelId} = useParams()
+    const modelId = useParams()
     const listItemsChecked = useSelector((store) => store.checkeditems.checkeditems )
+
 
 
     useEffect(() => {
         getColorOptions()
         getConditionsOptions()
         getCategoryOptions()
-        obtainItemsInfo()
 
         if(fromItem){
             if(modelFromItem){
@@ -59,6 +62,7 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
             setImages(model.images)
         }
     }, [modelFromItem, model])
+
 
     // handle inputs by user
     const handleNameInput = (e) =>{
@@ -103,48 +107,26 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
     }
   };
 
-    //fetch information
-    const obtainItemsInfo = async () => {
-        try {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
-            };
 
-            const response = await callAPI.get(`/items/`, config)
-            let itemsNameList = response.data?.map((item)=>{
-                return item.name
-            })
-            setItemList(itemsNameList)
-        } catch (error) {
-            console.log(error);
-        }
-    }
+
+
+
+    // Create / update model
     const createModel = async () => {
         if (!localStorage.getItem('token')) {
             return;
         }
         try {
-            console.log(images)
-            console.log(pictures)
-
             const formData = new FormData();
-                formData.append("color", color);
-                formData.append("name", name);
-                formData.append("status", status);
-                formData.append("condition", condition);
-                formData.append("category", category);
-                formData.append("brandName", brandName);
-                images.forEach((image) => {
-                  formData.append("images", image);
-                });
-
-
-            for (let pair of formData.entries()){
-                console.log(pair)
-            }
+            formData.append("color", color);
+            formData.append("name", name);
+            formData.append("status", status);
+            formData.append("condition", condition);
+            formData.append("category", category);
+            formData.append("brand_name", brandName);
+            images.forEach((image) => {
+                formData.append("images", image);
+            });
             const config = {
                 headers: {
                     'Content-Type': 'multipart/formdata',
@@ -155,7 +137,40 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
         } catch (error) {
             console.log(error)
         }
-  };
+    };
+
+    const udpateModel = async () => {
+        if (!localStorage.getItem('token')) {
+            return;
+        }
+        try {
+
+            const formData = new FormData();
+            formData.append("color", color);
+            formData.append("name", name);
+            formData.append("status", status);
+            formData.append("condition", condition);
+            formData.append("category", category);
+            formData.append("brand_name", brandName);
+            images.forEach((image) => {
+                formData.append("images", image);
+            });
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/formdata',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            };
+            const response = await callAPI.patch(`/item_models/${itemModel.id}/`, formData, config)
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+
+
+
+    //fetch information
 
     const getColorOptions = async () => {
           try {
@@ -238,19 +253,62 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
         assignItemsToModel(listItemsChecked)
     }
 
+    const handleEditButton = (e) => {
+        e.preventDefault()
+        if(editClicked) {
+            setEditClicked(!editClicked)
+            udpateModel()
+        }else {
+            setEditClicked(!editClicked)
+        }
+    }
+
+    const handleClickGoBack = (e) =>{
+        e.preventDefault()
+        navigate(-1)
+    }
+
+    const handleShowModelSpecs = (e) =>{
+        e.preventDefault()
+        setShowModelSpecs(!showModelSpecs)
+    }
+
 
 
     return (
           <form className="flex flex-col gap-4 " onSubmit={handleOnSubmit}>
+              {
+                  fromItem ?
+                      "":
+                      <div className="flex items-center justify-between bg-backgroundGrey px-4 h-10">
+                              <div >
+                                <img className="cursor-pointer" src={arrow_left_image} alt={"go back"} onClick={handleClickGoBack}/>
+                              </div>
+                                <h2 className="text-title">
+                                    {name}
+                                </h2>
+                                {
+                                    (fromCreate) ?
+                                        "":
+                                        <button className="p-0 bg-ifOrange w-20 text-white" onClick={handleEditButton}>
+                                            {
+                                                editClicked ?
+                                                    "Save" :
+                                                    "Edit"
+                                            }
+                                        </button>
+                                }
+                          </div>
+              }
               <div className="flex w-full gap-10 justify-around">
                   <div className="flex flex-col w-1/2 gap-1">
                       <ItemDetailsInput description={"Name:"}
-                                      disableInput={!comesFromCreate}
+                                      disableInput={!fromCreate & !editClicked}
                                       value={name}
                                       type={"text"}
                                       handleInput={handleNameInput}/>
                       <ItemDetailsInput description={"Color:"}
-                                      disableInput={!comesFromCreate}
+                                      disableInput={!fromCreate & !editClicked}
                                       value={color}
                                       type={"text"}
                                       handleInput={handleColorInput}
@@ -264,7 +322,7 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
                       {/*                  choicesEnabeled={true}*/}
                       {/*                choices={[true,false]}/>*/}
                       <ItemDetailsInput value={status}
-                                        disableInput={!fromCreate}
+                                        disableInput={!fromCreate & !editClicked}
                                         handleInput={handleStatusInput}
                                         description={"Item Status: "}
                                         choicesEnabeled={true}
@@ -272,21 +330,21 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
                   </div>
                   <div className="flex flex-col gap-1 w-1/2">
                       <ItemDetailsInput description={"Condition:"}
-                                      disableInput={!fromCreate}
+                                      disableInput={!fromCreate & !editClicked}
                                       value={condition}
                                       type={"text"}
                                       handleInput={handleConditionInput}
                                         choicesEnabeled={true}
                                       choices={conditionOptions}/>
                       <ItemDetailsInput description={"Category:"}
-                                      disableInput={!fromCreate}
+                                      disableInput={!fromCreate & !editClicked}
                                       value={category}
                                       type={"text"}
                                       handleInput={handleCategoryInput}
                                         choicesEnabeled={true}
                                       choices={categoryOptions}/>
                       <ItemDetailsInput description={"Brand name:"}
-                                      disableInput={!fromCreate}
+                                      disableInput={!fromCreate & !editClicked}
                                       value={brandName}
                                       type={"text"}
                                       handleInput={handleBrandNameInput}/>
@@ -332,6 +390,22 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, modelI
                           </div>
                   }
               </div>
+              {/*FETCH IS NOT WORKING*/}
+              {/*<div>*/}
+              {/*    <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">*/}
+              {/*        <p>*/}
+              {/*            Model Specifications*/}
+              {/*        </p>*/}
+              {/*        <button className="p-0" onClick={handleShowModelSpecs}>*/}
+              {/*                    {showModelSpecs ? <FaChevronUp className="h-6 w-6" /> : <FaChevronDown className="h-6 w-6"/>}*/}
+              {/*        </button>*/}
+              {/*    </div>*/}
+              {/*</div>*/}
+              {/*{*/}
+              {/*        showModelSpecs ?*/}
+              {/*            <ItemVariant itemModel={itemModel} itemModelID={itemModel.id} formList={true}/>:*/}
+              {/*            ""*/}
+              {/*}*/}
               <div className="flex w-full justify-center">
                 {
                  (fromCreate) ?

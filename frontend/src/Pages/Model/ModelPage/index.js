@@ -8,6 +8,7 @@ const ModelPage = () => {
     const navigate = useNavigate()
     const {modelID} = useParams()
     const [model, setModel] = useState("")
+    const [fromEdit, setFromEdit] = useState(false)
     const handleClickGoBack = (e) =>{
         e.preventDefault()
         navigate(-1)
@@ -35,19 +36,9 @@ const ModelPage = () => {
 
     return (
         <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-5">
-            <div className="flex flex-col h-full w-full rounded-ifRadius p-5 bg-white  overflow-y-scroll">
-                <div className="flex  h-10 rounded-ifRadius bg-white gap-4 justify-center items-center">
-                    <div className="flex w-full content-start items-center gap-4 bg-backgroundGrey px-4">
-                        <div >
-                          <img className="cursor-pointer" src={arrow_left_image} alt={"go back"} onClick={handleClickGoBack}/>
-                        </div>
-                        <h1 className="text-title">
-                            {`${model.name}`}
-                        </h1>
-                    </div>
-                </div>
+            <div className="flex flex-col h-full w-full rounded-ifRadius px-5 bg-white  overflow-y-scroll">
                 <div className="flex h-screen w-full justify-center">
-                    <div className="flex flex-col h-full w-11/12 pt-10 pb-10 gap-4">
+                    <div className="flex flex-col h-full w-full pt-10 pb-10 gap-4">
                         <ItemModel fromCreate={false} fromList={true} model={model}/>
                     </div>
                 </div>
