@@ -56,6 +56,7 @@ def get_stock_level_total_sale_value_current(warehouse):
 def get_error_item_not_assigned_item_specifications(warehouse):
     try:
         inventories = warehouse.warehouseiteminventory_set.filter(warehouse=warehouse)
+        error_item_not_assigned_item_specifications = True
         for inventory in inventories:
             try:
                 item_specifications = inventory.item.item_specifications.latest('valid_from')
@@ -71,16 +72,18 @@ def get_error_item_not_assigned_item_specifications(warehouse):
 def get_error_item_not_assigned_purchase_price_net_eur(warehouse):
     try:
         inventories = warehouse.warehouseiteminventory_set.filter(warehouse=warehouse)
+        error_assignment_purchase_price_net_eur = True
         for inventory in inventories:
             try:
                 purchase_price_net_eur = inventory.item.item_specifications.latest('valid_from') \
                     .purchase_price_net_eur
                 if purchase_price_net_eur is None:
                     error_assignment_purchase_price_net_eur = True
+                    break
                 else:
                     error_assignment_purchase_price_net_eur = False
             except ItemSpecification.DoesNotExist:
-                pass
+                error_assignment_purchase_price_net_eur = True
         return error_assignment_purchase_price_net_eur
     except WarehouseItemInventory.DoesNotExist:
         pass
@@ -89,16 +92,18 @@ def get_error_item_not_assigned_purchase_price_net_eur(warehouse):
 def get_error_item_not_assigned_sale_price_net_eur(warehouse):
     try:
         inventories = warehouse.warehouseiteminventory_set.filter(warehouse=warehouse)
+        error_assignment_sale_price_net = True
         for inventory in inventories:
             try:
                 sale_price_net_eur = inventory.item.item_specifications.latest('valid_from') \
                     .sale_price_net_eur
                 if sale_price_net_eur is None:
                     error_assignment_sale_price_net = True
+                    break
                 else:
                     error_assignment_sale_price_net = False
             except ItemSpecification.DoesNotExist:
-                pass
+                error_assignment_sale_price_net = True
         return error_assignment_sale_price_net
     except WarehouseItemInventory.DoesNotExist:
         pass
