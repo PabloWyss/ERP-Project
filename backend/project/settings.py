@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     # third party apps
     'rest_framework',
     'drf_yasg',
-    "corsheaders",
+    'corsheaders',
+    # 'import_export',
+
 
     # Own apps
     'inventory_ledger',

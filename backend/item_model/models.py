@@ -42,6 +42,8 @@ class ItemModel(models.Model):
     color = models.CharField(choices=COLORS, max_length=50, blank=True, null=True)
     brand_name = models.CharField(max_length=50, blank=True, null=True)
     has_specifications = models.BooleanField(default=False)
+
+    # linkages:
     # images (linked in item_image.models.py)
     # item_model_specifications (linked in item_model_specification.models.py)
 
