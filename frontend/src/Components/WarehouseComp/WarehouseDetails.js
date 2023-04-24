@@ -4,7 +4,7 @@ import callAPI from "../../Axios/callAPI";
 import ItemDetailsInput from "../../Pages/Items/Item/PrimaryDetails/ItemDetailsInput";
 import {useNavigate, useParams} from "react-router-dom";
 
-const WarehouseDetails = ({fromCreate, merchantID}) => {
+const WarehouseDetails = ({fromCreate}) => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const [warehouse, setWarehouse] = useState({});
@@ -83,7 +83,7 @@ const WarehouseDetails = ({fromCreate, merchantID}) => {
         },
       };
 
-      const response = await callAPI.get(`/warehouses/`, config);
+      const response = await callAPI.get(`/warehouses/${warehouseID}/`, config);
       setWarehouse(response.data);
       setName(response.data.name);
       setAddress(response.data.address);
@@ -121,7 +121,7 @@ const WarehouseDetails = ({fromCreate, merchantID}) => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       };
-      await callAPI.patch(`/warehouses/${merchantID}/`, data, config);
+      await callAPI.patch(`/warehouses/${warehouseID}/`, data, config);
     } catch (error) {
       console.log(error);
     }
@@ -188,9 +188,9 @@ return (
                {
                fromCreate ?
                    "":
-               [<ItemDetailsInput value={warehouse.id}
+               [/*<ItemDetailsInput value={warehouse.id}
                disableInput={true}
-               description={"Warehouse ID:"}/>,
+               description={"Warehouse ID:"}/>,*/
                <ItemDetailsInput value={date}
                disableInput={true}
                description={"Creation Date:"}/>]
@@ -243,10 +243,10 @@ return (
                 choicesEnabeled={true}
                 choices={["Active",'No restock']}/>
               <ItemDetailsInput
-                value={date}
-                type="date"
-                disableInput={true}
-                description={"Creation Date: "}
+                value={contact}
+                type="text"
+                handleInput={handleContactInput}
+                description={"Contact: "}
               />
 
 

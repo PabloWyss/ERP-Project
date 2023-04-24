@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import callAPI from "../../Axios/callAPI";
 import ItemsTable from "../Items/ItemsTable";
+import WarehouseTable from "./WarehouseTable";
 
 const Warehouse = () => {
   const [warehouseList, setwarehouseList] = useState([])
@@ -29,7 +30,7 @@ const Warehouse = () => {
     }]
   return (
     <div className="flex w-full">
-        <ItemsTable tableData={warehouseList}/>
+        <WarehouseTable tableData={warehouseList}/>
     </div>
   );
 }
