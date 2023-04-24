@@ -1,7 +1,6 @@
 import React from "react";
 import WarehouseDetails from "../../../Components/WarehouseComp/WarehouseDetails";
 
-
 function WarehouseDetailsView() {
 
 

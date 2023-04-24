@@ -26,7 +26,7 @@ import NewOrder from "./Pages/Orders/NewOrder";
 import QRReader from "./Pages/QRReader";
 import Variants from "./Pages/Variants";
 import WarehouseDetailsView from "./Pages/Warehouses/WarehouseDetailsView/indesx";
-import CreateWarehouse from "./Pages/Warehouses/CreateWarehouse";
+import CreateWarehouseView from "./Pages/Warehouses/CreateWarehouse";
 
 function App() {
   const currentUser = useSelector((store) => store.currentuser.currentuser);
@@ -81,7 +81,7 @@ function App() {
           <Route path="/orders/new" element={<NewOrder />} />
 
           <Route path="/warehouses" element={<Warehouses />} />
-          <Route path="/warehouses/new" element={<CreateWarehouse />} />
+          <Route path="/warehouses/new" element={<CreateWarehouseView />} />
            <Route path="/warehouses/:warehouseID" element={<WarehouseDetailsView />} />
 
           <Route path="/reports" element={<Reports />} />

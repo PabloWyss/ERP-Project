@@ -32,11 +32,7 @@ const WarehouseDetails = ({fromCreate}) => {
       setDisableInput(!disableInput);
     }
   };
-    const handleSubmitButton = (e) => {
-        e.preventDefault()
-        createWarehouse()
-        // navigate(`/warehouses/${newWarehouseID}/`)
-    }
+
   const handleNameInput = (e) => {
     setName(e.target.value);
   };
@@ -126,57 +122,19 @@ const WarehouseDetails = ({fromCreate}) => {
       console.log(error);
     }
   };
-  const createWarehouse = async () => {
-    if (!localStorage.getItem("token")) {
-      return;
-    }
-    try {
-      const data = {
-        name: name,
-        address: address,
-        country_code: countryCode,
-        contact: contact,
-        phone: phone,
-        email: email,
-        is_standard: isStandard,
-        status: status,
-        creation_date: creationDate,
-      };
-         const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
-            };
-            const response = await callAPI.post(`/warehouses/new/`, data, config)
-            navigate(`/warehouses/${response.data.id}/`)
 
-        } catch (error) {
-            const keys = Object.keys(error.response.data)
-            const values = Object.values(error.response.data)
-            let message = ""
-            values?.forEach((errorMessage, index)=>{
-                message += `${errorMessage} ${keys[index]} \n`
-            })
-            alert(message)
-        }
-      }
+let date = '';
 
-      let date = ""
-
-    if(warehouse.creation_date){
-        date = new Date(warehouse.creation_date).toString().slice(0,15)
-    }
-
-
+if (warehouse.creation_date) {
+  date = new Date(warehouse.creation_date).toString().slice(0, 15);
+}
 
   useEffect(() => {
     getWarehouseByID();
   }, []);
 
-
 return (
-      <div className="flex flex-col w-full justify-between gap-4" onSubmit={handleSubmitButton}>
+      <div className="flex flex-col w-full justify-between gap-4">
         <div className="flex items-center justify-between bg-backgroundGrey px-4">
           <h2 className="text-xl">Warehouse Details</h2>
           <button onClick={handleEditButton}>
@@ -185,16 +143,10 @@ return (
         </div>
           <div className="flex w-full justify-around gap-4">
             <div className="flex w-1/2 flex-col gap-1">
-               {
-               fromCreate ?
-                   "":
-               [/*<ItemDetailsInput value={warehouse.id}
-               disableInput={true}
-               description={"Warehouse ID:"}/>,*/
+
                <ItemDetailsInput value={date}
                disableInput={true}
                description={"Creation Date:"}/>]
-               }
               <ItemDetailsInput
                 disableInput={disableInput}
                 handleInput={handleNameInput}
