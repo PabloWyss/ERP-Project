@@ -81,7 +81,7 @@ const ItemsTable = ({tableData}) => {
 
     return (
         <div
-            className="flex h-full w-full py-6 px-6 justify-center
+            className="flex h-full w-full py-6 px-8 justify-center
     bg-backgroundGrey"
         >
             <div

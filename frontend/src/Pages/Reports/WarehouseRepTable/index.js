@@ -5,7 +5,7 @@ import ListTableIfEmpty from "../../../Components/ListTableIfEmpty/ListTable";
 import moment from "moment/moment";
 import React from "react";
 
-const ModelTable = ({tableData}) => {
+const WarehouseRepTable = ({tableData}) => {
     const navigate = useNavigate()
 
 
@@ -102,4 +102,4 @@ const ModelTable = ({tableData}) => {
     );
 }
 
-export default ModelTable
+export default WarehouseRepTable
