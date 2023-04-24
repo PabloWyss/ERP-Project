@@ -180,7 +180,7 @@ function Item() {
                     </div>
                     {showInventoryLedgers ?
                         <ItemInventoryLedgers itemID={itemID}/> : ""}
-                    {/*this sections was commented out since there are no paartners nor item Tags at the moment*/}
+                    {/*this sections was commented out since there are no partners nor item Tags at the moment*/}
                     {/*    <div className="flex flex-col gap-4">*/}
                     {/*        <div className="flex justify-between items-center px-4 bg-backgroundGrey text-xl">*/}
                     {/*            <div>*/}

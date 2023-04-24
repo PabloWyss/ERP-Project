@@ -4,6 +4,7 @@ import React, {useState} from "react";
 import ItemDetailsInput from "../../Items/Item/PrimaryDetails/ItemDetailsInput";
 import callAPI from "../../../Axios/callAPI";
 import {useSelector} from "react-redux";
+import moment from "moment/moment";
 
 const WarehouseTableQR = ({tableData, itemID}) => {
     // def const
@@ -20,6 +21,24 @@ const WarehouseTableQR = ({tableData, itemID}) => {
         e.preventDefault()
         assignItemsToWarehouse()
     }
+
+    // change format of numbers
+    function commifyCurrency(n = 0) {
+        let parts = n.toString().split(".");
+        const numberPart = parts[0];
+        const decimalPart = parts[1];
+        const thousands = /\B(?=(\d{3})+(?!\d))/g;
+        return numberPart.replace(thousands, "’") + (decimalPart ? "." + decimalPart : " " + "EUR");
+    }
+
+    function commify(n=0) {
+        let parts = n.toString().split(".");
+        const numberPart = parts[0];
+        const decimalPart = parts[1];
+        const thousands = /\B(?=(\d{3})+(?!\d))/g;
+        return numberPart.replace(thousands, ",") + (decimalPart ? "." + decimalPart : "");
+    }
+
     // fetch - assign item to warehouse
     const assignItemsToWarehouse = async () => {
         try {
@@ -54,10 +73,26 @@ const WarehouseTableQR = ({tableData, itemID}) => {
         {
             Header: "Total Stock",
             accessor: "stock_level_total_current",
+            Cell : (props)=> {
+                const number = commify(props.value)
+                return <span className="flex justify-center">{number}</span>
+            }
         },
         {
-            Header: "Total Value",
+            Header: "Total Purchase Value",
             accessor: "stock_level_total_purchase_value_current",
+            Cell : (props)=> {
+                const number = commifyCurrency(props.value)
+                return <span className="flex justify-center">{number}</span>
+            }
+        },
+        {
+            Header: "Total Sale Value",
+            accessor: "stock_level_total_sale_value_current",
+            Cell : (props)=> {
+                const number = commifyCurrency(props.value)
+                return <span className="flex justify-center">{number}</span>
+            }
         },
     ];
 
