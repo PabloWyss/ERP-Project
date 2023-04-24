@@ -4,11 +4,12 @@ import { useLocation } from "react-router-dom";
 import OrderPrimaryDetails from "./OrderPrimaryDetails";
 
 function OrderDetails() {
+  //fetch order data
   //read id of the order to fetch from the URL
   const location = useLocation();
   const orderId = location.pathname.slice(8); //remove "/order/" from the path
-  //TODO fetch order
 
+  //TODO fetch order -> endpoint missing?
   //fake order for testing
   const order = {
     id: orderId,
@@ -23,6 +24,9 @@ function OrderDetails() {
     quantity: 12,
   };
 
+  //TODO fetch data of the item(s) in the order? or is it already in the order data?
+
+  
   //fake data for table testing
   const items = [
     {

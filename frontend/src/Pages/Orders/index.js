@@ -19,6 +19,8 @@ function Orders() {
 
       const response = await callAPI.get(`/orders/`, config);
       setOrderList(response.data);
+      //TODO remove print
+console.log(orderList[0].items[0])
     } catch (error) {
       console.log(error);
     }
@@ -26,6 +28,9 @@ function Orders() {
   useEffect(() => {
     obtainItemsInfo();
   }, []);
+
+
+
 
   //create columns model
   //convert is_merchant_supplier to order type
@@ -36,6 +41,11 @@ function Orders() {
   //convert is_refund to yes or no
   const BoolToIsRefund = ({ value }) => {
     return value ? "Yes" : "No";
+  };
+
+  //slice datetime value to only display date
+  const sliceDateTime = ({ value }) => {
+    return value.slice(0, 10);
   };
 
   const columns = [
@@ -56,10 +66,12 @@ function Orders() {
     {
       Header: "Date",
       accessor: "order_date",
+      Cell: sliceDateTime,
     },
     {
       Header: "Shipping",
       accessor: "shipment_date",
+      Cell: sliceDateTime,
     },
     {
       Header: "Partner",
