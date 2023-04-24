@@ -221,10 +221,10 @@ class AssignItemToPartnerView(UpdateAPIView):
     """
 
     serializer_class = PartnerSerializer
-    lookup_url_kwarg = 'item_partner_id'
+    lookup_url_kwarg = 'partner_id'
 
     def update(self, request, *args, **kwargs):
-        partner = Partner.objects.get(pk=self.kwargs.get('item_partner_id'))
+        partner = Partner.objects.get(pk=self.kwargs.get('partner_id'))
         item_ids = self.request.data['item_ids']
         for item_id in item_ids:
             is_item_assigned = partner.items.filter(id=item_id).exists()
