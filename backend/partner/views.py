@@ -100,6 +100,20 @@ class RetrieveUpdateDestroyPartnerView(RetrieveUpdateDestroyAPIView):
         merchant = self.request.user.merchant
         return Partner.objects.filter(merchants__id=merchant.id)
 
+    def update(self, request, *args, **kwargs):
+        merchant = self.request.user.merchant
+        partner = Partner.objects.filter(id=self.kwargs['partner_id']).first()
+        is_supplier = request.data['is_supplier']
+        is_customer = request.data['is_customer']
+        if partner:
+            MerchantPartnerRelationship.objects.update(merchant=merchant,
+                                                       partner=partner,
+                                                       is_supplier=is_supplier,
+                                                       is_customer=is_customer)
+            return Response({'status': 'Partner updated successfully'})
+        else:
+            return Response({'status': 'Partner does not exist'})
+
 
 class ListSupplierView(ListAPIView):
     """
@@ -135,25 +149,6 @@ class SearchSupplierView(ListAPIView):
             .filter(merchantpartnerrelationship__is_supplier=True)
         queryset_filtered = search_by_search_string(self, queryset)
         return queryset_filtered
-
-
-class UpdateIsSupplierView(UpdateAPIView):
-
-    serializer_class = PartnerSerializer
-
-    def update(self, request, *args, **kwargs):
-        merchant = self.request.user.merchant
-        partner = Partner.objects.filter(id=self.kwargs['partner_id']).first()
-        if partner:
-            is_supplier = MerchantPartnerRelationship.objects.filter(Q(merchant=merchant) & Q(partner=partner) &
-                                                                     Q(is_supplier=True))
-            if is_supplier:
-                MerchantPartnerRelationship.objects.update(merchant=merchant, partner=partner, is_supplier=False)
-            else:
-                MerchantPartnerRelationship.objects.update(merchant=merchant, partner=partner, is_supplier=True)
-            return Response({'status': 'Partner updated successfully'})
-        else:
-            return Response({'status': 'Partner does not exist'})
 
 
 class ListCustomerView(ListAPIView):
@@ -192,25 +187,6 @@ class SearchCustomerView(ListAPIView):
         return queryset_filtered
 
 
-class UpdateIsCustomerView(UpdateAPIView):
-
-    serializer_class = PartnerSerializer
-
-    def update(self, request, *args, **kwargs):
-        merchant = self.request.user.merchant
-        partner = Partner.objects.filter(id=self.kwargs['partner_id']).first()
-        if partner:
-            is_customer = MerchantPartnerRelationship.objects.filter(Q(merchant=merchant) & Q(partner=partner) &
-                                                                     Q(is_customer=True))
-            if is_customer:
-                MerchantPartnerRelationship.objects.update(merchant=merchant, partner=partner, is_customer=False)
-            else:
-                MerchantPartnerRelationship.objects.update(merchant=merchant, partner=partner, is_customer=True)
-            return Response({'status': 'Partner updated successfully'})
-        else:
-            return Response({'status': 'Partner does not exist'})
-
-
 class AssignItemToPartnerView(UpdateAPIView):
     """
     patch:
@@ -221,10 +197,10 @@ class AssignItemToPartnerView(UpdateAPIView):
     """
 
     serializer_class = PartnerSerializer
-    lookup_url_kwarg = 'item_partner_id'
+    lookup_url_kwarg = 'partner_id'
 
     def update(self, request, *args, **kwargs):
-        partner = Partner.objects.get(pk=self.kwargs.get('item_partner_id'))
+        partner = Partner.objects.get(pk=self.kwargs.get('partner_id'))
         item_ids = self.request.data['item_ids']
         for item_id in item_ids:
             is_item_assigned = partner.items.filter(id=item_id).exists()

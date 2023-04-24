@@ -2,7 +2,7 @@ version: '3'
 
 services:
   backend:
-    image: registry.gitlab.propulsion-home.ch/full-stack/batch-23-feb-2023/final-projects/erp-system:latest
+    image: erp-system-local:latest
     ports:
       - '8001:8000'
     volumes:
