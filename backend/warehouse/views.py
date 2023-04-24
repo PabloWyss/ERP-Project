@@ -56,11 +56,10 @@ class CreateWarehouseView(CreateAPIView):
 
     serializer_class = WarehouseSerializer
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         merchant = request.user.merchant
         warehouse_name = request.data['name']
-        warehouse_exists = merchant.warehouses.filter(name=warehouse_name).exists()
-        if warehouse_exists:
+        if merchant.warehouses.filter(name=warehouse_name).exists():
             return Response({'status': 'Warehouse already exists'})
         else:
             serializer = self.get_serializer(data=request.data, partial=True)
