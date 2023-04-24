@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
 import SelectPartner from "./SelectPartner";
+import { useDispatch, useSelector } from "react-redux";
+import { setOrderIsBuy, setOrderIsRefund } from "../../../Redux/Slices/orderBuySellRefund";
 
 function NewOrder() {
-  //handle choice buy or sell
-  const [isBuy, setIsBuy] = useState(true);
-  let supplierOrCustomer = "Supplier";
+  //retrieve type buy or sell from redux
+  const isOrderBuy = useSelector((store) => store.orderbuysellrefund.isbuy);
+  
+  //handle user selection buy/sell
+  const dispatch = useDispatch(); //state is in redux
   const changeOrderType = () => {
-    setIsBuy(!isBuy);
-    supplierOrCustomer = isBuy ? "Supplier" : "Customer";
-    //TODO trigger fetching list of suppliers or customers
+    dispatch(setOrderIsBuy()); //toggle type buy/sell in redux
   };
-  useEffect(() => {}, [isBuy]);
 
   //handle choice refund or not
-  const [isRefund, setIsRefund] = useState(false);
+  const isOrderRefund = useSelector((store) => store.orderbuysellrefund.isrefund);
   const changeIsRefund = () => {
-    setIsRefund(!isRefund);
+    dispatch(setOrderIsRefund());
   };
 
   return (
@@ -37,7 +37,7 @@ function NewOrder() {
             <button
               onClick={changeOrderType}
               className={
-                isBuy
+                isOrderBuy
                   ? "rounded-r-none bg-ifOrange text-white"
                   : "rounded-r-none border-2 border-ifOrange text-buttonGrey"
               }
@@ -47,7 +47,7 @@ function NewOrder() {
             <button
               onClick={changeOrderType}
               className={
-                isBuy
+                isOrderBuy
                   ? "rounded-l-none border-2 border-ifOrange text-buttonGrey"
                   : "rounded-l-none bg-ifOrange text-white"
               }
@@ -60,7 +60,7 @@ function NewOrder() {
             <button
               onClick={changeIsRefund}
               className={
-                isRefund
+                isOrderRefund
                   ? "rounded-r-none bg-ifOrange text-white"
                   : "rounded-r-none border-2 border-ifOrange text-buttonGrey"
               }
@@ -70,7 +70,7 @@ function NewOrder() {
             <button
               onClick={changeIsRefund}
               className={
-                isRefund
+                isOrderRefund
                   ? "rounded-l-none border-2 border-ifOrange text-buttonGrey"
                   : "rounded-l-none bg-ifOrange text-white"
               }
@@ -80,7 +80,7 @@ function NewOrder() {
           </div>
         </div>
         <h2 className=" bg-backgroundGrey text-section px-4 mt-4">
-          {isBuy ? "Supplier" : "Customer"}
+          {isOrderBuy ? "Supplier" : "Customer"}
         </h2>
         <div className="my-2">
           {/* it will need to get the data for the table as props */}

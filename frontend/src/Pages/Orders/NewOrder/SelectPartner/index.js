@@ -4,75 +4,34 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import OrderSelectItem from "./OrderSelectItem/index.js";
 import { setCheckedItems } from "../../../../Redux/Slices/tableCheckedItems.js";
+import callAPI from "../../../../Axios/callAPI.js";
 
 function SelectPartner() {
-  //fake data for table testing
-  const data = [
-    {
-      name: "Kim Parrish",
-      address: "4420 Valley Street, Garnerville, NY 10923",
-      date: "07/11/2020",
-      order: "87349585892118",
-      partner: "supplier",
-      id: "8",
-    },
-    {
-      name: "Michele Castillo",
-      address: "637 Kyle Street, Fullerton, NE 68638",
-      date: "07/11/2020",
-      order: "58418278790810",
-      partner: "customer",
-      id: "2",
-    },
-    {
-      name: "Eric Ferris",
-      address: "906 Hart Country Lane, Toccoa, GA 30577",
-      date: "07/10/2020",
-      order: "81534454080477",
-      partner: "supplier",
-      id: "3",
-    },
-    {
-      name: "Gloria Noble",
-      address: "2403 Edgewood Avenue, Fresno, CA 93721",
-      date: "07/09/2020",
-      order: "20452221703743",
-      partner: "supplier",
-      id: "4",
-    },
-    {
-      name: "Darren Daniels",
-      address: "882 Hide A Way Road, Anaktuvuk Pass, AK 99721",
-      date: "07/07/2020",
-      order: "22906126785176",
-      partner: "customer",
-      id: "5",
-    },
-    {
-      name: "Ted McDonald",
-      address: "796 Bryan Avenue, Minneapolis, MN 55406",
-      date: "07/07/2020",
-      order: "87574505851064",
-      partner: "supplier",
-      id: "6",
-    },
-    {
-      name: "Abra Kebabra",
-      address: "4420 Rua de la Paz, Toledo, NY 10923",
-      date: "07/11/2023",
-      order: "67349585892118",
-      partner: "customer",
-      id: "7",
-    },
-    {
-      name: "Diane Keaton",
-      address: "4420 4th Avenue, Anaheim, WY 10923",
-      date: "05/11/2023",
-      order: "37349585892118",
-      partner: "customer",
-      id: "9",
-    },
-  ];
+  //retrieve type buy or sell from redux
+  const isOrderBuy = useSelector((store) => store.orderbuysellrefund.isbuy);
+  //store retrieved data here
+  const [partnerList, setPartnerList] = useState([]);
+  //fetch partner list from backend
+  const fetchSuppliersOrCustomers = async () => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
+      const endpoint = isOrderBuy
+        ? "/partners/suppliers/"
+        : "/partners/customers/";
+      const response = await callAPI.get(endpoint, config);
+      setPartnerList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchSuppliersOrCustomers();
+  }, [isOrderBuy]);
 
   //create columns model
   const columns = [
@@ -85,41 +44,54 @@ function SelectPartner() {
       accessor: "address",
     },
     {
-      Header: "Date",
-      accessor: "date",
+      Header: "E-Mail",
+      accessor: "email",
     },
     {
-      Header: "Order No.",
-      accessor: "order",
-    },
-    {
-      Header: "Partner Type",
-      accessor: "partner",
+      Header: "Phone",
+      accessor: "phone",
     },
   ];
 
   //show the partner list or the selected partner
   const dispatch = useDispatch(); //used later to reset redux store
   //retrieve id of selected partner from redux
-  const selectedPartner = useSelector(
+  const selectedPartnerId = useSelector(
     (store) => store.checkeditems.checkeditems
   );
-  let selectedPartnerData = useRef(undefined); //will be fetched when selected
+  // let selectedPartnerData = useRef(undefined); //will be fetched when selected
   const [isPartnerSelected, setIsPartnerSelected] = useState(false);
-  const handleSelectPartner = () => {
-    if (selectedPartner.length === 1) {
-      //TODO fetch partner data
-      selectedPartnerData.current = {
-        name: "Manifactura Zapatera",
-        address: "Callecita Muy Linda, 5 - Alcorcon",
-        id: 5,
+  //store retrieved data here
+  const [partnerData, setPartnerData] = useState([]);
+  //fetch partner list from backend
+  const fetchPartnerData = async () => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       };
+      // const response = await callAPI.get(`/partners/${selectedPartner}/`, config);
+      const response = await callAPI.get(`/partners/5/`, config);
+      setPartnerData(response.data);
+      console.log(partnerData)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+useEffect(() => {
+  fetchPartnerData()
+}, [selectedPartnerId])
+
+  const handleSelectPartner = () => {
+    if (selectedPartnerId.length === 1) {
+      console.log("id: " + selectedPartnerId)
       setIsPartnerSelected(true);
       dispatch(setCheckedItems([])); //reset redux store for item selection
     }
   };
-  useEffect(handleSelectPartner, [selectedPartner]);
-  useEffect(() => {}, [selectedPartner]);
+  useEffect(handleSelectPartner, [selectedPartnerId]);
 
   //TODO set isPartnerSelected to false if the user toggles Buy/Sell after selecting a partner
 
@@ -134,8 +106,8 @@ function SelectPartner() {
         {isPartnerSelected ? (
           <div className="flex justify-between">
             <div className="pt-4">
-              {selectedPartnerData.current.name} -{" "}
-              {selectedPartnerData.current.address}
+              {partnerData.name} -{" "}
+              {partnerData.address}
             </div>
             <div className="m-2">
               <button
@@ -147,14 +119,14 @@ function SelectPartner() {
             </div>
           </div>
         ) : (
-          <ListTable data={data} columns={columns} />
+          <ListTable data={partnerList} columns={columns} />
         )}
       </div>
       <div>
         {isPartnerSelected ? (
           <div>
             <h2 className=" bg-backgroundGrey text-section px-4 mt-4">Items</h2>
-            <OrderSelectItem partnerid={selectedPartnerData.current.id} />
+            {/* <OrderSelectItem partnerid={selectedPartner.id} /> */}
           </div>
         ) : (
           ""
