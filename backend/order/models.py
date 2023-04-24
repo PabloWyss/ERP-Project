@@ -22,6 +22,9 @@ class Order(models.Model):
     partner = models.ForeignKey(to=Partner, on_delete=models.PROTECT, related_name="orders")
     warehouse = models.ForeignKey(to=Warehouse, on_delete=models.PROTECT, related_name="orders")
 
+    # processed values:
+    value_total = models.FloatField(default=0)
+
     def __str__(self):
         return f'{self.id} - Date {self.order_date} - Merchant is supplier {self.is_merchant_supplier} - Is refund \
         {self.is_refund}- Partner {self.partner} - Warehouse {self.warehouse} - Item {self.item}'

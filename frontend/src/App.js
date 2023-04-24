@@ -24,6 +24,7 @@ import Models from "./Pages/Model";
 import ModelPage from "./Pages/Model/ModelPage";
 import NewOrder from "./Pages/Orders/NewOrder";
 import QRReader from "./Pages/QRReader";
+import Variants from "./Pages/Variants";
 import WarehouseDetailsView from "./Pages/Warehouses/WarehouseDetailsView/indesx";
 import CreateWarehouse from "./Pages/Warehouses/CreateWarehouse";
 
@@ -69,6 +70,7 @@ function App() {
           <Route path="/items" element={<Items />} />
           <Route path="/items/:itemID" element={<Item />} />
           <Route path="/items/new/" element={<CreateItem />} />
+          <Route path="/variants/:itemID" element={<Variants />} />
           <Route
             path="/items/itemVariant/create/:itemID"
             element={<CreateItemVariant />}

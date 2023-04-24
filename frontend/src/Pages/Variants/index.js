@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from "react";
 import callAPI from "../../Axios/callAPI";
-import ModelTable from "./ModelTable";
+import VariantTable from "./VariantTable";
+import {useParams} from "react-router-dom";
 
-const Models = () => {
+const Variants = () => {
     //define const
-    const [modelsList, setModelsList] = useState([])
+    const [variantsList, setVariantsList] = useState([])
+    const {itemID} = useParams();
 
-    // fetch data
-    const obtainModelsInfo = async () => {
+    //fetch variants information
+    const obtainVariantsInfo = async () => {
         try {
             const config = {
                 headers: {
@@ -16,25 +18,23 @@ const Models = () => {
                 },
             };
 
-            const response = await callAPI.get(`/item_models/`, config)
-            setModelsList(response.data)
-
+            const response = await callAPI.get(`/item_specifications/${itemID}/`, config)
+            setVariantsList(response.data)
         } catch (error) {
             console.log(error);
         }
     }
 
-
     useEffect(() => {
-        obtainModelsInfo()
+        obtainVariantsInfo()
     }, [])
 
 
     return (
         <div className="flex w-full">
-            <ModelTable tableData={modelsList}/>:
+            <VariantTable tableData={variantsList}/>:
         </div>
     );
 }
 
-export default Models
+export default Variants

@@ -13,6 +13,28 @@ def get_stock_level_total_current(item):
         pass
 
 
+def get_purchase_price_net_eur(item):
+    try:
+        purchase_price_net_eur = item.item_specifications.latest('valid_from').purchase_price_net_eur
+        if purchase_price_net_eur:
+            return purchase_price_net_eur
+        else:
+            pass
+    except ItemSpecification.DoesNotExist:
+        pass
+
+
+def get_sale_price_net_eur(item):
+    try:
+        sale_price_net_eur = item.item_specifications.latest('valid_from').sale_price_net_eur
+        if sale_price_net_eur:
+            return sale_price_net_eur
+        else:
+            pass
+    except ItemSpecification.DoesNotExist:
+        pass
+
+
 def get_stock_level_total_purchase_value_current(item):
     try:
         stock_level_total_current = get_stock_level_total_current(item)

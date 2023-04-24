@@ -19,6 +19,8 @@ class Merchant(models.Model):
     email = models.EmailField(unique=True)
     profile_picture = models.ImageField(upload_to=merchant_directory_path, null=True, blank=True)
     partners = models.ManyToManyField(to=Partner, through='MerchantPartnerRelationship', related_name='merchants')
+
+    # linkages:
     # item_models (linked in item_model.models.py)
     # items (linked in item.models.py)
     # item_tags (linked in item_tags.models.py)

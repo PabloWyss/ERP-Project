@@ -1,8 +1,10 @@
 const ItemDetailsChoicesInput = ({choices}) => {
+
+    //reusable input if there are choices
     return (
-            choices?.map((choice) => (
-              <option value={choice}>{choice}</option>
-            ))
+        choices?.map((choice) => (
+            <option value={choice} key={choice}>{choice}</option>
+        ))
     )
 }
 

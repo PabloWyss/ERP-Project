@@ -35,4 +35,4 @@ const ItemDetailsInput = ({ value, disableInput, handleInput, description, choic
   );
 };
 
-export default ItemDetailsInput;
+export default ItemDetailsInput

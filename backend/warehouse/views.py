@@ -10,20 +10,39 @@ from warehouse.formulas import get_stock_level_total_current, get_stock_level_to
     get_error_item_not_assigned_purchase_price_net_eur, get_error_item_not_assigned_sale_price_net_eur
 
 
+def get_updated_data(warehouse):
+    warehouse.stock_level_total_current = get_stock_level_total_current(warehouse)
+    warehouse.stock_level_total_purchase_value_current = get_stock_level_total_purchase_value_current(warehouse)
+    warehouse.stock_level_total_sale_value_current = get_stock_level_total_sale_value_current(warehouse)
+    warehouse.error_item_not_assigned_item_specifications = get_error_item_not_assigned_item_specifications(
+        warehouse)
+    warehouse.error_item_not_assigned_purchase_price_net_eur = get_error_item_not_assigned_purchase_price_net_eur(
+        warehouse)
+    warehouse.error_item_not_assigned_sale_price_net_eur = get_error_item_not_assigned_sale_price_net_eur(warehouse)
+    return warehouse
+
+
+def get_updated_queryset(self):
+    merchant = self.request.user.merchant
+    warehouses = Warehouse.objects.filter(merchants__id=merchant.id).order_by('name')
+    for warehouse in warehouses:
+        get_updated_data(warehouse)
+    return warehouses
+
+
 class ListWarehouseView(ListAPIView):
     """
     get:
     List all warehouses
 
     # subtitle
-    List all warehouses of the merchant
+    List all warehouses of the merchant in alphabetical order of name
     """
 
     serializer_class = WarehouseSerializer
 
     def get_queryset(self):
-        merchant = self.request.user.merchant
-        return Warehouse.objects.filter(merchants__id=merchant.id)
+        return get_updated_queryset(self)
 
 
 class CreateWarehouseView(CreateAPIView):
@@ -37,11 +56,10 @@ class CreateWarehouseView(CreateAPIView):
 
     serializer_class = WarehouseSerializer
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         merchant = request.user.merchant
         warehouse_name = request.data['name']
-        warehouse_exists = merchant.warehouses.filter(name=warehouse_name).exists()
-        if warehouse_exists:
+        if merchant.warehouses.filter(name=warehouse_name).exists():
             return Response({'status': 'Warehouse already exists'})
         else:
             serializer = self.get_serializer(data=request.data, partial=True)
@@ -178,12 +196,7 @@ class RetrieveUpdateDestroyWarehouseView(RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         warehouse = Warehouse.objects.get(pk=self.kwargs.get('warehouse_id'))
-        warehouse.stock_level_total_current = get_stock_level_total_current(warehouse)
-        warehouse.stock_level_total_purchase_value_current = get_stock_level_total_purchase_value_current(warehouse)
-        warehouse.stock_level_total_sale_value_current = get_stock_level_total_sale_value_current(warehouse)
-        warehouse.error_item_not_assigned_item_specifications = get_error_item_not_assigned_item_specifications(warehouse)
-        warehouse.error_item_not_assigned_purchase_price_net_eur = get_error_item_not_assigned_purchase_price_net_eur(warehouse)
-        warehouse.error_item_not_assigned_sale_price_net_eur = get_error_item_not_assigned_sale_price_net_eur(warehouse)
+        get_updated_data(warehouse)
         return warehouse
 
 

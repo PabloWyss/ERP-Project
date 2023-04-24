@@ -5,7 +5,9 @@ import {useNavigate, useParams} from "react-router-dom";
 import QRCode from "qrcode";
 import JsBarcode from "jsbarcode";
 
-const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChildren, obtainModelIdFromChildren}) => {
+const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
+
+    //define const
 
     const [item, setItem] = useState({})
     const [editClicked, setEditClicked] = useState(false)
@@ -20,33 +22,31 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChild
     const [AFNSKU, setAFNSKU] = useState("")
     const [createQRCodeClicked, setCreateQRCodeClicked] = useState(false)
     const [createBarcodeClicked, setCreateBarcodeClicked] = useState(false)
-    const [newItemID, setNewItemID] = useState("")
+    const [creatQRCodeBarcodeClicked, setCreatQRCodeBarcodeClicked] = useState(false)
     const navigate = useNavigate()
-
-    const { itemID } = useParams();
+    const {itemID} = useParams();
 
 
     // QRCODE GENERATOR
 
     const [qrcode, setQrcode] = useState("")
-    console.log(item)
     const handleCreateQRCode = (e) => {
         e.preventDefault()
         const data = {
             id: item.id,
-            amazon_asin : item.amazon_asin,
-            amazon_fnsku : item.amazon_fnsku,
+            amazon_asin: item.amazon_asin,
+            amazon_fnsku: item.amazon_fnsku,
             ean: item.ean,
             sku: item.sku,
             upc: item.upc,
         }
         const datJson = JSON.stringify(data)
         const generateQR = async text => {
-          try {
-            setQrcode(await QRCode.toDataURL(datJson))
-          } catch (err) {
-            console.error(err)
-          }
+            try {
+                setQrcode(await QRCode.toDataURL(datJson))
+            } catch (err) {
+                console.error(err)
+            }
         }
         generateQR()
         setCreateQRCodeClicked(!createQRCodeClicked)
@@ -58,53 +58,10 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChild
     const handleCreateBarcode = (e) => {
         e.preventDefault()
         setCreateBarcodeClicked(!createBarcodeClicked)
-        if(createBarcodeClicked){
-            JsBarcode(".barcode").init();
-        }
-        else {
-        }
         JsBarcode(".barcode").init();
     }
 
-
-
-    const handleEditButton = (e) => {
-        e.preventDefault()
-        if(editClicked) {
-            setEditClicked(!editClicked)
-            setDisableInput(!disableInput)
-            updateItem()
-        }else {
-            setEditClicked(!editClicked)
-            setDisableInput(!disableInput)
-        }
-    }
-
-    if (obtainModelIdFromChildren){
-        obtainModelIdFromChildren(item.item_model)
-    }
-
-    const handleSubmitButton = (e) => {
-        e.preventDefault()
-        createItem()
-        // navigate(`/items/${newItemID}/`)
-    }
-
-
-    useEffect(() => {
-        if (fromItem) {
-            setItem(itemFromItem)
-            setName(itemFromItem.name)
-            obtainNameFromChildren(name)
-            setStatus(itemFromItem.status)
-            setSeries(itemFromItem.series)
-            setSKU(itemFromItem.sku)
-            setEAN(itemFromItem.ean)
-            setUPC(itemFromItem.upc)
-            setAASIN(itemFromItem.amazon_asin)
-            setAFNSKU(itemFromItem.amazon_fnsku)
-        }
-    }, [itemFromItem])
+    // handle input
 
     const handleNameInput = (e) => {
         setName(e.target.value);
@@ -138,6 +95,47 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChild
         setAFNSKU(e.target.value);
     };
 
+    // handle buttons
+
+    const handleEditButton = (e) => {
+        e.preventDefault()
+        if (editClicked) {
+            setEditClicked(!editClicked)
+            setDisableInput(!disableInput)
+            updateItem()
+        } else {
+            setEditClicked(!editClicked)
+            setDisableInput(!disableInput)
+        }
+    }
+
+    const handleSubmitButton = (e) => {
+        e.preventDefault()
+        createItem()
+        // navigate(`/items/${newItemID}/`)
+    }
+
+    const handleCreateQrCodeBarcodeButton = (e) => {
+        e.preventDefault()
+        setCreatQRCodeBarcodeClicked(!creatQRCodeBarcodeClicked)
+    }
+
+
+    useEffect(() => {
+        if (fromItem) {
+            setItem(itemFromItem)
+            setName(itemFromItem.name)
+            setStatus(itemFromItem.status)
+            setSeries(itemFromItem.series)
+            setSKU(itemFromItem.sku)
+            setEAN(itemFromItem.ean)
+            setUPC(itemFromItem.upc)
+            setAASIN(itemFromItem.amazon_asin)
+            setAFNSKU(itemFromItem.amazon_fnsku)
+        }
+    }, [itemFromItem])
+
+    //  fetch - Update Item - Create Item
     const updateItem = async () => {
 
         if (!localStorage.getItem('token')) {
@@ -164,9 +162,9 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChild
         } catch (error) {
             console.log(error)
         }
-      }
+    }
 
-      const createItem = async () => {
+    const createItem = async () => {
 
         if (!localStorage.getItem('token')) {
             return;
@@ -195,21 +193,19 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChild
             const keys = Object.keys(error.response.data)
             const values = Object.values(error.response.data)
             let message = ""
-            values?.forEach((errorMessage, index)=>{
+            values?.forEach((errorMessage, index) => {
                 message += `${errorMessage} ${keys[index]} \n`
             })
             alert(message)
         }
-      }
-
-      let date = ""
-
-    if(item.release_date){
-        date = new Date(item.release_date).toString().slice(0,15)
     }
 
+    // convert date into readable
+    let date = ""
 
-
+    if (item.release_date) {
+        date = new Date(item.release_date).toString().slice(0, 15)
+    }
 
 
     return (
@@ -219,8 +215,8 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChild
                     Primary Details
                 </h2>
                 {
-                    fromCreate ?
-                        "":
+                    (fromCreate || fromQRCode) ?
+                        "" :
                         <button className="p-0 bg-ifOrange w-20 text-white" onClick={handleEditButton}>
                             {
                                 editClicked ?
@@ -235,13 +231,13 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChild
                     <div className="flex w-1/2 flex-col gap-1">
                         {
                             fromCreate ?
-                                "":
+                                "" :
                                 [<ItemDetailsInput value={item.id}
                                                    disableInput={true}
                                                    description={"Item ID:"}/>,
-                                <ItemDetailsInput value={date}
-                                                  disableInput={true}
-                                                  description={"Release Date:"}/>]
+                                    <ItemDetailsInput value={date}
+                                                      disableInput={true}
+                                                      description={"Release Date:"}/>]
                         }
                         <ItemDetailsInput value={name}
                                           disableInput={!fromCreate & fromItem & disableInput}
@@ -252,11 +248,18 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChild
                                           handleInput={handleStatusInput}
                                           description={"Item Status: "}
                                           choicesEnabeled={true}
-                                          choices={["","Active",'No restock']}/>
+                                          choices={["", "Active", 'No restock']}/>
                         <ItemDetailsInput value={series}
                                           disableInput={!fromCreate & fromItem & disableInput}
                                           handleInput={handleSeriesInput}
                                           description={"Series No.:"}/>
+                        {
+                            fromCreate ?
+                                "" :
+                                <ItemDetailsInput value={item.stock_level_total_current}
+                                                  disableInput={true}
+                                                  description={"Current Stock:"}/>
+                        }
                     </div>
                     <div className="flex w-1/2 flex-col gap-1">
                         <ItemDetailsInput value={SKU}
@@ -279,38 +282,76 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, obtainNameFromChild
                                           disableInput={!fromCreate & fromItem & disableInput}
                                           handleInput={handleAFNSKUInput}
                                           description={"Amazon FNSKU No.:"}/>
+                        {
+                            fromCreate ?
+                                "" :
+                                [<ItemDetailsInput value={item.stock_level_total_purchase_value_current}
+                                                   disableInput={true}
+                                                   description={"Total Purchase Value (eur):"}/>,
+                                    <ItemDetailsInput value={item.stock_level_total_sale_value_current}
+                                                      disableInput={true}
+                                                      description={"Total Sale Value (eur):"}/>]
+                        }
                     </div>
                 </div>
             </div>
             <div className="flex w-full justify-center">
                 {
-                    fromCreate ?
+                    (fromCreate) ?
                         <div>
                             <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"}>
                                 Submit
                             </button>
-                        </div>:
-                        <div className="flex w-full justify-around">
-                            <div className="flex flex-col items-center">
-                                <button className="p-0 bg-ifOrange w-40 text-white" onClick={handleCreateQRCode}> Create QRCode </button>
-                                {
-                                    createQRCodeClicked ?
-                                        <img alt={"QrCode"} src={qrcode}/> :
-                                        ""
-                                }
-                            </div>
-                            <div className="flex flex-col items-center">
-                                <button className="p-0 bg-ifOrange w-40 text-white" onClick={handleCreateBarcode}> Create Barcode </button>
-                                    <svg className="barcode"
-                                         //jsbarcode-format="EAN13"
-                                         jsbarcode-value={item.ean}
-                                         jsbarcode-textmargin="0"
-                                         jsbarcode-fontoptions="bold">
-                                    </svg>
-                            </div>
+                        </div> :
+                        <div className="flex justify-center items-center px-4 h-10">
+                            <button className="text-xl p-0 bg-ifOrange w-96 text-white"
+                                    onClick={handleCreateQrCodeBarcodeButton}>
+                                Create QRcode / Barcode
+                            </button>
                         </div>
                 }
             </div>
+            {
+                creatQRCodeBarcodeClicked ?
+                    <div className="flex w-full justify-center">
+                        {
+                            (fromCreate) ?
+                                <div>
+                                    <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"}>
+                                        Submit
+                                    </button>
+                                </div> :
+                                <div className="flex w-full justify-around">
+                                    {
+                                        fromQRCode ?
+                                            "" :
+                                            [<div className="flex flex-col items-center">
+                                                <button className="p-0 bg-ifOrange w-40 text-white"
+                                                        onClick={handleCreateQRCode}> Create QRCode
+                                                </button>
+                                                {
+                                                    createQRCodeClicked ?
+                                                        <img alt={"QrCode"} src={qrcode}/> :
+                                                        ""
+                                                }
+                                            </div>,
+                                                <div className="flex flex-col items-center">
+                                                    <button className="p-0 bg-ifOrange w-40 text-white"
+                                                            onClick={handleCreateBarcode}> Create Barcode
+                                                    </button>
+                                                    <svg className="barcode"
+                                                        //jsbarcode-format="EAN13"
+                                                         jsbarcode-value={item.ean}
+                                                         jsbarcode-textmargin="0"
+                                                         jsbarcode-fontoptions="bold">
+                                                    </svg>
+                                                </div>]
+                                    }
+                                </div>
+                        }
+                    </div> :
+                    ""
+            }
         </form>
     )
 }

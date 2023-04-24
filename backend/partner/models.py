@@ -13,6 +13,8 @@ class Partner(models.Model):
     country_code = models.CharField(max_length=2, null=True, blank=True)
     phone = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField()
+
+    # linkages:
     # merchants (linked in merchant.models.py)
     # merchantpartnerrelationship (linked in merchant.models.py)
     # items (linked in item.models.py)

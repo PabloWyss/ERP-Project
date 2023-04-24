@@ -4,25 +4,24 @@ from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
 from item.models import Item
 from item.serializers import CreateItemSerializer, ItemSerializer, UpdateItemSerializer
-from item.formulas import get_stock_level_total_current, get_stock_level_total_purchase_value_current, \
-    get_stock_level_total_sale_value_current
+from item.formulas import get_stock_level_total_current, get_purchase_price_net_eur, get_sale_price_net_eur, \
+    get_stock_level_total_purchase_value_current, get_stock_level_total_sale_value_current
+from warehouse.models import WarehouseItemInventory
+
+
+def get_updated_data(item):
+    item.stock_level_total_current = get_stock_level_total_current(item)
+    item.stock_level_total_purchase_value_current = get_stock_level_total_purchase_value_current(item)
+    item.stock_level_total_sale_value_current = get_stock_level_total_sale_value_current(item)
+    return item
 
 
 def get_updated_queryset(self):
     merchant = self.request.user.merchant
     items = Item.objects.filter(merchant_id=merchant.id).order_by('sku')
     for item in items:
-        item.stock_level_total_current = get_stock_level_total_current(item)
-        item.stock_level_total_purchase_value_current = get_stock_level_total_purchase_value_current(item)
-        item.stock_level_total_sale_value_current = get_stock_level_total_sale_value_current(item)
+        get_updated_data(item)
     return items
-
-
-def get_updated_item_information(item):
-    item.stock_level_total_current = get_stock_level_total_current(item)
-    item.stock_level_total_purchase_value_current = get_stock_level_total_purchase_value_current(item)
-    item.stock_level_total_sale_value_current = get_stock_level_total_sale_value_current(item)
-    return item
 
 
 class ListItemView(ListAPIView):
@@ -109,9 +108,7 @@ class RetrieveUpdateDestroyItemView(RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         item = Item.objects.get(pk=self.kwargs.get('item_id'))
-        item.stock_level_total_current = get_stock_level_total_current(item)
-        item.stock_level_total_purchase_value_current = get_stock_level_total_purchase_value_current(item)
-        item.stock_level_total_sale_value_current = get_stock_level_total_sale_value_current(item)
+        get_updated_data(item)
         return item
 
 
@@ -138,7 +135,7 @@ class ListItemWithStockView(ListAPIView):
     List all items with stock
 
     # subtitle
-    Lists all items with stock available of the merchant in alphabetical order of SKU number
+    Lists all items with stock of the merchant in alphabetical order of SKU number
     """
 
     serializer_class = ItemSerializer
@@ -148,7 +145,58 @@ class ListItemWithStockView(ListAPIView):
         items = Item.objects.filter(merchant_id=merchant.id).order_by('sku')
         filtered_items = []
         for item in items:
-            item = get_updated_item_information(item)
+            item = get_updated_data(item)
             if get_stock_level_total_current(item) > 0:
                 filtered_items.append(item)
+        return filtered_items
+
+
+class ListItemForOrderInboundView(ListAPIView):
+    """
+    get:
+    List all items eligible for outbound orders
+
+    # subtitle
+    Lists all items of the merchant with stock and a purchase price assigned in alphabetical order of SKU number
+    """
+
+    serializer_class = ItemSerializer
+
+    def get_queryset(self):
+        merchant = self.request.user.merchant
+        items = Item.objects.filter(merchant_id=merchant.id).order_by('sku')
+        filtered_items = []
+        for item in items:
+            item = get_updated_data(item)
+            try:
+                if get_purchase_price_net_eur(item):
+                    filtered_items.append(item)
+            except WarehouseItemInventory.DoesNotExist:
+                pass
+        return filtered_items
+
+
+class ListItemForOrderOutboundView(ListAPIView):
+    """
+    get:
+    List all items eligible for outbound orders
+
+    # subtitle
+    Lists all items of the merchant with stock and a sale price assigned in alphabetical order of SKU number
+    """
+
+    serializer_class = ItemSerializer
+
+    def get_queryset(self):
+        merchant = self.request.user.merchant
+        items = Item.objects.filter(merchant_id=merchant.id).order_by('sku')
+        filtered_items = []
+        for item in items:
+            item = get_updated_data(item)
+            if get_stock_level_total_current(item) > 0:
+                try:
+                    if get_sale_price_net_eur(item):
+                        filtered_items.append(item)
+                except WarehouseItemInventory.DoesNotExist:
+                    pass
         return filtered_items
