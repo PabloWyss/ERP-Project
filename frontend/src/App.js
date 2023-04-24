@@ -78,7 +78,7 @@ function App() {
           <Route path="/orders/:orderID" element={<OrderDetails />} />
           <Route path="/orders/new" element={<NewOrder />} />
           <Route path="/warehouses" element={<Warehouses />} />
-          <Route path="/warehouse/new" element={<CreateWarehouse />} />
+          <Route path="/warehouses/new" element={<CreateWarehouse />} />
            <Route path="/warehouses/:warehouseID" element={<WarehouseDetailsView />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/tags" element={<Tags />} />

@@ -32,7 +32,7 @@ const WarehouseTable = ({ tableData }) => {
 
   const handleCreateButton = (e) => {
     e.preventDefault();
-    navigate(`/warehouse/new/`);
+    navigate(`/warehouses/new/`);
   };
 
   const data_if_empty = [

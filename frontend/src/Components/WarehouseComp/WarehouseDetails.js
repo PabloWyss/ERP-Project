@@ -4,7 +4,7 @@ import callAPI from "../../Axios/callAPI";
 import ItemDetailsInput from "../../Pages/Items/Item/PrimaryDetails/ItemDetailsInput";
 import {useNavigate, useParams} from "react-router-dom";
 
-const WarehouseDetails = ({fromCreate}) => {
+const WarehouseDetails = ({fromCreate, merchantID}) => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const [warehouse, setWarehouse] = useState({});
@@ -121,7 +121,7 @@ const WarehouseDetails = ({fromCreate}) => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       };
-      await callAPI.patch(`/warehouses/`, data, config);
+      await callAPI.patch(`/warehouses/${merchantID}/`, data, config);
     } catch (error) {
       console.log(error);
     }
@@ -148,8 +148,8 @@ const WarehouseDetails = ({fromCreate}) => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
             };
-            const response = await callAPI.post(`/warehouse/new/`, data, config)
-            navigate(`/warehouse/${response.data.id}/`)
+            const response = await callAPI.post(`/warehouses/new/`, data, config)
+            navigate(`/warehouses/${response.data.id}/`)
 
         } catch (error) {
             const keys = Object.keys(error.response.data)
@@ -242,14 +242,13 @@ return (
                 description={"Status: "}
                 choicesEnabeled={true}
                 choices={["Active",'No restock']}/>
-
               <ItemDetailsInput
                 value={date}
                 type="date"
                 disableInput={true}
-               // handleInput={handleCreationDateInput}
                 description={"Creation Date: "}
               />
+
 
             </div>
           </div>
