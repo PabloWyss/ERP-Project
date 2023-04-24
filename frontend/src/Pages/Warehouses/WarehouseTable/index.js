@@ -17,16 +17,16 @@ const WarehouseTable = ({ tableData }) => {
       accessor: "address",
     },
     {
-      Header: "Contact Name",
-      accessor: "contact_name",
+      Header: "Contact",
+      accessor: "contact",
     },
     {
-      Header: "Contact Email",
-      accessor: "contact_email",
+      Header: "E-Mail",
+      accessor: "email",
     },
     {
-      Header: "Contact Phone",
-      accessor: "contact_phone",
+      Header: "Phone",
+      accessor: "phone",
     },
   ];
 
