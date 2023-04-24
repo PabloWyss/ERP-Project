@@ -1,9 +1,14 @@
 import React from "react";
 import CreateWarehouse from "../../../Components/WarehouseComp/CreateWarehouse";
+import {useNavigate} from "react-router-dom";
+import arrow_left_image from "../../../Assets/Icons/arrow_left_orange.svg";
 
 function CreateWarehouseView() {
-
-
+    const navigate = useNavigate()
+    const handleClickGoBack = (e) => {
+        e.preventDefault()
+        navigate(`/warehouses`)
+    }
   return (
           <div
       className="h-screen w-screen py-6 px-8 justify-center
@@ -19,6 +24,7 @@ function CreateWarehouseView() {
       <div className="flex flex-col h-screen w-11/12 pt-10 pb-10 gap-4">
           <div className="flex justify-start w-2/5">
               <div className="flex items-center justify-between w-full">
+              <img className="cursor-pointer mr-2" src={arrow_left_image} alt={"go back"} onClick={handleClickGoBack}/>
                   <h1 className="text-2xl">
                       Warehouse
                   </h1>

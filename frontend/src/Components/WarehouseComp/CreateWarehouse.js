@@ -89,7 +89,7 @@ const CreateWarehouse = () => {
     };
 
     const response = await callAPI.post(`/warehouses/new/`, data, config);
-    navigate(`/warehouses/`)
+    navigate(`/warehouses`)
   } catch (error) {
     const keys = Object.keys(error.response.data)
     const values = Object.values(error.response.data)

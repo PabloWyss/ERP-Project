@@ -118,6 +118,7 @@ const WarehouseDetails = ({fromCreate}) => {
         },
       };
       await callAPI.patch(`/warehouses/${warehouseID}/`, data, config);
+      navigate('/warehouses')
     } catch (error) {
       console.log(error);
     }
@@ -136,6 +137,7 @@ if (warehouse.creation_date) {
 return (
       <div className="flex flex-col w-full justify-between gap-4">
         <div className="flex items-center justify-between bg-backgroundGrey px-4">
+
           <h2 className="text-xl">Warehouse Details</h2>
           <button onClick={handleEditButton}>
             {editClicked ? "Save" : "Edit"}
@@ -146,7 +148,7 @@ return (
 
                <ItemDetailsInput value={date}
                disableInput={true}
-               description={"Creation Date:"}/>]
+               description={"Creation Date:"}/>
               <ItemDetailsInput
                 disableInput={disableInput}
                 handleInput={handleNameInput}
