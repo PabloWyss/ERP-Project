@@ -6,11 +6,13 @@ import ItemModel from "./ItemModel";
 import callAPI from "../../../Axios/callAPI";
 import {FaChevronDown, FaChevronUp} from "react-icons/fa";
 import {useNavigate, useParams} from "react-router-dom";
+import ItemInventoryLedgers from "./InventoryLedgers";
 
 function Item() {
     // define const
     const [showVariantDetails, setShowVariantDetails] = useState(false)
     const [showModelDetails, setShowModelDetails] = useState(false)
+    const [showInventoryLedgers, setShowInventoryLedgers] = useState(false)
     const [fromUpdate, setFromUpdate] = useState(false)
     const [item, setItem] = useState({})
     const [itemVariant, setItemVariant] = useState({})
@@ -49,6 +51,11 @@ function Item() {
         setShowModelDetails(!showModelDetails)
     }
 
+    const handleShowInventoryLedger = (e) => {
+        e.preventDefault()
+        setShowInventoryLedgers(!showInventoryLedgers)
+    }
+
     const handleShowVariantsDetails = (e) => {
         e.preventDefault()
         navigate(`/variants/${itemID}`)
@@ -64,8 +71,7 @@ function Item() {
         try {
             const config = {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
             };
 
@@ -80,8 +86,7 @@ function Item() {
         try {
             const config = {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
             };
 
@@ -98,119 +103,118 @@ function Item() {
         obtainItemInfo()
     }, [])
 
-    return (
-        <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-6">
-            <div className="flex flex-col h-full w-full rounded-ifRadius py-6 px-8 bg-white  overflow-y-auto scrollbar-thin scrollbar-track-transparent
+    return (<div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-6">
+        <div className="flex flex-col h-full w-full rounded-ifRadius py-6 px-8 bg-white  overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey">
-                <div className="flex flex-col h-full rounded-ifRadius bg-white gap-4">
-                    <div className="flex justify-start w-2/5">
-                        <div className="flex w-full content-start items-center gap-4 px-4">
-                            <div>
-                                <img className="cursor-pointer" src={arrow_left_image} alt={"go back"}
-                                     onClick={handleClickGoBack}/>
+            <div className="flex flex-col h-full rounded-ifRadius bg-white gap-4">
+                <div className="flex justify-start w-2/5">
+                    <div className="flex w-full content-start items-center gap-4 px-4">
+                        <div>
+                            <img className="cursor-pointer" src={arrow_left_image} alt={"go back"}
+                                 onClick={handleClickGoBack}/>
+                        </div>
+                        <h1 className="text-title">
+                            {item.name}
+                        </h1>
+                    </div>
+                </div>
+                <div className="flex flex-col w-full gap-4 justify-between">
+                    <PrimaryDetails fromItem={true} itemFromItem={item}/>
+                    <div className="flex flex-col gap-4">
+                        <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
+                            <div className="text-xl">
+                                Item Specifications (Current)
                             </div>
-                            <h1 className="text-title">
-                                {item.name}
-                            </h1>
+                            <div className="items-center flex gap-4 justify-items-center">
+                                {showVariantDetails ? [<button className="p-0 p-0 bg-ifOrange w-40 text-white"
+                                                               onClick={handleClickCreateVariant} key="1">Create
+                                    Specifications</button>, <button className="p-0 p-0 bg-ifOrange w-40 text-white"
+                                                                     onClick={handleClickUpdateVariant}
+                                                                     key="2">Update
+                                    Specifications</button>, <button className="p-0 p-0 bg-ifOrange w-40 text-white"
+                                                                     onClick={handleShowVariantsDetails}
+                                                                     key="3">List
+                                    Specs</button>] : ""}
+                                <button className="p-0" onClick={handleShowVariantDetails}>
+                                    {showVariantDetails ? <FaChevronUp className="h-6 w-6"/> :
+                                        <FaChevronDown className="h-6 w-6"/>}
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div className="flex flex-col w-full gap-4 justify-between">
-                        <PrimaryDetails fromItem={true} itemFromItem={item}/>
-                        <div className="flex flex-col gap-4">
-                            <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
-                                <div className="text-xl">
-                                    Item Specifications (Current)
-                                </div>
-                                <div className="items-center flex gap-4 justify-items-center">
-                                    {
-                                        showVariantDetails ?
-                                            [<button className="p-0 p-0 bg-ifOrange w-40 text-white"
-                                                     onClick={handleClickCreateVariant} key="1">Create
-                                                Specifications</button>,
-                                                <button className="p-0 p-0 bg-ifOrange w-40 text-white"
-                                                        onClick={handleClickUpdateVariant} key="2">Update
-                                                    Specifications</button>,
-                                                <button className="p-0 p-0 bg-ifOrange w-40 text-white"
-                                                        onClick={handleShowVariantsDetails} key="3">List
-                                                    Specs</button>] :
-                                            ""
-                                    }
-                                    <button className="p-0" onClick={handleShowVariantDetails}>
-                                        {showVariantDetails ? <FaChevronUp className="h-6 w-6"/> :
-                                            <FaChevronDown className="h-6 w-6"/>}
-                                    </button>
-                                </div>
+                    {showVariantDetails ?
+                        <ItemVariant itemVariant={itemVariant} itemID={itemID} fromUpdate={fromUpdate}/> : ""}
+                    <div className="flex flex-col gap-4">
+                        <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
+                            <div className="text-xl">
+                                Item Model
                             </div>
-                        </div>
-                        {
-                            showVariantDetails ?
-                                <ItemVariant itemVariant={itemVariant} itemID={itemID} fromUpdate={fromUpdate}/> :
-                                ""
-                        }
-                        <div className="flex flex-col gap-4">
-                            <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
-                                <div className="text-xl">
-                                    Item Model
-                                </div>
-                                <div className="items-center flex gap-4 justify-items-center">
-                                    {
-                                        showModelDetails ?
-                                            [<button className="p-0 p-0 bg-ifOrange w-40 text-white"
-                                                     onClick={handleClickListOfModel} key="3">Go to List of
-                                                Models</button>,
-                                                <button className="p-0 p-0 bg-ifOrange w-40 text-white"
-                                                        onClick={handleClickGoToModel} key="4">Go to Model</button>] :
-                                            ""
-                                    }
-                                    <button className="p-0" onClick={handleShowModelDetails}>
-                                        {showModelDetails ? <FaChevronUp className="h-6 w-6"/> :
-                                            <FaChevronDown className="h-6 w-6"/>}
-                                    </button>
-                                </div>
+                            <div className="items-center flex gap-4 justify-items-center">
+                                {showModelDetails ? [<button className="p-0 p-0 bg-ifOrange w-40 text-white"
+                                                             onClick={handleClickListOfModel} key="3">Go to List of
+                                    Models</button>, <button className="p-0 p-0 bg-ifOrange w-40 text-white"
+                                                             onClick={handleClickGoToModel} key="4">Go to
+                                    Model</button>] : ""}
+                                <button className="p-0" onClick={handleShowModelDetails}>
+                                    {showModelDetails ? <FaChevronUp className="h-6 w-6"/> :
+                                        <FaChevronDown className="h-6 w-6"/>}
+                                </button>
+                            </div>
 
+                        </div>
+                    </div>
+                    {showModelDetails ?
+                        <ItemModel fromItem={true} modelFromItem={item.item_model} modelID={item.id}/> : ""}
+                    <div className="flex flex-col gap-4">
+                        <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
+                            <div className="text-xl">
+                                Inventory ledger of Item
+                            </div>
+                            <div className="items-center flex gap-4 justify-items-center">
+                                <button className="p-0" onClick={handleShowInventoryLedger}>
+                                    {showInventoryLedgers ? <FaChevronUp className="h-6 w-6"/> :
+                                        <FaChevronDown className="h-6 w-6"/>}
+                                </button>
                             </div>
                         </div>
-                        {
-                            showModelDetails ?
-                                <ItemModel fromItem={true} modelFromItem={item.item_model} modelID={item.id}/> :
-                                ""
-                        }
-                        {/*this sections was commented out since there are no paartners nor item Tags at the moment*/}
-                        {/*    <div className="flex flex-col gap-4">*/}
-                        {/*        <div className="flex justify-between items-center px-4 bg-backgroundGrey text-xl">*/}
-                        {/*            <div>*/}
-                        {/*                Item tags*/}
-                        {/*            </div>*/}
-                        {/*            <button className="p-0" onClick={handleShowTagsDetails}>*/}
-                        {/*                {showTagsDetails ? <FaChevronUp className="h-6 w-6" /> : <FaChevronDown className="h-6 w-6"/>}*/}
-                        {/*            </button>*/}
-                        {/*        </div>*/}
-                        {/*    </div>*/}
-                        {/*    {*/}
-                        {/*        showTagsDetails ?*/}
-                        {/*            <ItemTag/>:*/}
-                        {/*            ""*/}
-                        {/*    }*/}
-                        {/*    <div className="flex flex-col gap-4">*/}
-                        {/*        <div className="flex justify-between items-center px-4 bg-backgroundGrey text-xl">*/}
-                        {/*            <div>*/}
-                        {/*                Partners*/}
-                        {/*            </div>*/}
-                        {/*            <button className="p-0" onClick={handleShowPartnersDetails}>*/}
-                        {/*                {showPartnersDetails ? <FaChevronUp className="h-6 w-6" /> : <FaChevronDown className="h-6 w-6"/>}*/}
-                        {/*            </button>*/}
-                        {/*        </div>*/}
-                        {/*    </div>*/}
-                        {/*    {*/}
-                        {/*        showPartnersDetails ?*/}
-                        {/*            <ItemPartners/>:*/}
-                        {/*            ""*/}
-                        {/*    }*/}
                     </div>
+                    {showInventoryLedgers ?
+                        <ItemInventoryLedgers itemID={itemID}/> : ""}
+                    {/*this sections was commented out since there are no paartners nor item Tags at the moment*/}
+                    {/*    <div className="flex flex-col gap-4">*/}
+                    {/*        <div className="flex justify-between items-center px-4 bg-backgroundGrey text-xl">*/}
+                    {/*            <div>*/}
+                    {/*                Item tags*/}
+                    {/*            </div>*/}
+                    {/*            <button className="p-0" onClick={handleShowTagsDetails}>*/}
+                    {/*                {showTagsDetails ? <FaChevronUp className="h-6 w-6" /> : <FaChevronDown className="h-6 w-6"/>}*/}
+                    {/*            </button>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*    {*/}
+                    {/*        showTagsDetails ?*/}
+                    {/*            <ItemTag/>:*/}
+                    {/*            ""*/}
+                    {/*    }*/}
+                    {/*    <div className="flex flex-col gap-4">*/}
+                    {/*        <div className="flex justify-between items-center px-4 bg-backgroundGrey text-xl">*/}
+                    {/*            <div>*/}
+                    {/*                Partners*/}
+                    {/*            </div>*/}
+                    {/*            <button className="p-0" onClick={handleShowPartnersDetails}>*/}
+                    {/*                {showPartnersDetails ? <FaChevronUp className="h-6 w-6" /> : <FaChevronDown className="h-6 w-6"/>}*/}
+                    {/*            </button>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*    {*/}
+                    {/*        showPartnersDetails ?*/}
+                    {/*            <ItemPartners/>:*/}
+                    {/*            ""*/}
+                    {/*    }*/}
                 </div>
             </div>
         </div>
-    );
+    </div>);
 }
 
 export default Item;

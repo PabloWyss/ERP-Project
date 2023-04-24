@@ -19,7 +19,7 @@ urlpatterns = [
     path('customers/search/', SearchCustomerView.as_view()),
     path('customers/update/<int:partner_id>/', UpdateIsCustomerView.as_view()),
 
-    path('assign/<int:item_partner_id>/', AssignItemToPartnerView.as_view()),
+    path('assign/<int:partner_id>/', AssignItemToPartnerView.as_view()),
 
     path('items/<int:item_id>/', ListPartnerAssignedToItemView.as_view()),
     path('suppliers/items/<int:item_id>/', ListSupplierAssignedToItemView.as_view()),
