@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "jsbarcode": "^3.11.5",
+    "moment": "^2.29.4",
     "qrcode": "^1.5.3",
     "react-icons": "^4.8.0",
     "react-qr-reader": "^2.2.1",
