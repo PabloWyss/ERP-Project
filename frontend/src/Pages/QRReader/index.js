@@ -101,7 +101,7 @@ const QRReader = () => {
                                             onError={webcamError}
                                             onScan={webcamScan}
                                             legacyMode={false}
-                                            facingMode={"user"}
+                                            facingMode={'environment'}
                                         />
                                     </div>
                             }
