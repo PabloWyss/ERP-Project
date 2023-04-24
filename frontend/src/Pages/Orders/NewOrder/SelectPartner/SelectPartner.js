@@ -1,15 +1,17 @@
-import React, { useEffect, useRef } from "react";
-import ListTable from "../../../../Components/ListTable/ListTable.js";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import OrderSelectItem from "./OrderSelectItem/index.js";
-import { setCheckedItems } from "../../../../Redux/Slices/tableCheckedItems.js";
+import OrderSelectItem from "./OrderSelectItem/OrderSelectItem.js";
 import callAPI from "../../../../Axios/callAPI.js";
+import { setPartner } from "../../../../Redux/Slices/orderBuySellRefund.js";
+import { setCheckedPartner } from "../../../../Redux/Slices/orderCheckedPartner.js";
+import SelectPartnerTable from "./SelectPartnerTable/SelectPartnerTable.js";
 
 function SelectPartner() {
+  //#### SHOW LIST OF PARTNERS ####
   //retrieve type buy or sell from redux
   const isOrderBuy = useSelector((store) => store.orderbuysellrefund.isbuy);
-  //store retrieved data here
+  //store fetched data here
   const [partnerList, setPartnerList] = useState([]);
   //fetch partner list from backend
   const fetchSuppliersOrCustomers = async () => {
@@ -33,7 +35,7 @@ function SelectPartner() {
     fetchSuppliersOrCustomers();
   }, [isOrderBuy]);
 
-  //create columns model
+  //create columns model for partner list
   const columns = [
     {
       Header: "Name",
@@ -53,17 +55,23 @@ function SelectPartner() {
     },
   ];
 
-  //show the partner list or the selected partner
-  const dispatch = useDispatch(); //used later to reset redux store
+  //#### HANDLE PARTNER SELECTION ####
+  const [isPartnerSelected, setIsPartnerSelected] = useState(false);
   //retrieve id of selected partner from redux
   const selectedPartnerId = useSelector(
-    (store) => store.checkeditems.checkeditems
+    (store) => store.checkedpartner.checkedpartner
   );
-  // let selectedPartnerData = useRef(undefined); //will be fetched when selected
-  const [isPartnerSelected, setIsPartnerSelected] = useState(false);
-  //store retrieved data here
+  const handleSelectPartner = () => {
+    if (selectedPartnerId.length === 1) {
+      setIsPartnerSelected(true);
+    }
+  };
+  useEffect(handleSelectPartner, [selectedPartnerId]);
+
+  //store the selected partner's data fetched from the backend here
   const [partnerData, setPartnerData] = useState([]);
-  //fetch partner list from backend
+  const dispatch = useDispatch(); //used later to update redux store
+  //fetch partner data from backend
   const fetchPartnerData = async () => {
     try {
       const config = {
@@ -72,32 +80,24 @@ function SelectPartner() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       };
-      // const response = await callAPI.get(`/partners/${selectedPartner}/`, config);
-      const response = await callAPI.get(`/partners/5/`, config);
+      const response = await callAPI.get(
+        `/partners/${selectedPartnerId[0]}/`,
+        config
+      );
       setPartnerData(response.data);
-      console.log(partnerData)
+      dispatch(setPartner(partnerData));
     } catch (error) {
       console.log(error);
     }
   };
-useEffect(() => {
-  fetchPartnerData()
-}, [selectedPartnerId])
-
-  const handleSelectPartner = () => {
-    if (selectedPartnerId.length === 1) {
-      console.log("id: " + selectedPartnerId)
-      setIsPartnerSelected(true);
-      dispatch(setCheckedItems([])); //reset redux store for item selection
-    }
-  };
-  useEffect(handleSelectPartner, [selectedPartnerId]);
-
-  //TODO set isPartnerSelected to false if the user toggles Buy/Sell after selecting a partner
+  useEffect(() => {
+    fetchPartnerData();
+  }, [selectedPartnerId]);
 
   //change an already selected partner
   const handleChangePartner = () => {
     setIsPartnerSelected(false);
+    dispatch(setCheckedPartner([]));
   };
 
   return (
@@ -106,8 +106,7 @@ useEffect(() => {
         {isPartnerSelected ? (
           <div className="flex justify-between">
             <div className="pt-4">
-              {partnerData.name} -{" "}
-              {partnerData.address}
+              {partnerData.name} - {partnerData.address}
             </div>
             <div className="m-2">
               <button
@@ -119,14 +118,14 @@ useEffect(() => {
             </div>
           </div>
         ) : (
-          <ListTable data={partnerList} columns={columns} />
+          <SelectPartnerTable data={partnerList} columns={columns} />
         )}
       </div>
       <div>
         {isPartnerSelected ? (
           <div>
             <h2 className=" bg-backgroundGrey text-section px-4 mt-4">Items</h2>
-            {/* <OrderSelectItem partnerid={selectedPartner.id} /> */}
+            <OrderSelectItem />
           </div>
         ) : (
           ""

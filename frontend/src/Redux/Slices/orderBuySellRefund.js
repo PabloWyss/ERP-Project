@@ -5,6 +5,10 @@ export const orderBuySellRefund = createSlice({
   initialState: {
     isbuy: true,
     isrefund: false,
+    partner: {},
+    item: {},
+    quantity: 1,
+    warehouse: {},
   },
   reducers: {
     setOrderIsBuy: (state) => {
@@ -13,7 +17,29 @@ export const orderBuySellRefund = createSlice({
     setOrderIsRefund: (state) => {
       state.isrefund = !state.isrefund;
     },
+    setPartner: (state, action) => {
+      const newPartner = { ...action.payload };
+      state.partner = newPartner;
+    },
+    setItem: (state, action) => {
+      const newItem = { ...action.payload };
+      state.item = newItem;
+    },
+    setQuantity: (state, action) => {
+      state.quantity = action.payload;
+    },
+    setWarehouse: (state, action) => {
+      const newWarehouse = { ...action.payload };
+      state.warehouse = newWarehouse;
+    },
   },
 });
-export const { setOrderIsBuy, setOrderIsRefund} = orderBuySellRefund.actions;
+export const {
+  setOrderIsBuy,
+  setOrderIsRefund,
+  setPartner,
+  setItem,
+  setQuantity,
+  setWarehouse,
+} = orderBuySellRefund.actions;
 export default orderBuySellRefund.reducer;

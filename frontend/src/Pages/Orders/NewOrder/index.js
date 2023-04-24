@@ -1,4 +1,4 @@
-import SelectPartner from "./SelectPartner";
+import SelectPartner from "./SelectPartner/SelectPartner";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrderIsBuy, setOrderIsRefund } from "../../../Redux/Slices/orderBuySellRefund";
 
