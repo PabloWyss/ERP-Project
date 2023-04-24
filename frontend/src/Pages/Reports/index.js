@@ -6,7 +6,7 @@ import WarehouseRepTable from "./WarehouseRepTable";
 function Reports() {
 
     //define const
-    const [modelsList, setModelsList] = useState([])
+    const [inventoryLedgers, setInventoryLedgers] = useState([])
 
     // fetch data
     const obtainModelsInfo = async () => {
@@ -19,8 +19,7 @@ function Reports() {
             };
 
             const response = await callAPI.get(`/inventory_ledgers/`, config)
-            setModelsList(response.data)
-
+            setInventoryLedgers(response.data)
         } catch (error) {
             console.log(error);
         }
@@ -34,7 +33,7 @@ function Reports() {
 
     return (
         <div className="flex w-full">
-            <WarehouseRepTable tableData={modelsList}/>:
+            <WarehouseRepTable tableData={inventoryLedgers}/>:
         </div>
     );
 }

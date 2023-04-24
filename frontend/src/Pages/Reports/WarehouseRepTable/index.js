@@ -1,68 +1,47 @@
 import ListTable from "../../../Components/ListTable/ListTable";
-import addButton from "../../../Assets/Icons/plus_orange.png"
-import {useNavigate} from "react-router-dom";
 import ListTableIfEmpty from "../../../Components/ListTableIfEmpty/ListTable";
 import moment from "moment/moment";
 import React from "react";
 
 const WarehouseRepTable = ({tableData}) => {
-    const navigate = useNavigate()
-
 
     //create columns model
     const columns = [
         {
-            Header: "Name",
-            accessor: "name",
+            Header: "Event Date",
+            accessor: "event_date",
+            Cell : (props)=>{
+            const custom_date = moment(props.value).format("MMMM Do YYYY")
+            return <span>{custom_date}</span>
+        }
         },
         {
-            Header: "Status",
-            accessor: "status",
+            Header: "Type",
+            accessor: "event_type",
         },
         {
-            Header: "Condition",
-            accessor: "condition",
+            Header: "Warehouse",
+            accessor: "warehouse.name",
         },
         {
-            Header: "Category",
-            accessor: "category",
+            Header: "Item",
+            accessor: "item.name",
         },
         {
-            Header: "Color",
-            accessor: "color",
+            Header: "Quantity Altered",
+            accessor: "quantity_altered",
         },
         {
-            Header: "Image",
-            accessor: "images[0].image",
-            Cell: (props) => {
-
-                if (props.row.original.images) {
-                    if(props.row.original.images[0]){
-                        return <img
-                        className="flex justify-center items-center"
-                        src={props.row.original.images[0].image}
-                        width={60}
-                        alt='Player'
-                    />
-                    }
-                    else {
-                        return <span>No Images assigned to Model</span>
-                    }
-                }
-            }
+            Header: "Initial Sock Level",
+            accessor: "stock_level_initial",
+        },
+        {
+            Header: "Final Sock Level",
+            accessor: "stock_level_final",
         },
     ];
 
-    // handle buttons
-    const handleCreateButton = (e) => {
-        e.preventDefault()
-        navigate(`/models/create/`)
-    }
 
-    const handleGoToItems = (e) => {
-        e.preventDefault()
-        navigate(`/items`)
-    }
 
     //table data if empy in order to avoid rendering problems
     const data_if_empty = [{
@@ -82,20 +61,13 @@ const WarehouseRepTable = ({tableData}) => {
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey"
             >
                 <div className="flex gap-10">
-                    <h1 className="text-title mb-2">Models</h1>
-                    <button className="p-0 p-0 bg-ifOrange w-40 h-8 text-white" onClick={handleGoToItems}>Go to Items
-                    </button>
+                    <h1 className="text-title mb-2">Inventory Ledgers</h1>
                 </div>
                 {
                     tableData?.length > 0 ?
                         <ListTable data={tableData} columns={columns}></ListTable> :
                         <ListTableIfEmpty data={data_if_empty} columns={columns}></ListTableIfEmpty>
                 }
-
-                <div className="flex">
-                    <img className="cursor-pointer absolute bottom-10 right-12" src={addButton} alt={"create new model"}
-                         onClick={handleCreateButton}/>
-                </div>
             </div>
 
         </div>
