@@ -5,6 +5,8 @@ import callAPI from "../../../../../../Axios/callAPI";
 import {
   setWarehouse,
   setOrderQuantity,
+  setShipping,
+  setOrderNumber,
 } from "../../../../../../Redux/Slices/orderBuySellRefund";
 import { useNavigate } from "react-router-dom";
 
@@ -108,19 +110,48 @@ function OrderSelectWarehouse() {
     }
   }, [quantity]);
 
+  //#### HANDLE INSERT ORDER NUMBER ####
+  const [isOrderNrValid, setIsOrderNrValid] = useState(false);
+  const [orderNr, setOrderNr] = useState(0);
+  const handleOrderNrChange = (e) => {
+    setOrderNr(e.target.value);
+    setIsOrderNrValid(true);
+  };
+  //when order number is changed, update value in redux
+  useEffect(() => {
+    dispatch(setOrderNumber(orderNr));
+  }, [orderNr]);
+
+  //#### HANDLE INSERT SHIPPING DATE ####
+  const [isShippingValid, setIsShippingValid] = useState(false);
+  const [shippingDate, setShippingDate] = useState(0);
+  const handleShippingDateChange = (e) => {
+    setShippingDate(e.target.value);
+    setIsShippingValid(true);
+  };
+  //when shipping date is changed, update value in redux
+  useEffect(() => {
+    dispatch(setShipping(shippingDate));
+  }, [shippingDate]);
+
   //#### SAVE BUTTON ####
   //toggle activate Save button
   const [allSelected, setAllSelected] = useState(false);
   useEffect(() => {
-    if (isQuantityValid && isWarehouseSelected) {
+    if (
+      isQuantityValid &&
+      isWarehouseSelected &&
+      isOrderNrValid &&
+      isShippingValid
+    ) {
       setAllSelected(true);
     } else {
       setAllSelected(false);
     }
-  }, [isQuantityValid, isWarehouseSelected]);
+  }, [isQuantityValid, isWarehouseSelected, isOrderNrValid, isShippingValid]);
 
   //retrieve order data from redux
-  const orderNumber = "Test1"; //TODO
+  const orderNumber = useSelector((store) => store.orderbuysellrefund.ordernr);
   const shipmentDate = "2024-04-19T21:41:00.366027Z"; //TODO
   const partner = useSelector((store) => store.orderbuysellrefund.partner.id);
   const isMerchantSupplier = !useSelector(
@@ -168,16 +199,39 @@ function OrderSelectWarehouse() {
 
   return (
     <div>
-      <div className="flex my-2">
-        <div className="mt-1 mr-4">Quantity:</div>
-        <div>
-          <input
-            onChange={handleQuantityChange}
-            value={quantity}
-            type="number"
-            min="1"
-            className="w-20"
-          />
+      <div className="flex my-2 gap-16">
+        <div className="flex">
+          <div className="mt-1 mr-4">Quantity:</div>
+          <div>
+            <input
+              onChange={handleQuantityChange}
+              value={quantity}
+              type="number"
+              min="1"
+              className="w-20"
+            />
+          </div>
+        </div>
+        <div className="flex">
+          <div className="mt-1 mr-4">Order #:</div>
+          <div>
+            <input
+              onChange={handleOrderNrChange}
+              value={orderNr}
+              className="w-40"
+            />
+          </div>
+        </div>
+        <div className="flex">
+          <div className="mt-1 mr-4">Shipping date:</div>
+          <div>
+            <input
+              onChange={handleShippingDateChange}
+              value={shippingDate}
+              type="date"
+              className="w-40"
+            />
+          </div>
         </div>
       </div>
       <ListTable data={warehouseList} columns={columns} />
