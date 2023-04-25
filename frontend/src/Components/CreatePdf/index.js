@@ -1,9 +1,14 @@
-import ReactPDF from '@react-pdf/renderer';
-import PdfFile from "./PdfFile";
-const CreatePdf = ()=> {
+import ReactDOM from 'react-dom';
+import { PDFViewer } from '@react-pdf/renderer';
+import MyDocument from "./PdfFile";
 
-    ReactPDF.render(<PdfFile />, `${__dirname}/example.pdf`);
 
-}
+const PDFView = () => (
+  <PDFViewer>
+    <MyDocument />
+  </PDFViewer>
+);
 
-export default CreatePdf
+export default PDFView
+
+ReactDOM.render(<PDFView />, document.getElementById('root'));

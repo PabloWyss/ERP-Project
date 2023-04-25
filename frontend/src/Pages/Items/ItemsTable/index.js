@@ -66,7 +66,7 @@ const ItemsTable = ({tableData}) => {
 
     const handleGoToModels = (e) => {
         e.preventDefault()
-        navigate(`/models`)
+        navigate(`/items/models`)
     }
 
     const hanldeClickQrCode = (e) => {

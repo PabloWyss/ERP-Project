@@ -33,13 +33,13 @@ function Item() {
 
     const handleClickListOfModel = (e) => {
         e.preventDefault()
-        navigate(`/models`)
+        navigate(`/items/models`)
     }
 
     const handleClickGoToModel = (e) => {
         e.preventDefault()
         if(item.item_model){
-            navigate(`/models/${item.item_model.id}`)
+            navigate(`/items/models/${item.item_model.id}`)
         }
     }
 

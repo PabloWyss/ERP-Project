@@ -5,6 +5,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import QRCode from "qrcode";
 import JsBarcode from "jsbarcode";
 import moment from "moment/moment";
+import PDFView from "../../../../Components/CreatePdf";
 
 const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
 
@@ -333,7 +334,11 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
                                     onClick={handleCreateQrCodeBarcodeButton}>
                                 Create QRcode / Barcode
                             </button>
+                            <div>
+                                <PDFView/>
+                            </div>
                         </div>
+
                 }
             </div>
             {

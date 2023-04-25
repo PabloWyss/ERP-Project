@@ -56,7 +56,7 @@ const ModelTable = ({tableData}) => {
     // handle buttons
     const handleCreateButton = (e) => {
         e.preventDefault()
-        navigate(`/models/create/`)
+        navigate(`/items/models/create/`)
     }
 
     const handleGoToItems = (e) => {
