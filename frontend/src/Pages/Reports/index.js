@@ -282,6 +282,8 @@ function Reports() {
     ]
 
 
+
+
     return (
         <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-6">
             <div className="flex flex-col h-full w-full rounded-ifRadius py-6 px-8 bg-white  overflow-y-auto scrollbar-thin scrollbar-track-transparent
@@ -297,12 +299,12 @@ function Reports() {
                                     </h2>
                                     <MyResponsiveBar data={data1}/>
                                 </div>
-                                <div className="flex flex-col justify-center items-center w-3/5 h-80">
-                                    <h2 className="text-title">
-                                        Inventory per Warehouse
-                                    </h2>
-                                    <MyResponsiveLine data={dataLine}/>
-                                </div>
+                                {/*<div className="flex flex-col justify-center items-center w-3/5 h-80">*/}
+                                {/*    <h2 className="text-title">*/}
+                                {/*        Inventory per Warehouse*/}
+                                {/*    </h2>*/}
+                                {/*    <MyResponsiveLine data={dataLine}/>*/}
+                                {/*</div>*/}
                             </div>
                         </div>
                     </div>
