@@ -11,19 +11,19 @@ const MyResponsiveBar = ({ data /* see data tab */ }) => (
     <ResponsiveBar
         data={data}
         keys={[
-            'hot dog',
-            'burger',
-            'sandwich',
-            'kebab',
-            'fries',
-            'donut'
+            'Stock level',
+            // 'item2',
+            // 'sandwich',
+            // 'kebab',
+            // 'fries',
+            // 'donut'
         ]}
-        indexBy="country"
+        indexBy="Warehouse Name"
         margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
         padding={0.3}
         valueScale={{ type: 'linear' }}
         indexScale={{ type: 'band', round: true }}
-        colors={{ scheme: 'nivo' }}
+        colors={{ scheme: 'accent' }}
         defs={[
             {
                 id: 'dots',
@@ -73,7 +73,7 @@ const MyResponsiveBar = ({ data /* see data tab */ }) => (
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'country',
+            legend: 'Warehouse',
             legendPosition: 'middle',
             legendOffset: 32
         }}
@@ -81,7 +81,7 @@ const MyResponsiveBar = ({ data /* see data tab */ }) => (
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'food',
+            legend: 'Qty Items',
             legendPosition: 'middle',
             legendOffset: -40
         }}

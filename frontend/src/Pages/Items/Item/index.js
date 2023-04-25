@@ -103,7 +103,8 @@ function Item() {
         obtainItemInfo()
     }, [])
 
-    return (<div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-6">
+    return (
+        <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-6">
         <div className="flex flex-col h-full w-full rounded-ifRadius py-6 px-8 bg-white  overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey">
             <div className="flex flex-col h-full rounded-ifRadius bg-white gap-4">
