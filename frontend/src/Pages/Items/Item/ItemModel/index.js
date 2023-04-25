@@ -223,6 +223,7 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList}) => {
         }
         if (editClicked){
             udpateModel()
+            setEditClicked(!editClicked)
         }
 
     }
