@@ -4,10 +4,10 @@ import callAPI from "../../Axios/callAPI";
 import ItemDetailsInput from "../../Pages/Items/Item/PrimaryDetails/ItemDetailsInput";
 import {useNavigate, useParams} from "react-router-dom";
 
-const WarehouseDetails = ({fromCreate}) => {
+const PartnerDetails = ({fromCreate}) => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
-  const [warehouse, setWarehouse] = useState({});
+  const [partner, setPartner] = useState({});
   const [editClicked, setEditClicked] = useState(false);
   const [disableInput, setDisableInput] = useState(true);
   const [name, setName] = useState("");
@@ -19,14 +19,14 @@ const WarehouseDetails = ({fromCreate}) => {
   const [isStandard, setIsStandard] = useState(false);
   const [status, setStatus] = useState("");
   const [creationDate, setCreationDate] = useState("");
-  const { warehouseID } = useParams();
+  const { partnerID } = useParams();
 
   const handleEditButton = async (e) => {
     e.preventDefault();
     if (editClicked) {
       setEditClicked(!editClicked);
       setDisableInput(!disableInput);
-      updateWarehouse();
+      updatePartner();
     } else {
       setEditClicked(!editClicked);
       setDisableInput(!disableInput);
@@ -72,7 +72,7 @@ const handleIsStandardInput = (e) => {
     setCreationDate(e.target.value);
   };
 
-  const getWarehouseByID = async () => {
+  const getPartnerByID = async () => {
     try {
       const config = {
         headers: {
@@ -81,8 +81,8 @@ const handleIsStandardInput = (e) => {
         },
       };
 
-      const response = await callAPI.get(`/warehouses/${warehouseID}/`, config);
-      setWarehouse(response.data);
+      const response = await callAPI.get(`/partners/${partnerID}/`, config);
+      setPartner(response.data);
       setName(response.data.name);
       setAddress(response.data.address);
       setCountryCode(response.data.country_code);
@@ -98,7 +98,7 @@ const handleIsStandardInput = (e) => {
     }
   };
 
-  const updateWarehouse = async () => {
+  const updatePartner = async () => {
     if (!localStorage.getItem("token")) {
       return;
     }
@@ -120,8 +120,8 @@ const handleIsStandardInput = (e) => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       };
-      await callAPI.patch(`/warehouses/${warehouseID}/`, data, config);
-      navigate('/warehouses')
+      await callAPI.patch(`/partners/${partnerID}/`, data, config);
+      navigate('/partners')
     } catch (error) {
       console.log(error);
     }
@@ -129,19 +129,19 @@ const handleIsStandardInput = (e) => {
 
 let date = '';
 
-if (warehouse.creation_date) {
-  date = new Date(warehouse.creation_date).toString().slice(0, 15);
+if (partner.creation_date) {
+  date = new Date(partner.creation_date).toString().slice(0, 15);
 }
 
   useEffect(() => {
-    getWarehouseByID();
+    getPartnerByID();
   }, []);
 
 return (
       <div className="flex flex-col w-full justify-between gap-4">
         <div className="flex items-center justify-between bg-backgroundGrey px-4">
 
-          <h2 className="text-xl">Warehouse Details</h2>
+          <h2 className="text-xl">Partner Details</h2>
           <button onClick={handleEditButton}>
             {editClicked ? "Save" : "Edit"}
           </button>
@@ -174,10 +174,11 @@ return (
               <ItemDetailsInput
                 type={"checkbox"}
                 disableInput={disableInput}
-                description={"Is Standard:"}
+                description={"Is Standard: "}
                 value={isStandard}
                 checked={isStandard}
                 handleInput={handleIsStandardInput}
+                className="w-10 h-10 mr-2"
               />
             </div>
             <div className="flex w-1/2 flex-col gap-1">
@@ -216,4 +217,4 @@ return (
 
 }
 
-export default WarehouseDetails;
+export default PartnerDetails;

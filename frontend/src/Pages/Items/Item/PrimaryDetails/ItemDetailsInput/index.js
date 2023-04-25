@@ -31,7 +31,7 @@ const ItemDetailsInput = ({value, disableInput, handleInput, description, choice
               type={type}
               checked={value ? value : ""}
             />
-            <label className="ml-2">{description}</label>
+
           </div>
         ) : (
           <input
