@@ -88,7 +88,7 @@ const QRReader = () => {
                             {
                                 fileResult ?
                                     [<button className="m-4 text-xl p-0 bg-ifOrange w-40 text-white"
-                                             onClick={handleGoToItemButton}> Got to item</button>,
+                                             onClick={handleGoToItemButton}> Go to Item</button>,
                                         <button className="m-4 text-xl p-0 bg-ifOrange w-60 text-white"
                                                 onClick={handleAddToWarehouseButton}> Add to Warehouse </button>,
                                         <button className="m-4 text-xl p-0 bg-ifOrange w-40 text-white"

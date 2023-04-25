@@ -2,6 +2,8 @@ import ListTable from "../../../Components/ListTable/ListTable";
 import addButton from "../../../Assets/Icons/plus_orange.png"
 import {useNavigate} from "react-router-dom";
 import ListTableIfEmpty from "../../../Components/ListTableIfEmpty/ListTable";
+import moment from "moment/moment";
+import React from "react";
 
 const ModelTable = ({tableData}) => {
     const navigate = useNavigate()
@@ -29,6 +31,26 @@ const ModelTable = ({tableData}) => {
             Header: "Color",
             accessor: "color",
         },
+        {
+            Header: "Image",
+            accessor: "images[0].image",
+            Cell: (props) => {
+
+                if (props.row.original.images) {
+                    if(props.row.original.images[0]){
+                        return <img
+                        className="flex justify-center items-center"
+                        src={props.row.original.images[0].image}
+                        width={60}
+                        alt='Player'
+                    />
+                    }
+                    else {
+                        return <span>No Images assigned to Model</span>
+                    }
+                }
+            }
+        },
     ];
 
     // handle buttons
@@ -49,7 +71,7 @@ const ModelTable = ({tableData}) => {
 
     return (
         <div
-            className="flex h-full w-full py-6 px-6 justify-between
+            className="flex h-full w-full py-6 px-8 justify-between
     bg-backgroundGrey"
         >
             <div

@@ -7,7 +7,7 @@ import ItemsToAssign from "./ItemsToAssign";
 import arrow_left_image from "../../../../Assets/Icons/arrow_left_orange.svg";
 import ItemsAssigned from "./ItemsAssigned";
 
-const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, fromEdit}) => {
+const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList}) => {
 
     //Def const
     const [itemModel, setItemModel] = useState({})
@@ -23,6 +23,7 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, fromEd
     const [conditionOptions, setConditionOptions] = useState([])
     const [categoryOptions, setCategoryOptions] = useState([])
     const [editClicked, setEditClicked] = useState(false)
+
     // for the moment no model specs are shown
     // const [showModelSpecs, setShowModelSpecs] = useState(false)
     const navigate = useNavigate()
@@ -130,7 +131,6 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, fromEd
             console.log(error)
         }
     };
-
     const udpateModel = async () => {
         if (!localStorage.getItem('token')) {
             return;
@@ -217,19 +217,21 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, fromEd
     //handle buttons
     const handleOnSubmit = (e) => {
         e.preventDefault()
-        createModel()
-        navigate(-1)
+        if (fromCreate){
+            createModel()
+            navigate(-1)
+        }
+        if (editClicked){
+            udpateModel()
+        }
+
     }
 
 
     const handleEditButton = (e) => {
         e.preventDefault()
-        if (editClicked) {
-            setEditClicked(!editClicked)
-            udpateModel()
-        } else {
-            setEditClicked(!editClicked)
-        }
+        setEditClicked(!editClicked)
+
     }
 
     const handleClickGoBack = (e) => {
@@ -242,27 +244,27 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, fromEd
     //     setShowModelSpecs(!showModelSpecs)
     // }
 
-
     return (
         <form className="flex flex-col gap-4 " onSubmit={handleOnSubmit}>
             {
                 fromItem ?
                     "" :
                     <div className="flex items-center justify-between bg-backgroundGrey px-4 h-10">
-                        <div>
+                        <div className="flex items-center gap-4">
                             <img className="cursor-pointer" src={arrow_left_image} alt={"go back"}
                                  onClick={handleClickGoBack}/>
+                            <h2 className="text-title">
+                                {name}
+                            </h2>
                         </div>
-                        <h2 className="text-title">
-                            {name}
-                        </h2>
+
                         {
                             (fromCreate) ?
                                 "" :
                                 <button className="p-0 bg-ifOrange w-20 text-white" onClick={handleEditButton}>
                                     {
                                         editClicked ?
-                                            "Save" :
+                                            "" :
                                             "Edit"
                                     }
                                 </button>
@@ -336,7 +338,7 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, fromEd
                     ))}
                 </div>
                 {
-                    fromCreate ?
+                    (fromCreate || editClicked) ?
 
                         <div>
                             <label className="flex flex-wrap" htmlFor="pictures">
@@ -377,7 +379,7 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, fromEd
             {/*}*/}
             <div className="flex w-full justify-center">
                 {
-                    (fromCreate) ?
+                    (fromCreate || editClicked) ?
                         <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"}>
                             Submit
                         </button> :
@@ -385,7 +387,7 @@ const ItemModel = ({fromCreate, fromItem, modelFromItem, model, fromList, fromEd
                 }
             </div>
             {
-                fromList ?
+                fromList  ?
                     <div className="flex flex-col w-full gap-4">
                         <div>
                             <div className="flex w-full">

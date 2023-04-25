@@ -27,7 +27,7 @@ const ItemInventoryLedgers = ({itemID}) =>{
 
     return(
         <div className="flex w-full">
-            <InventoryLedgerTable tableData={inventoryLedgers}/>:
+            <InventoryLedgerTable tableData={inventoryLedgers}/>
         </div>
     )
 }
