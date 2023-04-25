@@ -11,7 +11,7 @@ export const orderCheckedItem = createSlice({
       // const newCheckedItems = { ...action.payload };
       // state.checkeditems = newCheckedItems;
       const newCheckedItem = action.payload;
-      state.checkedpartner = newCheckedItem;
+      state.ordercheckeditem = newCheckedItem;
     },
   },
 });
