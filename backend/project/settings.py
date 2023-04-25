@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'import_export',
 
 
+
     # Own apps
     'inventory_ledger',
     'item',
