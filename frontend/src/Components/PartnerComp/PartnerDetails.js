@@ -192,19 +192,18 @@ return (
                 value={email}
               />
               <ItemDetailsInput
+                value={contact}
+                type="text"
+                handleInput={handleContactInput}
+                description={"Contact: "}
+              />
+              <ItemDetailsInput
                 type="checkbox"
                 handleInput={handleIsCustomerInput}
                 description={"Is Customer: "}
                 value={isCustomer}
                 checked={isCustomer}
               />
-              <ItemDetailsInput
-                value={contact}
-                type="text"
-                handleInput={handleContactInput}
-                description={"Contact: "}
-              />
-
 
             </div>
           </div>
