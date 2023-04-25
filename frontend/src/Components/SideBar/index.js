@@ -83,7 +83,7 @@ const SideBar = () => {
                     </button>
                 )}
               </NavLink>
-              <NavLink to="/tags">
+{/*              <NavLink to="/tags">
                 {({isActive}) => (
                     <button
                         className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
@@ -91,7 +91,7 @@ const SideBar = () => {
                       Tags
                     </button>
                 )}
-              </NavLink>
+              </NavLink>*/}
               <NavLink to="/partners">
                 {({isActive}) => (
                     <button
