@@ -115,7 +115,6 @@ function OrderSelectItem() {
         config
       );
       setItemData(response.data);
-      dispatch(setItem(itemData));
     } catch (error) {
       console.log(error);
     }
@@ -129,6 +128,10 @@ function OrderSelectItem() {
     setIsItemSelected(false);
     dispatch(setOrderCheckedItem([]));
   };
+  //store item data in redux when local state changes
+  useEffect(() => {
+    dispatch(setItem(itemData));
+  }, [itemData]);
 
   return (
     <div>

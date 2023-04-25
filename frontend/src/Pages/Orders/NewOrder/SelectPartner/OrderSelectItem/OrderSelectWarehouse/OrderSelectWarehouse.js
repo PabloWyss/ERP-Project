@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import ListTable from "../../../../../../Components/ListTable/ListTable";
 import { useDispatch, useSelector } from "react-redux";
 import callAPI from "../../../../../../Axios/callAPI";
-import { setWarehouse, setOrderQuantity } from "../../../../../../Redux/Slices/orderBuySellRefund";
+import {
+  setWarehouse,
+  setOrderQuantity,
+} from "../../../../../../Redux/Slices/orderBuySellRefund";
 import { useNavigate } from "react-router-dom";
 
 function OrderSelectWarehouse() {
@@ -86,7 +89,7 @@ function OrderSelectWarehouse() {
   const handleSelectWarehouse = () => {
     if (selectedWarehouseId.length === 1) {
       setIsWarehouseSelected(true);
-      dispatch(setWarehouse(selectedWarehouseId));
+      dispatch(setWarehouse(selectedWarehouseId[0]));
     }
   };
   useEffect(handleSelectWarehouse, [selectedWarehouseId]);
@@ -97,18 +100,13 @@ function OrderSelectWarehouse() {
   const handleQuantityChange = (e) => {
     setQuantity(e.target.value);
     setIsQuantityValid(true);
+  };
+  //when quantity is changed, update value in redux
+  useEffect(() => {
     if (quantity > 0) {
       dispatch(setOrderQuantity(quantity));
     }
-    // if (quantity > 0) {
-    //   setIsQuantityValid(true);
-    // }
-  };
-  //   useEffect(() => {
-  //     if (quantity <= 0) {
-  //       setIsQuantityValid(false);
-  //     }
-  //   }, [quantity]);
+  }, [quantity]);
 
   //#### SAVE BUTTON ####
   //toggle activate Save button
@@ -125,18 +123,15 @@ function OrderSelectWarehouse() {
   const orderNumber = "Test1"; //TODO
   const shipmentDate = "2024-04-19T21:41:00.366027Z"; //TODO
   const partner = useSelector((store) => store.orderbuysellrefund.partner.id);
-  //TODO console.log(partner)
   const isMerchantSupplier = !useSelector(
     (store) => store.orderbuysellrefund.isbuy
   );
   const isRefund = useSelector((store) => store.orderbuysellrefund.isrefund);
   const warehouse = useSelector((store) => store.orderbuysellrefund.warehouse);
-  const items = useSelector((store) => store.orderbuysellrefund.item.id);
-  //TODO console.log(items)
-  const orderQuantity = useSelector(
-    (store) => store.orderbuysellrefund.quantity
+  const items = [useSelector((store) => store.orderbuysellrefund.item.id)];
+  const orderQuantity = Number(
+    useSelector((store) => store.orderbuysellrefund.quantity)
   );
-  //TODO console.log(orderQuantity)
   //post new order to backend when button clicked
   const createNewOrder = async () => {
     try {
@@ -146,16 +141,20 @@ function OrderSelectWarehouse() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       };
-      const formData = new FormData();
-      formData.append("order_number", orderNumber);
-      formData.append("shipment_date", shipmentDate);
-      formData.append("partner", partner);
-      formData.append("is_merchant_supplier", isMerchantSupplier);
-      formData.append("is_refund", isRefund);
-      formData.append("warehouse", warehouse);
-      formData.append("items", items);
-      formData.append("quantity", orderQuantity);
-      const response = await callAPI.post(`/orders/new/`, formData, config);
+      const response = await callAPI.post(
+        `/orders/new/`,
+        JSON.stringify({
+          order_number: orderNumber,
+          shipment_date: shipmentDate,
+          partner: partner,
+          is_merchant_supplier: isMerchantSupplier,
+          is_refund: isRefund,
+          warehouse: warehouse,
+          items: items,
+          quantity: orderQuantity,
+        }),
+        config
+      );
     } catch (error) {
       console.log(error);
     }

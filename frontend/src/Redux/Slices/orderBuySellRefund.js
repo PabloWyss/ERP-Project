@@ -8,7 +8,7 @@ export const orderBuySellRefund = createSlice({
     partner: {},
     item: {},
     quantity: 1,
-    warehouse: {},
+    warehouse: 0,
   },
   reducers: {
     setOrderIsBuy: (state) => {
