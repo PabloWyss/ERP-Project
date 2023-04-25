@@ -16,8 +16,8 @@ const PartnerDetails = ({fromCreate}) => {
   const [contact, setContact] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [isStandard, setIsStandard] = useState(false);
-  const [status, setStatus] = useState("");
+  const [isSupplier, setIsSupplier] = useState(false);
+  const [isCustomer, setIsCustomer] = useState(false);
   const [creationDate, setCreationDate] = useState("");
   const { partnerID } = useParams();
 
@@ -57,14 +57,12 @@ const PartnerDetails = ({fromCreate}) => {
     setEmail(e.target.value);
   };
 
-const handleIsStandardInput = (e) => {
-  setIsStandard(e.target.checked);
-};
+  const handleIsSupplierInput = (e) => {
+    setIsSupplier(e.target.checked);
+  };
 
-
-
-  const handleStatusInput = (e) => {
-    setStatus(e.target.value);
+  const handleIsCustomerInput= (e) => {
+    setIsSupplier(e.target.checked);
   };
 
 
@@ -89,8 +87,8 @@ const handleIsStandardInput = (e) => {
       setContact(response.data.contact);
       setPhone(response.data.phone);
       setEmail(response.data.email);
-      setIsStandard(response.data.is_standard);
-      setStatus(response.data.status);
+      setIsSupplier(response.data.is_supplier);
+      setIsCustomer(response.data.is_customer);
       setCreationDate(response.data.creation_date);
 
     } catch (error) {
@@ -110,8 +108,8 @@ const handleIsStandardInput = (e) => {
         contact: contact,
         phone: phone,
         email: email,
-        is_standard: isStandard,
-        status: status,
+        is_supplier: isSupplier,
+        is_customer: isCustomer,
         creation_date: creationDate,
       };
       const config = {
@@ -172,13 +170,12 @@ return (
               />
 
               <ItemDetailsInput
-                type={"checkbox"}
-                disableInput={disableInput}
-                description={"Is Standard: "}
-                value={isStandard}
-                checked={isStandard}
-                handleInput={handleIsStandardInput}
-                className="w-10 h-10 mr-2"
+                type="checkbox"
+
+                handleInput={handleIsSupplierInput}
+                description={"Is Supplier: "}
+                value={isSupplier}
+                checked={isSupplier}
               />
             </div>
             <div className="flex w-1/2 flex-col gap-1">
@@ -194,12 +191,13 @@ return (
                 description={"Email: "}
                 value={email}
               />
-              <ItemDetailsInput value={status}
-                disableInput={disableInput}
-                handleInput={handleStatusInput}
-                description={"Status: "}
-                choicesEnabeled={true}
-                choices={["Active",'No restock']}/>
+              <ItemDetailsInput
+                type="checkbox"
+                handleInput={handleIsCustomerInput}
+                description={"Is Customer: "}
+                value={isCustomer}
+                checked={isCustomer}
+              />
               <ItemDetailsInput
                 value={contact}
                 type="text"

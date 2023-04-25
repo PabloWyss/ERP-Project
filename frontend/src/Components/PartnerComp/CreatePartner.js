@@ -16,8 +16,8 @@ const CreatePartner = () => {
   const [contact, setContact] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [isStandard, setIsStandard] = useState(false);
-  const [status, setStatus] = useState("Active");
+  const [isSupplier, setIsSupplier] = useState(false);
+  const [isCustomer, setIsCustomer] = useState(false);
   const [creationDate, setCreationDate] = useState("");
   const { partnerID } = useParams();
 
@@ -51,12 +51,12 @@ const CreatePartner = () => {
     setEmail(e.target.value);
   };
 
-  const handleIsStandardInput = (e) => {
-    setIsStandard(e.target.checked);
+  const handleIsSupplierInput = (e) => {
+    setIsSupplier(e.target.checked);
   };
 
-  const handleStatusInput = (e) => {
-    setStatus(e.target.value);
+  const handleIsCustomerInput= (e) => {
+    setIsSupplier(e.target.checked);
   };
 
 
@@ -76,8 +76,8 @@ const CreatePartner = () => {
       contact: contact,
       phone: phone,
       email: email,
-      is_standard: isStandard,
-      status: status,
+      is_supplier: isSupplier,
+      is_customer: isCustomer,
       creation_date: currentDate.toISOString(),
     };
 
@@ -134,10 +134,10 @@ return (
         <ItemDetailsInput
           type="checkbox"
 
-          handleInput={handleIsStandardInput}
-          description={"Is Standard: "}
-          value={isStandard}
-          checked={isStandard}
+          handleInput={handleIsSupplierInput}
+          description={"Is Supplier: "}
+          value={isSupplier}
+          checked={isSupplier}
         />
       </div>
       <div className="flex w-1/2 flex-col gap-1">
@@ -154,13 +154,14 @@ return (
           value={email}
         />
         <ItemDetailsInput
-          value={status}
+          type="checkbox"
 
-          handleInput={handleStatusInput}
-          description={"Status: "}
-          choicesEnabeled={true}
-          choices={["Active", "No restock"]}
+          handleInput={handleIsCustomerInput}
+          description={"Is Customer: "}
+          value={isCustomer}
+          checked={isCustomer}
         />
+      </div>
         <ItemDetailsInput
           value={contact}
           type="text"
@@ -169,7 +170,6 @@ return (
         />
       </div>
     </div>
-  </div>
 );
 
 }
