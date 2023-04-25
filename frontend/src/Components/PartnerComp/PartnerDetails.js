@@ -62,7 +62,7 @@ const PartnerDetails = ({fromCreate}) => {
   };
 
   const handleIsCustomerInput= (e) => {
-    setIsSupplier(e.target.checked);
+    setIsCustomer(e.target.checked);
   };
 
 
@@ -87,8 +87,8 @@ const PartnerDetails = ({fromCreate}) => {
       setContact(response.data.contact);
       setPhone(response.data.phone);
       setEmail(response.data.email);
-      setIsSupplier(response.data.is_supplier);
-      setIsCustomer(response.data.is_customer);
+      setIsSupplier(response.data.merchant_partner_relationship[0].is_supplier);
+      setIsCustomer(response.data.merchant_partner_relationship[0].is_customer);
       setCreationDate(response.data.creation_date);
 
     } catch (error) {
@@ -171,7 +171,7 @@ return (
 
               <ItemDetailsInput
                 type="checkbox"
-
+                disableInput={disableInput}
                 handleInput={handleIsSupplierInput}
                 description={"Is Supplier: "}
                 value={isSupplier}
@@ -192,19 +192,19 @@ return (
                 value={email}
               />
               <ItemDetailsInput
-                type="checkbox"
-                handleInput={handleIsCustomerInput}
-                description={"Is Customer: "}
-                value={isCustomer}
-                checked={isCustomer}
-              />
-              <ItemDetailsInput
                 value={contact}
                 type="text"
                 handleInput={handleContactInput}
                 description={"Contact: "}
               />
-
+              <ItemDetailsInput
+                type="checkbox"
+                handleInput={handleIsCustomerInput}
+                disableInput={disableInput}
+                description={"Is Customer: "}
+                value={isCustomer}
+                checked={isCustomer}
+              />
 
             </div>
           </div>

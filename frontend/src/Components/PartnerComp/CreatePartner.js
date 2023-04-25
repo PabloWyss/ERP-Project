@@ -56,7 +56,7 @@ const CreatePartner = () => {
   };
 
   const handleIsCustomerInput= (e) => {
-    setIsSupplier(e.target.checked);
+    setIsCustomer(e.target.checked);
   };
 
 
@@ -114,26 +114,22 @@ return (
     <div className="flex w-full justify-around gap-4">
       <div className="flex w-1/2 flex-col gap-1">
         <ItemDetailsInput
-
           handleInput={handleNameInput}
           description={"Name"}
           value={name}
         />
         <ItemDetailsInput
-
           handleInput={handleAddressInput}
           description={"Address"}
           value={address}
         />
         <ItemDetailsInput
-
           handleInput={handleCountryCodeInput}
           description={"Country Code"}
           value={countryCode}
         />
         <ItemDetailsInput
           type="checkbox"
-
           handleInput={handleIsSupplierInput}
           description={"Is Supplier: "}
           value={isSupplier}
@@ -142,34 +138,31 @@ return (
       </div>
       <div className="flex w-1/2 flex-col gap-1">
         <ItemDetailsInput
-
           handleInput={handlePhoneInput}
           description={"Phone: "}
           value={phone}
         />
         <ItemDetailsInput
-
           handleInput={handleEmailInput}
           description={"Email: "}
           value={email}
         />
-        <ItemDetailsInput
-          type="checkbox"
-
-          handleInput={handleIsCustomerInput}
-          description={"Is Customer: "}
-          value={isCustomer}
-          checked={isCustomer}
-        />
-      </div>
         <ItemDetailsInput
           value={contact}
           type="text"
           handleInput={handleContactInput}
           description={"Contact: "}
         />
+        <ItemDetailsInput
+          type="checkbox"
+          handleInput={handleIsCustomerInput}
+          description={"Is Customer: "}
+          value={isCustomer}
+          checked={isCustomer}
+        />
       </div>
     </div>
+  </div>
 );
 
 }

@@ -12,7 +12,11 @@ import SignUp from "./Pages/Auth/SignUp";
 import Congratulations from "./Pages/Auth/Congratulations";
 import Verification from "./Pages/Auth/Verification";
 import Warehouses from "./Pages/Warehouses/index";
-import Partners from "./Pages/Partners";
+import WarehouseDetailsView from "./Pages/Warehouses/WarehouseDetailsView/indesx";
+import CreateWarehouseView from "./Pages/Warehouses/CreateWarehouse";
+import Partners from "./Pages/Partners/index";
+import PartnerDetailsView from "./Pages/Partners/PartnerDetailsView/indesx";
+import CreatePartnerView from "./Pages/Partners/CreatePartner";
 import { useDispatch, useSelector } from "react-redux";
 import OrderDetails from "./Pages/Orders/OrderDetails";
 import CreateItemVariant from "./Pages/CreateItemVariant";
@@ -25,8 +29,7 @@ import ModelPage from "./Pages/Model/ModelPage";
 import NewOrder from "./Pages/Orders/NewOrder";
 import QRReader from "./Pages/QRReader";
 import Variants from "./Pages/Variants";
-import WarehouseDetailsView from "./Pages/Warehouses/WarehouseDetailsView/indesx";
-import CreateWarehouseView from "./Pages/Warehouses/CreateWarehouse";
+
 
 function App() {
   const currentUser = useSelector((store) => store.currentuser.currentuser);
@@ -82,7 +85,11 @@ function App() {
 
           <Route path="/warehouses" element={<Warehouses />} />
           <Route path="/warehouses/new" element={<CreateWarehouseView />} />
-           <Route path="/warehouses/:warehouseID" element={<WarehouseDetailsView />} />
+          <Route path="/warehouses/:warehouseID" element={<WarehouseDetailsView />} />
+
+          <Route path="/partners" element={<Partners/>} />
+          <Route path="/partners/new" element={<CreatePartnerView />} />
+          <Route path="/partners/:partnerID" element={<PartnerDetailsView />} />
 
           <Route path="/reports" element={<Reports />} />
           <Route path="/tags" element={<Tags />} />
