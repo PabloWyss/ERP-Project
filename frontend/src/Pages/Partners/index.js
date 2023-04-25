@@ -16,6 +16,7 @@ const Partners = () => {
             };
 
             const response = await callAPI.get(`/partners/`, config)
+            console.log(response)
             setpartnerList(response.data)
         } catch (error) {
             console.log(error);

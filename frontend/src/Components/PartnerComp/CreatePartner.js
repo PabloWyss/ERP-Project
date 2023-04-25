@@ -56,7 +56,7 @@ const CreatePartner = () => {
   };
 
   const handleIsCustomerInput= (e) => {
-    setIsSupplier(e.target.checked);
+    setIsCustomer(e.target.checked);
   };
 
 
