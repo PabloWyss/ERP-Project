@@ -90,8 +90,6 @@ function Reports() {
 
     })
 
-    console.log(listData2)
-
 
     // const data = [{
     //     "Warehouse Name": "warehouseName",
@@ -299,12 +297,12 @@ function Reports() {
                                     </h2>
                                     <MyResponsiveBar data={data1}/>
                                 </div>
-                                {/*<div className="flex flex-col justify-center items-center w-3/5 h-80">*/}
-                                {/*    <h2 className="text-title">*/}
-                                {/*        Inventory per Warehouse*/}
-                                {/*    </h2>*/}
-                                {/*    <MyResponsiveLine data={dataLine}/>*/}
-                                {/*</div>*/}
+                                <div className="flex flex-col justify-center items-center w-3/5 h-80">
+                                    <h2 className="text-title">
+                                        Inventory per Warehouse
+                                    </h2>
+                                    <MyResponsiveLine data={dataLine}/>
+                                </div>
                             </div>
                         </div>
                     </div>
