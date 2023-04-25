@@ -1,11 +1,9 @@
 import React from "react";
 import ItemDetailsChoicesInput from "./ItemDetailsChoicesInput";
 
-const ItemDetailsInput = ({ value, disableInput, handleInput, description, choicesEnabeled, choices, type }) => {
-  const isCheckbox = type === "checkbox";
-
+const ItemDetailsInput = ({value, disableInput, handleInput, description, choicesEnabeled, choices, type,}) => {
   return (
-    <div className={`flex gap-1 items-center ${isCheckbox ? "" : "justify-between"}`}>
+    <div className="flex items-center justify-between">
       <label className="w-3/5" htmlFor="item_input">
         {description}
       </label>
@@ -21,18 +19,35 @@ const ItemDetailsInput = ({ value, disableInput, handleInput, description, choic
           <ItemDetailsChoicesInput choices={choices ? choices : []} />
         </select>
       ) : (
-        <input
-          className={isCheckbox ? "h-7 w-7 " : "w-2/5"}
-          id="item_input"
-          name="item_input"
-          type={type ? type : "text"}
-          value={value ? value : ""}
-          disabled={disableInput}
-          onChange={handleInput}
-        />
+        type === "checkbox" ? (
+          <div className="flex items-center">
+            <input
+              className="w-7 h-7"
+              id="item_input"
+              name="item_input"
+              value={value ? value : ""}
+              disabled={disableInput}
+              onChange={handleInput}
+              type={type}
+              checked={value ? value : ""}
+            />
+            <label className="ml-2">{description}</label>
+          </div>
+        ) : (
+          <input
+            className="w-2/5"
+            id="item_input"
+            name="item_input"
+            value={value ? value : ""}
+            disabled={disableInput}
+            onChange={handleInput}
+            type={type}
+            checked={value ? value : ""}
+          />
+        )
       )}
     </div>
   );
 };
 
-export default ItemDetailsInput
+export default ItemDetailsInput;

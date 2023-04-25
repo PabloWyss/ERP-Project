@@ -57,9 +57,11 @@ const WarehouseDetails = ({fromCreate}) => {
     setEmail(e.target.value);
   };
 
-  const handleIsStandardInput = (e) => {
-    setIsStandard(e.target.checked);
-  };
+const handleIsStandardInput = (e) => {
+  setIsStandard(e.target.checked);
+};
+
+
 
   const handleStatusInput = (e) => {
     setStatus(e.target.value);
@@ -90,6 +92,7 @@ const WarehouseDetails = ({fromCreate}) => {
       setIsStandard(response.data.is_standard);
       setStatus(response.data.status);
       setCreationDate(response.data.creation_date);
+
     } catch (error) {
       console.log(error);
     }
@@ -169,12 +172,13 @@ return (
               />
 
               <ItemDetailsInput
-                type="checkbox"
+                type={"checkbox"}
                 disableInput={disableInput}
-                handleInput={handleIsStandardInput}
                 description={"Is Standard: "}
                 value={isStandard}
                 checked={isStandard}
+                handleInput={handleIsStandardInput}
+                className="w-10 h-10 mr-2"
               />
             </div>
             <div className="flex w-1/2 flex-col gap-1">

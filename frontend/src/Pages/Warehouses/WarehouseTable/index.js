@@ -63,7 +63,7 @@ const WarehouseTable = ({ tableData }) => {
         )}
         <div>
           <img
-            className="cursor-pointer"
+            className="cursor-pointer absolute bottom-10 right-12"
             src={addButton}
             alt={"create new warehouse"}
             onClick={handleCreateButton}
