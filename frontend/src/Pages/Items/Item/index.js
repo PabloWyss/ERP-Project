@@ -38,7 +38,9 @@ function Item() {
 
     const handleClickGoToModel = (e) => {
         e.preventDefault()
-        navigate(`/models/${item.item_model.id}`)
+        if(item.item_model){
+            navigate(`/models/${item.item_model.id}`)
+        }
     }
 
     const handleClickUpdateVariant = () => {
