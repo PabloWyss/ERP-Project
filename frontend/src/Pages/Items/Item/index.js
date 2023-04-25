@@ -38,7 +38,9 @@ function Item() {
 
     const handleClickGoToModel = (e) => {
         e.preventDefault()
-        navigate(`/models/${item.item_model.id}`)
+        if(item.item_model){
+            navigate(`/models/${item.item_model.id}`)
+        }
     }
 
     const handleClickUpdateVariant = () => {
@@ -103,7 +105,8 @@ function Item() {
         obtainItemInfo()
     }, [])
 
-    return (<div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-6">
+    return (
+        <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-6">
         <div className="flex flex-col h-full w-full rounded-ifRadius py-6 px-8 bg-white  overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey">
             <div className="flex flex-col h-full rounded-ifRadius bg-white gap-4">
@@ -180,7 +183,7 @@ function Item() {
                     </div>
                     {showInventoryLedgers ?
                         <ItemInventoryLedgers itemID={itemID}/> : ""}
-                    {/*this sections was commented out since there are no paartners nor item Tags at the moment*/}
+                    {/*this sections was commented out since there are no partners nor item Tags at the moment*/}
                     {/*    <div className="flex flex-col gap-4">*/}
                     {/*        <div className="flex justify-between items-center px-4 bg-backgroundGrey text-xl">*/}
                     {/*            <div>*/}
