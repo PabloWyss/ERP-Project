@@ -25,12 +25,11 @@ export const orderBuySellRefund = createSlice({
       const newItem = { ...action.payload };
       state.item = newItem;
     },
-    setQuantity: (state, action) => {
+    setOrderQuantity: (state, action) => {
       state.quantity = action.payload;
     },
     setWarehouse: (state, action) => {
-      const newWarehouse = { ...action.payload };
-      state.warehouse = newWarehouse;
+      state.warehouse = action.payload;
     },
   },
 });
@@ -39,7 +38,7 @@ export const {
   setOrderIsRefund,
   setPartner,
   setItem,
-  setQuantity,
+  setOrderQuantity,
   setWarehouse,
 } = orderBuySellRefund.actions;
 export default orderBuySellRefund.reducer;

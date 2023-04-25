@@ -1,107 +1,105 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import ListTable from "../../../../../../Components/ListTable/ListTable";
 import { useDispatch, useSelector } from "react-redux";
-import { setCheckedItems } from "../../../../../../Redux/Slices/tableCheckedItems";
+import callAPI from "../../../../../../Axios/callAPI";
+import { setWarehouse, setOrderQuantity } from "../../../../../../Redux/Slices/orderBuySellRefund";
+import { useNavigate } from "react-router-dom";
 
 function OrderSelectWarehouse() {
-  //fake data for table testing
-  const data = [
-    {
-      name: "Kim Parrish",
-      address: "4420 Valley Street, Garnerville, NY 10923",
-      date: "07/11/2020",
-      order: "87349585892118",
-      partner: "supplier",
-      id: "8",
-    },
-    {
-      name: "Michele Castillo",
-      address: "637 Kyle Street, Fullerton, NE 68638",
-      date: "07/11/2020",
-      order: "58418278790810",
-      partner: "customer",
-      id: "2",
-    },
-    {
-      name: "Eric Ferris",
-      address: "906 Hart Country Lane, Toccoa, GA 30577",
-      date: "07/10/2020",
-      order: "81534454080477",
-      partner: "supplier",
-      id: "3",
-    },
-    {
-      name: "Gloria Noble",
-      address: "2403 Edgewood Avenue, Fresno, CA 93721",
-      date: "07/09/2020",
-      order: "20452221703743",
-      partner: "supplier",
-      id: "4",
-    },
-    {
-      name: "Darren Daniels",
-      address: "882 Hide A Way Road, Anaktuvuk Pass, AK 99721",
-      date: "07/07/2020",
-      order: "22906126785176",
-      partner: "customer",
-      id: "5",
-    },
-    {
-      name: "Ted McDonald",
-      address: "796 Bryan Avenue, Minneapolis, MN 55406",
-      date: "07/07/2020",
-      order: "87574505851064",
-      partner: "supplier",
-      id: "6",
-    },
-    {
-      name: "Abra Kebabra",
-      address: "4420 Rua de la Paz, Toledo, NY 10923",
-      date: "07/11/2023",
-      order: "67349585892118",
-      partner: "customer",
-      id: "7",
-    },
-    {
-      name: "Diane Keaton",
-      address: "4420 4th Avenue, Anaheim, WY 10923",
-      date: "05/11/2023",
-      order: "37349585892118",
-      partner: "customer",
-      id: "9",
-    },
-  ];
+  //#### SHOW WAREHOUSE LIST ####
+  //retrieve type buy or sell and refund from redux
+  const isOrderBuy = useSelector((store) => store.orderbuysellrefund.isbuy);
+  const isOrderRefund = useSelector(
+    (store) => store.orderbuysellrefund.isrefund
+  );
+  // store fetched Warehouse list here
+  const [warehouseList, setWarehouseList] = useState([]);
+  // retrieve selected item id from redux
+  // (could be changed to be done only when needed -> see fetch below)
+  const selectedItemId = useSelector(
+    (store) => store.orderbuysellrefund.item.id
+  );
+  // fetch warehouse list
+  const obtainItemsInfo = async () => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
+      const endpoint =
+        (isOrderBuy && isOrderRefund) || (!isOrderBuy && !isOrderRefund)
+          ? `/warehouses/items/${selectedItemId}`
+          : "/warehouses/";
+      const response = await callAPI.get(endpoint, config);
+      setWarehouseList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    obtainItemsInfo();
+  }, []);
 
-  //create columns model
-  const columns = [
-    {
-      Header: "Name",
-      accessor: "name",
-    },
-    {
-      Header: "Address",
-      accessor: "address",
-    },
-    {
-      Header: "Date",
-      accessor: "date",
-    },
-    {
-      Header: "Order No.",
-      accessor: "order",
-    },
-    {
-      Header: "Warehouse Type",
-      accessor: "partner",
-    },
-  ];
+  //create columns model for warehouse list
+  //different columns are shown depending on buy/sell/refund
+  const columns =
+    (isOrderBuy && isOrderRefund) || (!isOrderBuy && !isOrderRefund)
+      ? [
+          {
+            Header: "Name",
+            accessor: "name",
+          },
+          {
+            Header: "Status",
+            accessor: "status",
+          },
+          {
+            Header: "Item Stock",
+            accessor: `warehouse_item_inventory.filter(warehouse => warehouse.item === ${selectedItemId})[0].stock_level_current`,
+          },
+        ]
+      : [
+          {
+            Header: "Name",
+            accessor: "name",
+          },
+          {
+            Header: "Status",
+            accessor: "status",
+          },
+          {
+            Header: "Total Stock",
+            accessor: "stock_level_total_current",
+          },
+        ];
 
-  //handle input quantity
+  //#### HANDLE WAREHOUSE SELECTION ####
+  const [isWarehouseSelected, setIsWarehouseSelected] = useState(false);
+  const dispatch = useDispatch(); //used later to update redux store
+  //retrieve id of selected warehouse from redux
+  const selectedWarehouseId = useSelector(
+    (store) => store.checkeditems.checkeditems
+  );
+  //change status and store warehouse id in redux
+  const handleSelectWarehouse = () => {
+    if (selectedWarehouseId.length === 1) {
+      setIsWarehouseSelected(true);
+      dispatch(setWarehouse(selectedWarehouseId));
+    }
+  };
+  useEffect(handleSelectWarehouse, [selectedWarehouseId]);
+
+  //#### HANDLE INPUT QUANTITY ####
   const [isQuantityValid, setIsQuantityValid] = useState(false);
   const [quantity, setQuantity] = useState(0);
   const handleQuantityChange = (e) => {
     setQuantity(e.target.value);
     setIsQuantityValid(true);
+    if (quantity > 0) {
+      dispatch(setOrderQuantity(quantity));
+    }
     // if (quantity > 0) {
     //   setIsQuantityValid(true);
     // }
@@ -112,27 +110,7 @@ function OrderSelectWarehouse() {
   //     }
   //   }, [quantity]);
 
-  //handle select warehouse
-  //retrieve id of selected warehouse from redux
-  const selectedWarehouse = useSelector(
-    (store) => store.checkeditems.checkeditems
-  );
-  //handle warehouse selection
-  let selectedWarehouseData = useRef(undefined); //will be fetched when selected
-  const [isWarehouseSelected, setIsWarehouseSelected] = useState(false);
-  const handleSelectWarehouse = () => {
-    if (selectedWarehouse.length === 1) {
-      //TODO fetch partner data
-      selectedWarehouseData.current = {
-        name: "Lager 50",
-        quantity: 18,
-        id: 2,
-      };
-      setIsWarehouseSelected(true);
-    }
-  };
-  useEffect(handleSelectWarehouse, [selectedWarehouse]);
-
+  //#### SAVE BUTTON ####
   //toggle activate Save button
   const [allSelected, setAllSelected] = useState(false);
   useEffect(() => {
@@ -143,9 +121,50 @@ function OrderSelectWarehouse() {
     }
   }, [isQuantityValid, isWarehouseSelected]);
 
-  //TODO handle click on Save button
+  //retrieve order data from redux
+  const orderNumber = "Test1"; //TODO
+  const shipmentDate = "2024-04-19T21:41:00.366027Z"; //TODO
+  const partner = useSelector((store) => store.orderbuysellrefund.partner.id);
+  //TODO console.log(partner)
+  const isMerchantSupplier = !useSelector(
+    (store) => store.orderbuysellrefund.isbuy
+  );
+  const isRefund = useSelector((store) => store.orderbuysellrefund.isrefund);
+  const warehouse = useSelector((store) => store.orderbuysellrefund.warehouse);
+  const items = useSelector((store) => store.orderbuysellrefund.item.id);
+  //TODO console.log(items)
+  const orderQuantity = useSelector(
+    (store) => store.orderbuysellrefund.quantity
+  );
+  //TODO console.log(orderQuantity)
+  //post new order to backend when button clicked
+  const createNewOrder = async () => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
+      const formData = new FormData();
+      formData.append("order_number", orderNumber);
+      formData.append("shipment_date", shipmentDate);
+      formData.append("partner", partner);
+      formData.append("is_merchant_supplier", isMerchantSupplier);
+      formData.append("is_refund", isRefund);
+      formData.append("warehouse", warehouse);
+      formData.append("items", items);
+      formData.append("quantity", orderQuantity);
+      const response = await callAPI.post(`/orders/new/`, formData, config);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  //handle click on Save button
+  const navigate = useNavigate();
   const handleSave = () => {
-    //TODO send data to backend
+    createNewOrder();
+    navigate("/orders");
   };
 
   return (
@@ -162,7 +181,7 @@ function OrderSelectWarehouse() {
           />
         </div>
       </div>
-      <ListTable data={data} columns={columns} />
+      <ListTable data={warehouseList} columns={columns} />
       <div>
         <button
           className={
