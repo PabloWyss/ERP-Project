@@ -9,6 +9,23 @@ const ItemsTable = ({tableData}) => {
 
     const navigate = useNavigate()
 
+    // change format of numbers
+    function commifyCurrency(n = 0) {
+        let parts = n.toString().split(".");
+        const numberPart = parts[0];
+        const decimalPart = parts[1];
+        const thousands = /\B(?=(\d{3})+(?!\d))/g;
+        return numberPart.replace(thousands, "’") + (decimalPart ? "." + decimalPart : " " + "EUR");
+    }
+
+    function commify(n=0) {
+        let parts = n.toString().split(".");
+        const numberPart = parts[0];
+        const decimalPart = parts[1];
+        const thousands = /\B(?=(\d{3})+(?!\d))/g;
+        return numberPart.replace(thousands, ",") + (decimalPart ? "." + decimalPart : "");
+    }
+
     //create columns model
     const columns = [
         {
@@ -32,8 +49,12 @@ const ItemsTable = ({tableData}) => {
             accessor: "upc",
         },
         {
-            Header: "Series",
-            accessor: "series",
+            Header: "Current Stock",
+            accessor: "stock_level_total_current",
+            Cell : (props)=> {
+                const number = commify(props.value)
+                return <span>{number}</span>
+            }
         },
     ];
 
@@ -60,7 +81,7 @@ const ItemsTable = ({tableData}) => {
 
     return (
         <div
-            className="flex h-full w-full py-6 px-6 justify-center
+            className="flex h-full w-full py-6 px-8 justify-center
     bg-backgroundGrey"
         >
             <div

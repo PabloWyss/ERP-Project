@@ -205,7 +205,23 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
     let date = ""
 
     if (item.release_date) {
-        date =  moment(item.release_date).format("dddd, MMMM Do YYYY")
+        date = moment(item.release_date).format("dddd, MMMM Do YYYY")
+    }
+
+    function commify(n) {
+        let parts = n.toString().split(".");
+        const numberPart = parts[0];
+        const decimalPart = parts[1];
+        const thousands = /\B(?=(\d{3})+(?!\d))/g;
+        return numberPart.replace(thousands, ",") + (decimalPart ? "." + decimalPart : "");
+    }
+
+    function commifyCurrency(n = 0) {
+        let parts = n.toString().split(".");
+        const numberPart = parts[0];
+        const decimalPart = parts[1];
+        const thousands = /\B(?=(\d{3})+(?!\d))/g;
+        return numberPart.replace(thousands, "’") + (decimalPart ? "." + decimalPart : " " + "EUR");
     }
 
     return (
@@ -256,7 +272,10 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
                         {
                             fromCreate ?
                                 "" :
-                                <ItemDetailsInput value={item.stock_level_total_current}
+                                <ItemDetailsInput
+                                                  value={item.stock_level_total_current ?
+                                                      commify(item.stock_level_total_current)
+                                                      : ""}
                                                   disableInput={true}
                                                   description={"Current Stock:"}/>
                         }
@@ -285,12 +304,18 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
                         {
                             fromCreate ?
                                 "" :
-                                [<ItemDetailsInput value={item.stock_level_total_purchase_value_current}
-                                                   disableInput={true}
-                                                   description={"Total Purchase Value (eur):"}/>,
-                                    <ItemDetailsInput value={item.stock_level_total_sale_value_current}
-                                                      disableInput={true}
-                                                      description={"Total Sale Value (eur):"}/>]
+                                [<ItemDetailsInput
+                                    value={item.stock_level_total_purchase_value_current ?
+                                        commifyCurrency(item.stock_level_total_purchase_value_current)
+                                        : ""}
+                                    disableInput={true}
+                                    description={"Total Purchase Value:"}/>,
+                                    <ItemDetailsInput
+                                        value={item.stock_level_total_sale_value_current ?
+                                            commifyCurrency(item.stock_level_total_sale_value_current)
+                                            : ""}
+                                        disableInput={true}
+                                        description={"Total Sale Value:"}/>]
                         }
                     </div>
                 </div>
