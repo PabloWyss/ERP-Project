@@ -139,7 +139,7 @@ function OrderSelectItem() {
         {isItemSelected ? (
           <div className="flex justify-between">
             <div className="pt-4">
-              {itemData.name} - size: {/*//TODO select variant??*/}
+              {itemData.name} - size: {itemData.item_specifications ? itemData.item_specifications[0].size : ""}
             </div>
             <div className="m-2">
               <button
