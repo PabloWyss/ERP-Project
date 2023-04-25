@@ -236,13 +236,14 @@ const SideBar = () => {
               <NavLink to="/profile">
                 {({isActive}) => (
                     <button
-                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'} `}
+                    >
                       <ProfileIcon className="mr-2"/>
                       Profile
                     </button>
                 )}
               </NavLink>
-              <button className={`flex mt-50 items-start w-full text-left mt-4 text-white`} onClick={handleLogout}>
+              <button className={`flex items-center w-full text-left mt-4 ${'text-white'}`} onClick={handleLogout}>
                 < ExitIcon className="mr-2"/>
                 Log out
               </button>
