@@ -31,7 +31,7 @@ const VariantTable = ({tableData}) => {
     //handle buttons
     const handleCreateButton = (e) => {
         e.preventDefault()
-        navigate(`/models/create/`)
+        navigate(`/items/models/create/`)
     }
 
     const handleClickGoBack = (e) => {

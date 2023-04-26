@@ -1,31 +1,42 @@
-import React from 'react';
-import {
-  Page, Text, View, Document, StyleSheet
- } from '@react-pdf/renderer';
-import ReactDOM from 'react-dom';
+import {Document, Page, Text, View, StyleSheet, Image} from '@react-pdf/renderer';
+import React from "react";
 
 // Create styles
 const styles = StyleSheet.create({
-  page: {
-    flexDirection: 'row',
-    backgroundColor: '#E4E4E4'
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1
-  }
+    page: {
+        flexDirection: 'row',
+        backgroundColor: '#E4E4E4',
+        flexWrap: 'wrap'
+
+    },
+    section: {
+        margin: 10,
+        padding: 10,
+        flexGrow: 1
+    }
 });
 
 // Create Document Component
-const MyDocument = () => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.section}>
-        <Text>How To Create PDF File In React JS - Techsolutionstuff</Text>
-      </View>
-    </Page>
-  </Document>
-);
+const MyDocument = ({qrcode, number}) => {
 
-ReactDOM.render(<MyDocument />, document.getElementById('root'));
+    let array= [1,2,3,4,5]
+    for(let i=0; i<=number; i++){
+        array.push(i)
+    }
+
+
+        return (
+            <Document>
+                <Page size="A4" style={styles.page}>
+                    {
+                        array.map(()=>{
+                            return <Image style={{height:"90", width:"90", border:"1px black solid"}} src={qrcode}/>
+                        })
+                    }
+                </Page>
+            </Document>
+        )
+    }
+;
+
+export default MyDocument

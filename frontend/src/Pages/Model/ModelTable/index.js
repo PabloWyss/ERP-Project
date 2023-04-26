@@ -7,7 +7,7 @@ import React from "react";
 
 const ModelTable = ({tableData}) => {
     const navigate = useNavigate()
-
+    console.log(tableData)
 
     //create columns model
     const columns = [
@@ -30,6 +30,15 @@ const ModelTable = ({tableData}) => {
         {
             Header: "Color",
             accessor: "color",
+        },
+        {
+            Header: "Qty Items",
+            accessor: "items",
+            Cell: (props) => {
+                if(props.row.original.items){
+                    return <span>{props.row.original.items.length}</span>
+                }
+            }
         },
         {
             Header: "Image",
@@ -56,7 +65,7 @@ const ModelTable = ({tableData}) => {
     // handle buttons
     const handleCreateButton = (e) => {
         e.preventDefault()
-        navigate(`/models/create/`)
+        navigate(`/items/models/create/`)
     }
 
     const handleGoToItems = (e) => {

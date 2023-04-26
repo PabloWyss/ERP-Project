@@ -6,6 +6,7 @@ import QRCode from "qrcode";
 import JsBarcode from "jsbarcode";
 import moment from "moment/moment";
 
+
 const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
 
     //define const
@@ -119,6 +120,11 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
     const handleCreateQrCodeBarcodeButton = (e) => {
         e.preventDefault()
         setCreatQRCodeBarcodeClicked(!creatQRCodeBarcodeClicked)
+    }
+
+    const handleCreatePDF = (e) => {
+        e.preventDefault()
+        navigate(`/createPdf/${itemID}/`)
     }
 
 
@@ -273,11 +279,11 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
                             fromCreate ?
                                 "" :
                                 <ItemDetailsInput
-                                                  value={item.stock_level_total_current ?
-                                                      commify(item.stock_level_total_current)
-                                                      : ""}
-                                                  disableInput={true}
-                                                  description={"Current Stock:"}/>
+                                    value={item.stock_level_total_current ?
+                                        commify(item.stock_level_total_current)
+                                        : ""}
+                                    disableInput={true}
+                                    description={"Current Stock:"}/>
                         }
                     </div>
                     <div className="flex w-1/2 flex-col gap-1">
@@ -334,6 +340,7 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
                                 Create QRcode / Barcode
                             </button>
                         </div>
+
                 }
             </div>
             {
@@ -356,8 +363,11 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
                                                 </button>
                                                 {
                                                     createQRCodeClicked ?
-                                                        <img alt={"QrCode"} src={qrcode}/> :
-                                                        ""
+                                                        [<img alt={"QrCode"} src={qrcode}/>,
+                                                        <button className="p-0 bg-ifOrange w-40 text-white"
+                                                                onClick={handleCreatePDF}> Create PDF
+                                                        </button>]:
+                                                    ""
                                                 }
                                             </div>,
                                                 <div className="flex flex-col items-center">

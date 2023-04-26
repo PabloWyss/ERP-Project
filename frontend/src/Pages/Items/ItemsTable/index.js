@@ -6,7 +6,6 @@ import ListTableIfEmpty from "../../../Components/ListTableIfEmpty/ListTable";
 import {FaQrcode} from "react-icons/fa";
 
 const ItemsTable = ({tableData}) => {
-
     const navigate = useNavigate()
 
     // change format of numbers
@@ -18,7 +17,7 @@ const ItemsTable = ({tableData}) => {
         return numberPart.replace(thousands, "’") + (decimalPart ? "." + decimalPart : " " + "EUR");
     }
 
-    function commify(n=0) {
+    function commify(n = 0) {
         let parts = n.toString().split(".");
         const numberPart = parts[0];
         const decimalPart = parts[1];
@@ -51,11 +50,32 @@ const ItemsTable = ({tableData}) => {
         {
             Header: "Current Stock",
             accessor: "stock_level_total_current",
-            Cell : (props)=> {
+            Cell: (props) => {
                 const number = commify(props.value)
                 return <span>{number}</span>
             }
         },
+        {
+            Header: "Sale Price",
+            accessor: "item_specifications[0].sale_price_net_eur",
+            Cell: (props) => {
+                const number = commifyCurrency(props.value)
+                return <span>{number}</span>
+            }
+        },
+        {
+            Header: "Puchase Price",
+            accessor: "item_specifications[0].purchase_price_net_eur",
+            Cell: (props) => {
+                const number = commifyCurrency(props.value)
+                return <span>{number}</span>
+            }
+        },
+        {
+            Header: "Size",
+            accessor: "item_specifications[0].size",
+        },
+
     ];
 
     //Handle Buttons
@@ -66,7 +86,7 @@ const ItemsTable = ({tableData}) => {
 
     const handleGoToModels = (e) => {
         e.preventDefault()
-        navigate(`/models`)
+        navigate(`/items/models`)
     }
 
     const hanldeClickQrCode = (e) => {
