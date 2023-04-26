@@ -208,7 +208,7 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
 
     let date = ""
 
-    if (itemVariant.valid_from) {
+    if (itemVariant?.valid_from) {
         date = moment(itemVariant.valid_from).format("dddd, MMMM Do YYYY")
     }
 

@@ -43,7 +43,7 @@ const PdfShow = () => {
                 },
             };
 
-            const response = await callAPI.get(`/items/1/`, config).then()
+            const response = await callAPI.get(`/items/${itemID}/`, config).then()
             setItem(response.data)
         } catch (error) {
             console.log(error);
