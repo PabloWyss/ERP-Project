@@ -32,7 +32,9 @@ const QRReader = () => {
     }
 
     useEffect(() => {
-
+        if(fileResult){
+            navigate(`/readqr`)
+        }
     }, [fileResult])
 
     // handle buttons
@@ -73,7 +75,7 @@ const QRReader = () => {
 
 
     return (
-        <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-5">
+        <div className="flex h-80 w-100 justify-center bg-backgroundGrey items-center p-5">
             <div className="flex flex-col h-full w-full rounded-ifRadius p-5 bg-white  overflow-y-scroll">
                 <div className="flex  h-10 rounded-ifRadius bg-white gap-4 justify-center items-center">
                     <div className="flex w-full content-start items-center gap-4 bg-backgroundGrey px-4">

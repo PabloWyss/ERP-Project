@@ -4,9 +4,13 @@ import addButton from "../../../Assets/Icons/plus_orange.png"
 import {useNavigate} from "react-router-dom";
 import ListTableIfEmpty from "../../../Components/ListTableIfEmpty/ListTable";
 import {FaQrcode} from "react-icons/fa";
+import QRReader from "../../QRReader";
+import PopUpQRReader from "../../QRReader/AddFromQRCode/popUpQrCode";
 
 const ItemsTable = ({tableData}) => {
     const navigate = useNavigate()
+    const [qrcodeClicked, setQrcodeClicked] = useState(false)
+    const [color, setColor] = useState("white")
 
     // change format of numbers
     function commifyCurrency(n = 0) {
@@ -40,14 +44,6 @@ const ItemsTable = ({tableData}) => {
             accessor: "sku",
         },
         {
-            Header: "EAN",
-            accessor: "ean",
-        },
-        {
-            Header: "UPC",
-            accessor: "upc",
-        },
-        {
             Header: "Current Stock",
             accessor: "stock_level_total_current",
             Cell: (props) => {
@@ -64,7 +60,7 @@ const ItemsTable = ({tableData}) => {
             }
         },
         {
-            Header: "Puchase Price",
+            Header: "Purchase Price",
             accessor: "item_specifications[0].purchase_price_net_eur",
             Cell: (props) => {
                 const number = commifyCurrency(props.value)
@@ -89,9 +85,20 @@ const ItemsTable = ({tableData}) => {
         navigate(`/items/models`)
     }
 
+
+
+
     const hanldeClickQrCode = (e) => {
         e.preventDefault()
-        navigate(`/readqr`)
+        setQrcodeClicked(!qrcodeClicked)
+        if(qrcodeClicked){
+            setColor('white')
+        } else {
+            setColor('black')
+        }
+        console.log(color)
+        setQrcodeClicked(!qrcodeClicked)
+        // navigate(`/readqr`)
     }
 
     //table data if empy in order to avoid rendering problems
@@ -99,17 +106,24 @@ const ItemsTable = ({tableData}) => {
         name: ""
     }]
 
+    useEffect(()=>{
+
+    },[color])
+
     return (
         <div
-            className="flex h-full w-full py-6 px-8 justify-center
-    bg-backgroundGrey"
+            className='flex h-full w-full py-6 px-8 justify-center
+    bg-backgroundGrey'
         >
             <div
-                className="w-full h-full py-6 px-8
+                style={{
+                    background: color
+                }}
+                className='w-full h-full py-6 px-8
         flex flex-col
-      bg-white rounded-ifRadius
+           rounded-ifRadius
         overflow-y-auto scrollbar-thin scrollbar-track-transparent
-        scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey"
+        scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey'
             >
                 <div className="flex gap-10">
                     <h1 className="text-title mb-2">Items</h1>
@@ -127,6 +141,14 @@ const ItemsTable = ({tableData}) => {
                     <img className="cursor-pointer absolute bottom-10 right-12" src={addButton} alt={"create new item"}
                          onClick={handleCreateButton}/>
                 </div>
+
+                {
+                    qrcodeClicked ?
+                        <div className="fixed top-40 left-1/3">
+                            <PopUpQRReader/>
+                        </div> :
+                        ""
+                }
             </div>
         </div>
     );
