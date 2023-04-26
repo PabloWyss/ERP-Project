@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from item.models import Item
 from item_specification.models import ItemSpecification
 from inventory_ledger.models import InventoryLedger
+from order.models import Order
 from warehouse.models import Warehouse, WarehouseItemInventory
 
 
@@ -117,17 +118,17 @@ def create_order(self, request):
     quantity = request.data['quantity']
     is_merchant_supplier = request.data['is_merchant_supplier']
     is_refund = request.data['is_refund']
-    if is_merchant_supplier:
-        if is_refund:
-            response = process_order_inbound(self, request, merchant, item, warehouse, quantity)
-            return Response(response)
-        else:
-            response = process_order_outbound(self, request, merchant, item, warehouse, quantity)
-            return Response(response)
+    if Order.objects.filter(order_number=request.data['order_number']).exists():
+        response = {'status': 'This order number already exists'}
     else:
-        if is_refund:
-            response = process_order_outbound(self, request, merchant, item, warehouse, quantity)
-            return Response(response)
+        if is_merchant_supplier:
+            if is_refund:
+                response = process_order_inbound(self, request, merchant, item, warehouse, quantity)
+            else:
+                response = process_order_outbound(self, request, merchant, item, warehouse, quantity)
         else:
-            response = process_order_inbound(self, request, merchant, item, warehouse, quantity)
-            return Response(response)
+            if is_refund:
+                response = process_order_outbound(self, request, merchant, item, warehouse, quantity)
+            else:
+                response = process_order_inbound(self, request, merchant, item, warehouse, quantity)
+    return Response(response)

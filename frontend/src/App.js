@@ -67,7 +67,7 @@ function App() {
                     <Route path="/verification" element={<Verification/>}/>
                     <Route path="/items/models" element={<Models/>}/>
                     <Route path="/items/models/:modelID" element={<ModelPage/>}/>
-                    <Route path="/readqr/" element={<QRReader/>}/>
+                    <Route path="/readqr/:itemID/" element={<QRReader/>}/>
                     <Route
                         path="/items/models/create/"
                         element={<CreateItemModel/>}
