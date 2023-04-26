@@ -1,9 +1,15 @@
-import ReactPDF from '@react-pdf/renderer';
-import PdfFile from "./PdfFile";
-const CreatePdf = ()=> {
+import {PDFViewer} from '@react-pdf/renderer';
+import MyDocument from "./PdfFile";
 
-    ReactPDF.render(<PdfFile />, `${__dirname}/example.pdf`);
+const PDFCreate = (qrcode) => {
 
-}
+        return (
+            <PDFViewer className="w-full h-screen">
+                <MyDocument qrcode={qrcode}/>
+            </PDFViewer>
 
-export default CreatePdf
+        )
+    }
+;
+
+export default PDFCreate

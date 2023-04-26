@@ -3,6 +3,7 @@ import callAPI from "../../Axios/callAPI";
 import WarehouseRepTable from "./WarehouseRepTable";
 import MyResponsiveLine from "./Graphs/LineGraph";
 import MyResponsiveBar from "./Graphs/BarGraph";
+import PDFView from "../../Components/CreatePdf";
 
 function Reports() {
 
