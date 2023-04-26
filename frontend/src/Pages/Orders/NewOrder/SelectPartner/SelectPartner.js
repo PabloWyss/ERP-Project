@@ -85,7 +85,6 @@ function SelectPartner() {
         config
       );
       setPartnerData(response.data);
-      dispatch(setPartner(partnerData));
     } catch (error) {
       console.log(error);
     }
@@ -93,6 +92,10 @@ function SelectPartner() {
   useEffect(() => {
     fetchPartnerData();
   }, [selectedPartnerId]);
+  //store partner data in redux when local state changes
+  useEffect(() => {
+    dispatch(setPartner(partnerData));
+  }, [partnerData]);
 
   //change an already selected partner
   const handleChangePartner = () => {
