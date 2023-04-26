@@ -43,14 +43,14 @@ const SideBar = () => {
           <div
               className="flex py-10 left-0 top-0 h-screen flex-col w-48 bg-gradient-to-b from-gradientFrom to-gradientTo">
             <div className="flex items-center justify-center">
-              <img src={logo} alt="Invenflow Logo" className="w-8 h-8 mr-5"/>
+              <img src={logo} alt="Invenflow Logo" className="w-8 h-8 mr-1"/>
               <h1 className="text-white text-xl font-bold">InvenFlow</h1>
             </div>
             <div className="mt-10">
                 <NavLink to="/merchants/me">
                 {({isActive}) => (
                     <button
-                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1) mx-2' : 'text-white'}`}>
                       <MerchantIcon className="mr-2"/>
                       Merchant
                     </button>
@@ -59,7 +59,7 @@ const SideBar = () => {
               <NavLink to="/items">
                 {({isActive}) => (
                     <button
-                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1) mx-2' : 'text-white'}`}>
                       <ItemsIcon className="mr-2"/>
                       Items
                     </button>
@@ -68,7 +68,7 @@ const SideBar = () => {
               <NavLink to="/orders">
                 {({isActive}) => (
                     <button
-                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1) mx-2' : 'text-white'}`}>
                       <OrdersIcon className="mr-2"/>
                       Orders
                     </button>
@@ -77,7 +77,7 @@ const SideBar = () => {
               <NavLink to="/reports">
                 {({isActive}) => (
                     <button
-                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1) mx-2' : 'text-white'}`}>
                       <ReportsIcon className="mr-2"/>
                       Reports
                     </button>
@@ -86,7 +86,7 @@ const SideBar = () => {
 {/*              <NavLink to="/tags">
                 {({isActive}) => (
                     <button
-                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1) mx-2' : 'text-white'}`}>
                       <TagsIcon className="mr-2"/>
                       Tags
                     </button>
@@ -95,7 +95,7 @@ const SideBar = () => {
               <NavLink to="/partners">
                 {({isActive}) => (
                     <button
-                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1) mx-2' : 'text-white'}`}>
                       <PartnerIcon className="mr-2"/>
                       Partners
                     </button>
@@ -104,7 +104,7 @@ const SideBar = () => {
               <NavLink to="/warehouses">
                 {({isActive}) => (
                     <button
-                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1) mx-2' : 'text-white'}`}>
                       <WarehouseIcon className="mr-2"/>
                       Warehouses
                     </button>
@@ -116,7 +116,7 @@ const SideBar = () => {
               <NavLink to="/profile">
                 {({isActive}) => (
                     <button
-                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1) mx-2' : 'text-white'}`}>
                       <ProfileIcon className="mr-2"/>
                       Profile
                     </button>
@@ -162,7 +162,7 @@ const SideBar = () => {
             <button
               className={`flex items-center w-full text-left mt-4 ${
                 isActive
-                  ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1)'
+                  ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1) mx-2'
                   : 'text-white'
               }`}
             >
@@ -176,7 +176,7 @@ const SideBar = () => {
             <button
               className={`flex items-center w-full text-left mt-4 ${
                 isActive
-                  ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1)'
+                  ? 'bg-white bg-opacity-60 text text-rgba(58, 89, 84, 1) mx-2'
                   : 'text-white'
               }`}
             >
@@ -188,7 +188,7 @@ const SideBar = () => {
         <NavLink to="/orders">
                 {({isActive}) => (
                     <button
-                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1) mx-2' : 'text-white'}`}>
                       <OrdersIcon className="mr-2"/>
                       Orders
                     </button>
@@ -197,7 +197,7 @@ const SideBar = () => {
               <NavLink to="/reports">
                 {({isActive}) => (
                     <button
-                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1) mx-2' : 'text-white'}`}>
                       <ReportsIcon className="mr-2"/>
                       Reports
                     </button>
@@ -206,7 +206,7 @@ const SideBar = () => {
               <NavLink to="/tags">
                 {({isActive}) => (
                     <button
-                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1) mx-2' : 'text-white'}`}>
                       <TagsIcon className="mr-2"/>
                       Tags
                     </button>
@@ -215,7 +215,7 @@ const SideBar = () => {
               <NavLink to="/partners">
                 {({isActive}) => (
                     <button
-                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1) mx-2' : 'text-white'}`}>
                       <PartnerIcon className="mr-2"/>
                       Partners
                     </button>
@@ -224,7 +224,7 @@ const SideBar = () => {
               <NavLink to="/warehouses">
                 {({isActive}) => (
                     <button
-                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'}`}>
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1) mx-2' : 'text-white'}`}>
                       <WarehouseIcon className="mr-2"/>
                       Warehouses
                     </button>
@@ -236,7 +236,7 @@ const SideBar = () => {
               <NavLink to="/profile">
                 {({isActive}) => (
                     <button
-                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1)' : 'text-white'} `}
+                        className={`flex items-center w-full text-left mt-4 ${isActive ? 'bg-white bg-opacity-60 text-rgba(58, 89, 84, 1) mx-2' : 'text-white'} `}
                     >
                       <ProfileIcon className="mr-2"/>
                       Profile

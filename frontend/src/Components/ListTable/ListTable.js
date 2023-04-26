@@ -12,6 +12,7 @@ import {
   FaChevronRight,
   FaChevronUp,
 } from "react-icons/fa";
+import Lens from "../../Assets/Icons/search.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { forwardRef } from "react";
 import { useRef } from "react";
@@ -28,15 +29,22 @@ function ListTable(props) {
   function TextFilter({ column: { filterValue, preFilteredRows, setFilter } }) {
     // const count = preFilteredRows.length;
     return (
-      <input
-        value={filterValue || ""}
-        onChange={(e) => {
-          setFilter(e.target.value || undefined);
-        }}
-        // placeholder={`Search ${count} records...`}
-        placeholder={`Search...`}
-        className="float-left w-full mb-2"
-      />
+      <div className="h-2">
+        <input
+          value={filterValue || ""}
+          onChange={(e) => {
+            setFilter(e.target.value || undefined);
+          }}
+          // placeholder={`Search ${count} records...`}
+          // placeholder={`Search...`}
+          className="float-left w-full mb-2"
+        />
+        <img
+          className="cursor-pointer relative left-2 bottom-8"
+          src={Lens}
+          alt={"Search..."}
+        />
+      </div>
     );
   }
 
@@ -173,7 +181,7 @@ return (
                       )}
                     </div>
                   </div>
-                  <div className="w-full py-3">
+                  <div className="w-full py-3 font-normal">
                     {column.canFilter ? column.render("Filter") : null}
                   </div>
                 </th>
@@ -209,12 +217,12 @@ return (
           <button
             onClick={() => previousPage()}
             disabled={!canPreviousPage}
-            className="px-4 py-2 border-2 rounded-ifRadius border-buttonGrey bg-white"
+            className="px-4 py-2 border-2 rounded-ifRadius border-drawGrey bg-white"
           >
-            <FaChevronLeft className="text-buttonGrey" />
+            <FaChevronLeft className="text-drawGrey" />
           </button>
         </div>
-        <div className="text-buttonGrey pt-2 px-2">
+        <div className="text-drawGrey pt-2 px-2">
           Page{" "}
           <span>
             {pageIndex + 1} of {pageOptions.length}
@@ -224,9 +232,9 @@ return (
           <button
             onClick={() => nextPage()}
             disabled={!canNextPage}
-            className="px-4 py-2 border-2 rounded-ifRadius border-buttonGrey bg-white"
+            className="px-4 py-2 border-2 rounded-ifRadius border-drawGrey bg-white"
           >
-            <FaChevronRight className="text-buttonGrey" />
+            <FaChevronRight className="text-drawGrey" />
           </button>
         </div>
       </div>
