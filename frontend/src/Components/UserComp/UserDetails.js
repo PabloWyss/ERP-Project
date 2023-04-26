@@ -184,7 +184,7 @@ const handleProfilePictureChange = async (event) => {
                 className="w-full"
               />
             </div>
-                    </div>
+{/*                    </div>
               <div className="flex gap-4">
             <div className="w-full">
               <label htmlFor="address">Address</label>
@@ -209,7 +209,7 @@ const handleProfilePictureChange = async (event) => {
                 disabled={disableInput}
                 className="w-full"
               />
-            </div>
+            </div>*/}
           </div>
           <div className="flex gap-4">
             <div className="w-full">
