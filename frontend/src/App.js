@@ -102,7 +102,7 @@ function App() {
                     <Route path="/merchants/new" element={<MerchantNEW/>}/>
                     <Route path="/partners" element={<Partners/>}/>
 
-                    <Route path="/" element={<Items/>}/>
+                    <Route path="/" element={<SignIn/>}/>
                 </Routes>
             </div>
         </Router>

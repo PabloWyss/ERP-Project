@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import callAPI from "../../../../Axios/callAPI";
 import {useNavigate, useParams} from "react-router-dom";
 import ItemDetailsInput from "../PrimaryDetails/ItemDetailsInput";
+import moment from "moment";
 
 const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
 
@@ -204,7 +205,13 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
     //     ].join('-');
     // }
 
-    const date = new Date(validFrom).toString().slice(0, 15)
+
+    let date = ""
+
+    if (itemVariant.valid_from) {
+        date = moment(itemVariant.valid_from).format("dddd, MMMM Do YYYY")
+    }
+
     return (
         <form className="flex flex-col gap-4 " onSubmit={handleOnSubmit}>
             <div className="flex w-full gap-10 justify-around">
@@ -218,7 +225,6 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
                                 <ItemDetailsInput description={"Valid From:"}
                                                   value={date}
                                                   disableInput={true}
-                                                  type={"date"}
                                                   handleInput={handleInitialDateInput}/>]
                     }
 

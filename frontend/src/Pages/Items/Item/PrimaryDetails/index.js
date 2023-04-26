@@ -5,7 +5,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import QRCode from "qrcode";
 import JsBarcode from "jsbarcode";
 import moment from "moment/moment";
-import PDFView from "../../../../Components/CreatePdf";
+
 
 const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
 
