@@ -138,72 +138,72 @@ function ListTable(props) {
   };
   useEffect(extractIdFromSelectedRows, [selectedFlatRows]);
 
-  return (
-    <div className="max-h-full">
-      <div
-        className="max-h-full overflow-y-scroll 
+return (
+  <div className="max-h-full">
+    <div
+      className="max-h-full overflow-y-scroll
       scrollbar-thin scrollbar-track-transparent scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey
       bg-white"
-      >
-        <table {...getTableProps()}>
-          <thead className="sticky top-0 bg-white">
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th className="px-2">
-                    {/* putting a key={uuidv4()} inside <th> makes the filter lose focus after each keystroke*/}
-                    <div
-                      {...column.getHeaderProps(
-                        column.getSortByToggleProps()
-                      )} /*handle sorting*/
-                    >
-                      <div className="float-left pt-2 pr-2 text-buttonGrey">
-                        {column.render("Header")}
-                      </div>
-                      <div className="pt-3 h-7">
-                        {column.isSorted ? (
-                          column.isSortedDesc ? (
-                            <FaChevronUp className="text-buttonGrey" />
-                          ) : (
-                            <FaChevronDown className="text-buttonGrey" />
-                          )
+    >
+      <table {...getTableProps()}>
+        <thead className="sticky top-0 bg-white">
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th className="px-2 align-bottom">
+                  {/* putting a key={uuidv4()} inside <th> makes the filter lose focus after each keystroke*/}
+                  <div
+                    {...column.getHeaderProps(
+                      column.getSortByToggleProps()
+                    )} /*handle sorting*/
+                    className="flex items-center"
+                  >
+                    <div className="float-left pt-2 pr-2 text-buttonGrey">
+                      {column.render("Header")}
+                    </div>
+                    <div className="pt-3 h-7">
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <FaChevronUp className="text-buttonGrey" />
                         ) : (
-                          ""
-                        )}
-                      </div>
+                          <FaChevronDown className="text-buttonGrey" />
+                        )
+                      ) : (
+                        ""
+                      )}
                     </div>
-                    <div className="w-full py-3">
-                      {column.canFilter ? column.render("Filter") : null}
-                    </div>
-                  </th>
-                ))}
+                  </div>
+                  <div className="w-full py-3">
+                    {column.canFilter ? column.render("Filter") : null}
+                  </div>
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {page.map((row) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell, index) => {
+                  return (
+                    <td
+                      {...cell.getCellProps()}
+                      {...(index !== 0
+                        ? { onClick: () => handleRowClick(row.original) }
+                        : {})} /*exclude navigation to details page for the checkbox*/
+                      className="px-2 py-2 border-t-2 border-drawGrey text-textGrey"
+                    >
+                      {cell.render("Cell")}
+                    </td>
+                  );
+                })}
               </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell, index) => {
-                    return (
-                      <td
-                        {...cell.getCellProps()}
-                        {...(index !== 0
-                          ? { onClick: () => handleRowClick(row.original) }
-                          : {})} /*exclude navigation to details page for the checkbox*/
-                        className="px-2 py-2 border-t-2 border-drawGrey text-textGrey"
-                      >
-                        {cell.render("Cell")}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+            );
+          })}
+        </tbody>
+      </table>
       <div className="flex flex-row my-2 pb-6">
         <div>
           <button
@@ -231,7 +231,8 @@ function ListTable(props) {
         </div>
       </div>
     </div>
-  );
-}
+  </div>
+);
 
+}
 export default ListTable;
