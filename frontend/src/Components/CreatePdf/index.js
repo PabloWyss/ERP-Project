@@ -6,30 +6,24 @@ import React, {useState} from "react";
 const PDFCreate = (qrcode) => {
 
     const [numerOfQrCode, setNumerOfQrCode] = useState(0)
-    const [clickedSubmit, setClickedSubmit] = useState("")
+
 
     const handeleInputNumber = (e) =>{
         e.preventDefault()
         setNumerOfQrCode(e.target.value)
     }
-    const hanldeSubmit = (e) => {
-        e.preventDefault()
-        setClickedSubmit(!clickedSubmit)
-
-    }
 
         return (
             <div className="flex flex-col w-full">
-                {/*<div className="flex w-1/3 justify-start m-4">*/}
-                {/*    <ItemDetailsInput className="flex justify-center w-full"*/}
-                {/*                  value={numerOfQrCode}*/}
-                {/*                          disableInput={false}*/}
-                {/*                          handleInput={handeleInputNumber}*/}
-                {/*                          description={"Number of QrCodes"}/>*/}
-                {/*    <button> Submit </button>*/}
+                <div className="flex w-1/3 justify-start m-4">
+                    <ItemDetailsInput className="flex justify-center w-full"
+                                  value={numerOfQrCode}
+                                          disableInput={false}
+                                          handleInput={handeleInputNumber}
+                                          description={"Number of QrCodes"}/>
+                    <button> Submit </button>
 
-                {/*</div>*/}
-
+                </div>
                 <PDFViewer className="w-full h-screen">
                     <MyDocument qrcode={qrcode} number={numerOfQrCode}/>
                 </PDFViewer>

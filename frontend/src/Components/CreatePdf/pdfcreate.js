@@ -7,15 +7,14 @@ import callAPI from "../../Axios/callAPI";
 
 const PdfShow = () => {
 
-
-    const [item, setItem] = useState({})
     const {itemID} = useParams();
 
 
     // QRCODE GENERATOR
 
     const [qrcode, setQrcode] = useState("")
-    const handleCreateQRCode = (e) => {
+    const handleCreateQRCode = (item) => {
+        console.log(item)
         const data = {
             id: item.id,
             amazon_asin: item.amazon_asin,
@@ -44,7 +43,7 @@ const PdfShow = () => {
             };
 
             const response = await callAPI.get(`/items/${itemID}/`, config).then()
-            setItem(response.data)
+            handleCreateQRCode(response.data)
         } catch (error) {
             console.log(error);
         }
@@ -52,7 +51,6 @@ const PdfShow = () => {
 
     useEffect(()=>{
         obtainItemInfo()
-        handleCreateQRCode()
     },[])
 
     return (
