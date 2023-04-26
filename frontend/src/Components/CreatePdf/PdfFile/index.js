@@ -5,7 +5,9 @@ import React from "react";
 const styles = StyleSheet.create({
     page: {
         flexDirection: 'row',
-        backgroundColor: '#E4E4E4'
+        backgroundColor: '#E4E4E4',
+        flexWrap: 'wrap'
+
     },
     section: {
         margin: 10,
@@ -15,17 +17,22 @@ const styles = StyleSheet.create({
 });
 
 // Create Document Component
-const MyDocument = ({qrcode}) => {
+const MyDocument = ({qrcode, number}) => {
+
+    let array= [1,2,3,4,5]
+    for(let i=0; i<=number; i++){
+        array.push(i)
+    }
+
 
         return (
             <Document>
                 <Page size="A4" style={styles.page}>
-                    <Image style={{height:"100", width:"100", border:"1px black solid"}} src={qrcode}/>
-                    <Image style={{height:"100", width:"100", border:"1px black solid"}} src={qrcode}/>
-                    <Image style={{height:"100", width:"100", border:"1px black solid"}} src={qrcode}/>
-                    <Image style={{height:"100", width:"100", border:"1px black solid"}} src={qrcode}/>
-                    <Image style={{height:"100", width:"100", border:"1px black solid"}} src={qrcode}/>
-                    <Image style={{height:"100", width:"100", border:"1px black solid"}} src={qrcode}/>
+                    {
+                        array.map(()=>{
+                            return <Image style={{height:"90", width:"90", border:"1px black solid"}} src={qrcode}/>
+                        })
+                    }
                 </Page>
             </Document>
         )
