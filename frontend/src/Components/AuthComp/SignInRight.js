@@ -49,7 +49,7 @@ const handleLoginClick = async (e) => {
         navigate("/merchants/me");
       } else {
         // User does not have a merchant account, redirect to /merchants/new
-        navigate("/merchants/new");
+        navigate("/merchants/me");
       }
     } else {
       alert("Please check your username and password!");
