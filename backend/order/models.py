@@ -27,4 +27,4 @@ class Order(models.Model):
 
     def __str__(self):
         return f'{self.id} - Date {self.order_date} - Merchant is supplier {self.is_merchant_supplier} - Is refund \
-        {self.is_refund}- Partner {self.partner} - Warehouse {self.warehouse} - Item {self.item}'
+        {self.is_refund}- Partner {self.partner} - Warehouse {self.warehouse}'
