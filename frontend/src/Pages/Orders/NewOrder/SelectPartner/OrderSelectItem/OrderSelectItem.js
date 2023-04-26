@@ -6,11 +6,15 @@ import OrderSelectWarehouse from "./OrderSelectWarehouse/OrderSelectWarehouse.js
 import callAPI from "../../../../../Axios/callAPI.js";
 import SelectItemTable from "./SelectItemTable/SelectItemTable.js";
 import { setItem } from "../../../../../Redux/Slices/orderBuySellRefund.js";
+import { setOrderCheckedItem } from "../../../../../Redux/Slices/orderCheckedItem.js";
 
 function OrderSelectItem() {
   //#### SHOW ITEM LIST ####
-  //retrieve type buy or sell from redux
+  //retrieve type buy or sell and refund from redux
   const isOrderBuy = useSelector((store) => store.orderbuysellrefund.isbuy);
+  const isOrderRefund = useSelector(
+    (store) => store.orderbuysellrefund.isrefund
+  );
   // store fetched items list here
   const [itemList, setItemList] = useState([]);
   // fetch items list
@@ -22,9 +26,10 @@ function OrderSelectItem() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       };
-      const endpoint = isOrderBuy
-        ? "/items/order_outbound/"
-        : "/items/order_inbound/";
+      const endpoint =
+        (isOrderBuy && isOrderRefund) || (!isOrderBuy && !isOrderRefund)
+          ? "/items/order_outbound/"
+          : "/items/order_inbound/";
       const response = await callAPI.get(endpoint, config);
       setItemList(response.data);
     } catch (error) {
@@ -40,6 +45,10 @@ function OrderSelectItem() {
     {
       Header: "Name",
       accessor: "name",
+    },
+    {
+      Header: "Size",
+      accessor: "item_specifications[0].size",
     },
     {
       Header: "Status",
@@ -61,6 +70,18 @@ function OrderSelectItem() {
       Header: "Series",
       accessor: "series",
     },
+    {
+      Header: "Stock",
+      accessor: "stock_level_total_current",
+    },
+    {
+      Header: "Cost",
+      accessor: "item_specifications[0].purchase_price_net_eur",
+    },
+    {
+      Header: "Price",
+      accessor: "item_specifications[0].sale_price_net_eur",
+    },
   ];
 
   //#### HANDLE ITEM SELECTION ####
@@ -69,6 +90,7 @@ function OrderSelectItem() {
   const selectedItemId = useSelector(
     (store) => store.ordercheckeditem.ordercheckeditem
   );
+  //change status
   const handleSelectItem = () => {
     if (selectedItemId.length === 1) {
       setIsItemSelected(true);
@@ -93,7 +115,6 @@ function OrderSelectItem() {
         config
       );
       setItemData(response.data);
-      dispatch(setItem(itemData));
     } catch (error) {
       console.log(error);
     }
@@ -102,13 +123,15 @@ function OrderSelectItem() {
     fetchItemData();
   }, [selectedItemId]);
 
-
-  //TODO set isItemSelected to false if the user toggles Buy/Sell after selecting a partner
-
   //change an already selected item
   const handleChangeItem = () => {
     setIsItemSelected(false);
+    dispatch(setOrderCheckedItem([]));
   };
+  //store item data in redux when local state changes
+  useEffect(() => {
+    dispatch(setItem(itemData));
+  }, [itemData]);
 
   return (
     <div>
@@ -116,9 +139,7 @@ function OrderSelectItem() {
         {isItemSelected ? (
           <div className="flex justify-between">
             <div className="pt-4">
-              {itemData.model_name}{" "}
-              {itemData.item_name} - size:{" "}
-              {itemData.size}
+              {itemData.name} - size: {itemData.item_specifications ? itemData.item_specifications[0].size : ""}
             </div>
             <div className="m-2">
               <button
@@ -139,7 +160,7 @@ function OrderSelectItem() {
             <h2 className=" bg-backgroundGrey text-section px-4 mt-4">
               Quantity & Warehouse
             </h2>
-            {/* <OrderSelectWarehouse /> */}
+            <OrderSelectWarehouse />
           </div>
         ) : (
           ""
