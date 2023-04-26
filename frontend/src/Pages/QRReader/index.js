@@ -1,7 +1,7 @@
 import QrReader from "react-qr-reader"
 import React, {useEffect, useRef, useState} from "react";
 import AddFromQRCode from "./AddFromQRCode";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import callAPI from "../../Axios/callAPI";
 import WarehouseTableQR from "./AddFromQRCode/warehouseTableQR";
 
@@ -13,6 +13,7 @@ const QRReader = () => {
     const navigate = useNavigate()
     const [warehouses, setWarehouses] = useState([])
     const [warehousesClicked, setWarehousesClicked] = useState(false)
+    const {itemID} = useParams()
 
 
     // QRcode Reader
@@ -41,7 +42,7 @@ const QRReader = () => {
 
     const handleGoToItemButton = (e) => {
         e.preventDefault()
-        navigate(`/items/${fileResult.id}/`)
+        navigate(`/items/${itemID}/`)
     }
 
     const handleScanAgainButton = (e) => {
@@ -75,7 +76,7 @@ const QRReader = () => {
 
 
     return (
-        <div className="flex h-80 w-100 justify-center bg-backgroundGrey items-center p-5">
+        <div className="flex h-screen w-full justify-center bg-backgroundGrey items-center p-5">
             <div className="flex flex-col h-full w-full rounded-ifRadius p-5 bg-white  overflow-y-scroll">
                 <div className="flex  h-10 rounded-ifRadius bg-white gap-4 justify-center items-center">
                     <div className="flex w-full content-start items-center gap-4 bg-backgroundGrey px-4">
@@ -87,42 +88,24 @@ const QRReader = () => {
                 <div className="flex h-screen w-full justify-center">
                     <div className="w-full">
                         <div className="flex justify-around items-center">
-                            {
-                                fileResult ?
-                                    [<button className="m-4 text-xl p-0 bg-ifOrange w-40 text-white"
+                            <button className="m-4 text-xl p-0 bg-ifOrange w-40 text-white"
                                              onClick={handleGoToItemButton}> Go to Item</button>,
                                         <button className="m-4 text-xl p-0 bg-ifOrange w-60 text-white"
                                                 onClick={handleAddToWarehouseButton}> Add to Warehouse </button>,
                                         <button className="m-4 text-xl p-0 bg-ifOrange w-40 text-white"
-                                                onClick={handleScanAgainButton}> Scan Again</button>]
-                                    :
-                                    <div className="flex w-1/2 h-40 justify-center mt-4 items-center">
-                                        <QrReader
-                                            className="flex justify-center items-center w-40 h-40"
-                                            delay={1000}
-                                            onError={webcamError}
-                                            onScan={webcamScan}
-                                            legacyMode={false}
-                                            facingMode={'environment'}
-                                        />
-                                    </div>
-                            }
+                                                onClick={handleScanAgainButton}> Scan Again</button>
                         </div>
                         <div>
                             {
                                 warehousesClicked ?
                                     <WarehouseTableQR tableData={warehouses}
-                                                      itemID={fileResult.id}
+                                                      itemID={itemID}
                                     /> :
                                     ""
                             }
                         </div>
                         <div>
-                            {
-                                fileResult ?
-                                    <AddFromQRCode fileResult={fileResult}/> :
-                                    ""
-                            }
+                            <AddFromQRCode itemID={itemID}/> :
                         </div>
                     </div>
                 </div>
