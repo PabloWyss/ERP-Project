@@ -12,6 +12,26 @@ const ModelTable = ({tableData}) => {
     //create columns model
     const columns = [
         {
+            Header: "Image",
+            accessor: "images[0].image",
+            Cell: (props) => {
+
+                if (props.row.original.images) {
+                    if(props.row.original.images[0]){
+                        return <img
+                        className="flex justify-center items-center"
+                        src={props.row.original.images[0].image}
+                        width={60}
+                        alt='Player'
+                    />
+                    }
+                    else {
+                        return <span>No Images assigned to Model</span>
+                    }
+                }
+            }
+        },
+        {
             Header: "Name",
             accessor: "name",
         },
@@ -32,31 +52,11 @@ const ModelTable = ({tableData}) => {
             accessor: "color",
         },
         {
-            Header: "Qty Items",
+            Header: "No. of Variants",
             accessor: "items",
             Cell: (props) => {
                 if(props.row.original.items){
                     return <span>{props.row.original.items.length}</span>
-                }
-            }
-        },
-        {
-            Header: "Image",
-            accessor: "images[0].image",
-            Cell: (props) => {
-
-                if (props.row.original.images) {
-                    if(props.row.original.images[0]){
-                        return <img
-                        className="flex justify-center items-center"
-                        src={props.row.original.images[0].image}
-                        width={60}
-                        alt='Player'
-                    />
-                    }
-                    else {
-                        return <span>No Images assigned to Model</span>
-                    }
                 }
             }
         },
