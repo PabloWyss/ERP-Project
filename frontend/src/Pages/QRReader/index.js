@@ -33,7 +33,7 @@ const QRReader = () => {
     }
 
     useEffect(() => {
-        if(fileResult){
+        if (fileResult) {
             navigate(`/readqr`)
         }
     }, [fileResult])
@@ -43,11 +43,6 @@ const QRReader = () => {
     const handleGoToItemButton = (e) => {
         e.preventDefault()
         navigate(`/items/${itemID}/`)
-    }
-
-    const handleScanAgainButton = (e) => {
-        e.preventDefault()
-        setFileResult()
     }
 
     const handleAddToWarehouseButton = (e) => {
@@ -87,13 +82,13 @@ const QRReader = () => {
                 </div>
                 <div className="flex h-screen w-full justify-center">
                     <div className="w-full">
-                        <div className="flex justify-around items-center">
+                        <div className="flex w-full justify-start items-center">
                             <button className="m-4 text-xl p-0 bg-ifOrange w-40 text-white"
-                                             onClick={handleGoToItemButton}> Go to Item</button>,
-                                        <button className="m-4 text-xl p-0 bg-ifOrange w-60 text-white"
-                                                onClick={handleAddToWarehouseButton}> Add to Warehouse </button>,
-                                        <button className="m-4 text-xl p-0 bg-ifOrange w-40 text-white"
-                                                onClick={handleScanAgainButton}> Scan Again</button>
+                                    onClick={handleGoToItemButton}> Go to Item
+                            </button>
+                            <button className="m-4 text-xl p-0 bg-ifOrange w-60 text-white"
+                                    onClick={handleAddToWarehouseButton}> Add to Warehouse </button>,
+
                         </div>
                         <div>
                             {
@@ -105,7 +100,7 @@ const QRReader = () => {
                             }
                         </div>
                         <div>
-                            <AddFromQRCode itemID={itemID}/> :
+                            <AddFromQRCode itemID={itemID}/>
                         </div>
                     </div>
                 </div>

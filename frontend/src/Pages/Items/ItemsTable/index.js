@@ -86,18 +86,22 @@ const ItemsTable = ({tableData}) => {
     }
 
 
-
-
     const hanldeClickQrCode = (e) => {
         e.preventDefault()
         setQrcodeClicked(!qrcodeClicked)
-        if(qrcodeClicked){
+        if (qrcodeClicked) {
             setOpacity(1)
         } else {
-            setOpacity(.33)
+            setOpacity(.2)
         }
         setQrcodeClicked(!qrcodeClicked)
         // navigate(`/readqr`)
+    }
+
+    const hanldeClickGoBack = (e) =>{
+        e.preventDefault()
+        setQrcodeClicked(!qrcodeClicked)
+        setOpacity(1)
     }
 
     //table data if empy in order to avoid rendering problems
@@ -105,9 +109,10 @@ const ItemsTable = ({tableData}) => {
         name: ""
     }]
 
-    useEffect(()=>{
+    useEffect(() => {
 
-    },[opacity])
+    }, [opacity])
+
 
     return (
         <div
@@ -143,15 +148,21 @@ const ItemsTable = ({tableData}) => {
                 </div>
             </div>
             {
-                    qrcodeClicked ?
-                        <div style={{
-                            opacity: 1
-                            }}
-                            className="fixed top-56 left-1/3 w-2/3 h-2/3">
+                qrcodeClicked ?
+                    <div style={{
+                        opacity: 1
+                    }}
+                         className="fixed top-56 left-1/3">
+                        <div className="flex flex-col gap-10 justify-center items-center">
                             <PopUpQRReader/>
-                        </div> :
-                        ""
-                }
+                            <button className="p-0 p-0 bg-ifOrange w-40 h-8 text-white"
+                                onClick={hanldeClickGoBack}>
+                                Go Back
+                            </button>
+                        </div>
+                    </div> :
+                    ""
+            }
         </div>
     );
 }
