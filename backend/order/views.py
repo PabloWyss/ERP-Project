@@ -35,14 +35,14 @@ class ListOrderView(ListAPIView):
     List all orders
 
     # subtitle
-    List all orders of the merchant in chronological order of -order date
+    List all orders of the merchant in order of -order number
     """
 
     serializer_class = OrderSerializer
 
     def get_queryset(self):
         merchant = self.request.user.merchant
-        return Order.objects.filter(merchant_id=merchant.id).order_by('-order_date')
+        return Order.objects.filter(merchant_id=merchant.id).order_by('-order_number')
 
 
 class CreateOrderView(CreateAPIView):
