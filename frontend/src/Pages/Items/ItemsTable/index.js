@@ -147,7 +147,7 @@ const ItemsTable = ({tableData}) => {
             >
                 <div className="flex gap-10 mb-2">
                     <h1 className="text-title my-2">Items</h1>
-                    <button className="bg-ifOrange w-40 text-white" onClick={handleGoToModels}>Go to
+                    <button className="bg-ifOrange mt-1 h-10 w-40 text-white" onClick={handleGoToModels}>Go to
                         Models
                     </button>
                     <FaQrcode className="mt-2 w-8 h-8 cursor-pointer" onClick={hanldeClickQrCode}/>

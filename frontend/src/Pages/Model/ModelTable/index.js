@@ -92,7 +92,7 @@ const ModelTable = ({tableData}) => {
             >
                 <div className="flex gap-10 mb-2">
                     <h1 className="text-title my-2">Models</h1>
-                    <button className="bg-ifOrange w-40 text-white" onClick={handleGoToItems}>Go to Items
+                    <button className="bg-ifOrange mt-1 h-10 w-40 text-white" onClick={handleGoToItems}>Go to Items
                     </button>
                 </div>
                 {
