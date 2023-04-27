@@ -10,7 +10,7 @@ import PopUpQRReader from "../../QRReader/AddFromQRCode/popUpQrCode";
 const ItemsTable = ({tableData}) => {
     const navigate = useNavigate()
     const [qrcodeClicked, setQrcodeClicked] = useState(false)
-    const [color, setColor] = useState("white")
+    const [opacity, setOpacity] = useState(1)
 
     // change format of numbers
     function commifyCurrency(n = 0) {
@@ -18,7 +18,7 @@ const ItemsTable = ({tableData}) => {
         const numberPart = parts[0];
         const decimalPart = parts[1];
         const thousands = /\B(?=(\d{3})+(?!\d))/g;
-        return numberPart.replace(thousands, "’") + (decimalPart ? "." + decimalPart : " " + "EUR");
+        return "EUR " + numberPart.replace(thousands, "’") + (decimalPart ? "." + decimalPart : " ");
     }
 
     function commify(n = 0) {
@@ -92,11 +92,10 @@ const ItemsTable = ({tableData}) => {
         e.preventDefault()
         setQrcodeClicked(!qrcodeClicked)
         if(qrcodeClicked){
-            setColor('white')
+            setOpacity(1)
         } else {
-            setColor('black')
+            setOpacity(.33)
         }
-        console.log(color)
         setQrcodeClicked(!qrcodeClicked)
         // navigate(`/readqr`)
     }
@@ -108,7 +107,7 @@ const ItemsTable = ({tableData}) => {
 
     useEffect(()=>{
 
-    },[color])
+    },[opacity])
 
     return (
         <div
@@ -117,10 +116,11 @@ const ItemsTable = ({tableData}) => {
         >
             <div
                 style={{
-                    background: color
+                    opacity: opacity
                 }}
                 className='w-full h-full py-6 px-8
         flex flex-col
+        bg-white
            rounded-ifRadius
         overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey'
@@ -141,15 +141,17 @@ const ItemsTable = ({tableData}) => {
                     <img className="cursor-pointer absolute bottom-10 right-12" src={addButton} alt={"create new item"}
                          onClick={handleCreateButton}/>
                 </div>
-
-                {
+            </div>
+            {
                     qrcodeClicked ?
-                        <div className="fixed top-40 left-1/3">
+                        <div style={{
+                            opacity: 1
+                            }}
+                            className="fixed top-56 left-1/3 w-2/3 h-2/3">
                             <PopUpQRReader/>
                         </div> :
                         ""
                 }
-            </div>
         </div>
     );
 }

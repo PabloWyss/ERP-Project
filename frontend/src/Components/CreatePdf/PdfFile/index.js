@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 // Create Document Component
 const MyDocument = ({qrcode, number}) => {
 
-    let array= [1,2,3,4,5]
+    let array= []
     for(let i=0; i<=number; i++){
         array.push(i)
     }
@@ -30,7 +30,7 @@ const MyDocument = ({qrcode, number}) => {
                 <Page size="A4" style={styles.page}>
                     {
                         array.map(()=>{
-                            return <Image style={{height:"90", width:"90", border:"1px black solid"}} src={qrcode}/>
+                            return <Image style={{height:90, width:90, border:"1px black solid"}} src={qrcode}/>
                         })
                     }
                 </Page>
