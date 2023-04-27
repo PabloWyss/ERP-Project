@@ -1,6 +1,5 @@
 import {Document, Page, Text, View, StyleSheet, Image} from '@react-pdf/renderer';
 import React from "react";
-import {Section} from "tailwind-react-ui";
 
 // Create styles
 const styles = StyleSheet.create({
