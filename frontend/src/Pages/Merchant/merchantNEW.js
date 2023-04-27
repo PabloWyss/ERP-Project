@@ -116,7 +116,7 @@ return (
     <div className="flex flex-col h-screen w-11/12 pt-10 pb-10 gap-4">
       <div className="flex justify-start w-2/5">
         <div className="flex items-center justify-between w-full">
-          <h1 className="text-2xl">Merchant</h1>
+          <h1 className="text-title">Merchant</h1>
         </div>
       </div>
       <div className="flex flex-col w-full gap-4 justify-between">

@@ -284,22 +284,25 @@ function Reports() {
 
 
     return (
-        <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-6">
+        <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center py-6 px-8">
             <div className="flex flex-col h-full w-full rounded-ifRadius py-6 px-8 bg-white  overflow-y-auto scrollbar-thin scrollbar-track-transparent
             scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey">
                 <div className="flex flex-col rounded-ifRadius bg-white gap-4">
-                    <div className="flex w-full content-start items-center gap-4 px-4">
+                <div>
+                        <h1 className="text-title">Reports</h1>
+                        </div>
+                    <div className="flex w-full content-start items-center gap-4">                     
                         <div className="w-full overflow-x-visible ">
                             <WarehouseRepTable tableData={inventoryLedgers}/>
-                            <div className="flex w-full h-100">
+                            <div className="flex w-full h-100 mt-4">
                                 <div className="flex flex-col justify-center items-center w-2/5 h-80">
-                                    <h2 className="text-title">
+                                    <h2 className="text-section">
                                         Inventory per Warehouse
                                     </h2>
                                     <MyResponsiveBar data={data1}/>
                                 </div>
                                 <div className="flex flex-col justify-center items-center w-3/5 h-80">
-                                    <h2 className="text-title">
+                                    <h2 className="text-section">
                                         Inventory per Warehouse
                                     </h2>
                                     <MyResponsiveLine data={dataLine}/>

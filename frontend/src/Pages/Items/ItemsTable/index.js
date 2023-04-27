@@ -145,12 +145,12 @@ const ItemsTable = ({tableData}) => {
         overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey'
             >
-                <div className="flex gap-10">
-                    <h1 className="text-title mb-2">Items</h1>
-                    <button className="p-0 p-0 bg-ifOrange w-40 h-8 text-white" onClick={handleGoToModels}>Go to
+                <div className="flex gap-10 mb-2">
+                    <h1 className="text-title my-2">Items</h1>
+                    <button className="bg-ifOrange w-40 text-white" onClick={handleGoToModels}>Go to
                         Models
                     </button>
-                    <FaQrcode className="w-8 h-8 cursor-pointer" onClick={hanldeClickQrCode}/>
+                    <FaQrcode className="mt-2 w-8 h-8 cursor-pointer" onClick={hanldeClickQrCode}/>
                 </div>
                 {
                     tableData?.length > 0 ?

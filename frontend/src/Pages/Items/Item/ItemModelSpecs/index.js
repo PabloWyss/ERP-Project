@@ -212,7 +212,7 @@ const ItemModelSpecs = ({itemModel, itemModelID, fromList}) => {
             <div className="flex w-full justify-center">
                 {
                     (fromList) ?
-                        <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"}>
+                        <button className="bg-ifOrange w-20 text-white" type={"submit"}>
                             Submit
                         </button> :
                         ""

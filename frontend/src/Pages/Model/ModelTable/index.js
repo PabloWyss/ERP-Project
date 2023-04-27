@@ -90,9 +90,9 @@ const ModelTable = ({tableData}) => {
         overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey"
             >
-                <div className="flex gap-10">
-                    <h1 className="text-title mb-2">Models</h1>
-                    <button className="p-0 p-0 bg-ifOrange w-40 h-8 text-white" onClick={handleGoToItems}>Go to Items
+                <div className="flex gap-10 mb-2">
+                    <h1 className="text-title my-2">Models</h1>
+                    <button className="bg-ifOrange w-40 text-white" onClick={handleGoToItems}>Go to Items
                     </button>
                 </div>
                 {
