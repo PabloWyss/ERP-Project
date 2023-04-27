@@ -67,10 +67,6 @@ function OrderSelectItem() {
       accessor: "upc",
     },
     {
-      Header: "Series",
-      accessor: "series",
-    },
-    {
       Header: "Stock",
       accessor: "stock_level_total_current",
     },
