@@ -30,16 +30,17 @@ const PopUpQRReader = () => {
         if (fileResult) {
             setTimeout(() => {
                 navigate(`/readqr/${fileResult.id}/`)
-            }, 1000)
+            }, 200)
         }
     }, [fileResult])
 
+
     return (
 
-        <div className="flex w-1/2 h-40 justify-center mt-4 items-center">
+        <div>
             <QrReader
                 className="flex justify-center items-center w-80 h-80"
-                delay={1000}
+                delay={10}
                 onError={webcamError}
                 onScan={webcamScan}
                 legacyMode={false}

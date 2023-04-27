@@ -110,7 +110,7 @@ function Item() {
         <div className="flex flex-col h-full w-full rounded-ifRadius py-6 px-8 bg-white  overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey">
             <div className="flex flex-col h-full rounded-ifRadius bg-white gap-4">
-                <div className="flex justify-start w-2/5">
+                <div className="flex justify-start w-full">
                     <div className="flex w-full content-start items-center gap-4 px-4">
                         <div>
                             <img className="cursor-pointer" src={arrow_left_image} alt={"go back"}
