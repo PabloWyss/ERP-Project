@@ -34,10 +34,6 @@ const WarehouseTable = ({tableData}) => {
             Header: "Address",
             accessor: "address",
         },
-          {
-            Header: "E-Mail",
-            accessor: "email",
-        },
          {
             Header: "Phone",
             accessor: "phone",
