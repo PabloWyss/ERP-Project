@@ -137,7 +137,6 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
     }
 
     const updateItemVariant = async () => {
-
         if (!localStorage.getItem('token')) {
             return;
         }

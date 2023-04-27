@@ -20,7 +20,7 @@ const WarehouseTable = ({tableData}) => {
         let parts = n.toString().split(".");
         const numberPart = parts[0];
         const decimalPart = parts[1];
-        const thousands = /\B(?=(\d{3})+(?!\d))/g;
+        const thousands = /\B(?=(\d{3})+(?!\d{3}))/g;
         return numberPart.replace(thousands, ",") + (decimalPart ? "." + decimalPart : "");
     }
 
@@ -33,10 +33,6 @@ const WarehouseTable = ({tableData}) => {
         {
             Header: "Address",
             accessor: "address",
-        },
-          {
-            Header: "E-Mail",
-            accessor: "email",
         },
          {
             Header: "Phone",
