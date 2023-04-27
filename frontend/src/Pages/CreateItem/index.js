@@ -16,10 +16,10 @@ const CreateItem = () => {
 
 
     return (
-        <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-5">
+        <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center py-6 px-8">
             <div className="flex flex-col h-full w-full rounded-ifRadius p-5 bg-white  overflow-y-scroll">
                 <div className="flex  h-10 rounded-ifRadius bg-white gap-4 justify-center items-center">
-                    <div className="flex w-full content-start items-center gap-4 bg-backgroundGrey px-4">
+                    <div className="flex w-full content-start items-center gap-4 px-4">
                         <div>
                             <img className="cursor-pointer" src={arrow_left_image} alt={"go back"}
                                  onClick={handleClickGoBack}/>
@@ -30,7 +30,7 @@ const CreateItem = () => {
                     </div>
                 </div>
                 <div className="flex h-screen w-full justify-center">
-                    <div className="flex flex-col h-full w-11/12 pt-10 pb-10 gap-4">
+                    <div className="flex flex-col h-full w-full p-4 gap-4">
                         <PrimaryDetails fromCreate={true}/>
                     </div>
                 </div>

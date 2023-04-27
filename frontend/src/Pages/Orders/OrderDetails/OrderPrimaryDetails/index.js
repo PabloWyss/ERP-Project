@@ -7,7 +7,7 @@ function OrderPrimaryDetails(props) {
 
   return (
     <div>
-      <div className="flex items-center justify-between bg-backgroundGrey px-4">
+      <div className="flex items-center justify-between bg-backgroundGrey px-4 h-10">
         <h2 className="text-section">Primary Details</h2>
       </div>
       <div className="flex w-full py-4">

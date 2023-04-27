@@ -1,28 +1,36 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import ListTable from "../../../Components/ListTable/ListTable";
 import addButton from "../../../Assets/Icons/plus_orange.png";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ListTableIfEmpty from "../../../Components/ListTableIfEmpty/ListTable";
 
-const WarehouseTable = ({tableData}) => {
-    const navigate = useNavigate();
-    console.log(tableData)
+const WarehouseTable = ({ tableData }) => {
+  const navigate = useNavigate();
+  console.log(tableData);
 
-    function commifyCurrency(n = 0) {
-        let parts = n.toString().split(".");
-        const numberPart = parts[0];
-        const decimalPart = parts[1];
-        const thousands = /\B(?=(\d{3})+(?!\d))/g;
-        return "EUR" + " " + numberPart.replace(thousands, "’") + (decimalPart ? "." + decimalPart : " ");
-    }
+  function commifyCurrency(n = 0) {
+    let parts = n.toString().split(".");
+    const numberPart = parts[0];
+    const decimalPart = parts[1];
+    const thousands = /\B(?=(\d{3})+(?!\d))/g;
+    return (
+      "EUR" +
+      " " +
+      numberPart.replace(thousands, "’") +
+      (decimalPart ? "." + decimalPart : " ")
+    );
+  }
 
-    function commify(n = 0) {
-        let parts = n.toString().split(".");
-        const numberPart = parts[0];
-        const decimalPart = parts[1];
-        const thousands = /\B(?=(\d{3})+(?!\d))/g;
-        return numberPart.replace(thousands, ",") + (decimalPart ? "." + decimalPart : "");
-    }
+  function commify(n = 0) {
+    let parts = n.toString().split(".");
+    const numberPart = parts[0];
+    const decimalPart = parts[1];
+    const thousands = /\B(?=(\d{3})+(?!\d))/g;
+    return (
+      numberPart.replace(thousands, ",") +
+      (decimalPart ? "." + decimalPart : "")
+    );
+  }
 
     //create columns model
     const columns = [
@@ -64,49 +72,46 @@ const WarehouseTable = ({tableData}) => {
         },
     ];
 
-    const handleCreateButton = (e) => {
-        e.preventDefault();
-        navigate(`/warehouses/new/`);
-    };
+  const handleCreateButton = (e) => {
+    e.preventDefault();
+    navigate(`/warehouses/new/`);
+  };
 
-    const data_if_empty = [
-        {
-            name: "",
-        },
-    ];
+  const data_if_empty = [
+    {
+      name: "",
+    },
+  ];
 
-    return (
-        <div
-            className="flex h-full w-full py-6 px-6 justify-center bg-backgroundGrey"
-        >
-            <div
-                className="w-full h-full py-6 px-8 flex flex-col bg-white rounded-ifRadius
+  return (
+    <div className="flex h-full w-full py-6 px-8 justify-center bg-backgroundGrey">
+      <div
+        className="w-full h-full py-6 px-8 flex flex-col bg-white rounded-ifRadius
         overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey"
-            >
-                <div className="flex gap-10">
-                    <h1 className="text-title mb-2">Warehouses</h1>
-                </div>
-                {tableData?.length > 0 ? (
-                    <ListTable data={tableData} columns={columns}></ListTable>
-                ) : (
-                    <ListTableIfEmpty
-                        data={data_if_empty}
-                        columns={columns}
-                    ></ListTableIfEmpty>
-                )}
-                <div>
-                    <img
-                        className="cursor-pointer absolute bottom-10 right-12"
-                        src={addButton}
-                        alt={"create new warehouse"}
-                        onClick={handleCreateButton}
-                    />
-                </div>
-            </div>
+      >
+        <div className="flex">
+          <h1 className="text-title mb-2">Warehouses</h1>
         </div>
-    );
+        {tableData?.length > 0 ? (
+          <ListTable data={tableData} columns={columns}></ListTable>
+        ) : (
+          <ListTableIfEmpty
+            data={data_if_empty}
+            columns={columns}
+          ></ListTableIfEmpty>
+        )}
+        <div>
+          <img
+            className="cursor-pointer absolute bottom-10 right-12"
+            src={addButton}
+            alt={"create new warehouse"}
+            onClick={handleCreateButton}
+          />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default WarehouseTable;
-

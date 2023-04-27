@@ -1,11 +1,16 @@
 import SelectPartner from "./SelectPartner/SelectPartner";
 import { useDispatch, useSelector } from "react-redux";
-import { setOrderIsBuy, setOrderIsRefund } from "../../../Redux/Slices/orderBuySellRefund";
+import {
+  setOrderIsBuy,
+  setOrderIsRefund,
+} from "../../../Redux/Slices/orderBuySellRefund";
+import { useNavigate } from "react-router-dom";
+import arrow_left_image from "../../../Assets/Icons/arrow_left_orange.svg";
 
 function NewOrder() {
   //retrieve type buy or sell from redux
   const isOrderBuy = useSelector((store) => store.orderbuysellrefund.isbuy);
-  
+
   //handle user selection buy/sell
   const dispatch = useDispatch(); //state is in redux
   const changeOrderType = () => {
@@ -13,9 +18,17 @@ function NewOrder() {
   };
 
   //handle choice refund or not
-  const isOrderRefund = useSelector((store) => store.orderbuysellrefund.isrefund);
+  const isOrderRefund = useSelector(
+    (store) => store.orderbuysellrefund.isrefund
+  );
   const changeIsRefund = () => {
     dispatch(setOrderIsRefund());
+  };
+
+  const navigate = useNavigate();
+  const handleClickGoBack = (e) => {
+    e.preventDefault();
+    navigate(`/orders`);
   };
 
   return (
@@ -30,10 +43,20 @@ function NewOrder() {
         overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey"
       >
-        <h1 className="text-title mb-4">New Order</h1>
+        <div className="flex w-full content-start items-center gap-4 px-4 mb-4">
+          <div>
+            <img
+              className="cursor-pointer"
+              src={arrow_left_image}
+              alt={"go back"}
+              onClick={handleClickGoBack}
+            />
+          </div>
+        <h1 className="text-title">New Order</h1>
+        </div>
         <div className="flex gap-8">
           <div className="flex">
-            <div className="pt-2 mr-2 text-buttonGrey">Type: </div>
+            <div className="pt-[10px] mr-2 text-buttonGrey">Type: </div>
             <button
               onClick={changeOrderType}
               className={
@@ -56,7 +79,7 @@ function NewOrder() {
             </button>
           </div>
           <div className="flex">
-            <div className="pt-2 mr-2 text-buttonGrey">Refund: </div>
+            <div className="pt-[10px] mr-2 text-buttonGrey">Refund: </div>
             <button
               onClick={changeIsRefund}
               className={
@@ -79,7 +102,7 @@ function NewOrder() {
             </button>
           </div>
         </div>
-        <h2 className=" bg-backgroundGrey text-section px-4 mt-4">
+        <h2 className=" bg-backgroundGrey text-section px-4 py-2 mt-4">
           {isOrderBuy ? "Supplier" : "Customer"}
         </h2>
         <div className="my-2">

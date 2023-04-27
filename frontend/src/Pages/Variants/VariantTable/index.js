@@ -56,9 +56,9 @@ const VariantTable = ({tableData}) => {
         overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey"
             >
-                <div className="flex gap-10">
+                <div className="flex gap-10 mb-2">
                     <img className="cursor-pointer" src={arrow_left_image} alt={"go back"} onClick={handleClickGoBack}/>
-                    <h1 className="text-title mb-2">{`Variants of Item`}</h1>
+                    <h1 className="text-title">{`Variants of Item`}</h1>
                 </div>
                 {
                     tableData?.length > 0 ?

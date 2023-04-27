@@ -105,14 +105,14 @@ const CreateWarehouse = () => {
 
 return (
   <div className="flex flex-col w-full justify-between gap-4">
-    <div className="flex items-center justify-between bg-backgroundGrey px-4">
-      <h2 className="text-xl">New Warehouse </h2>
-      <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"} onClick={handleSubmitButton}>
+    <div className="flex items-center justify-between bg-backgroundGrey px-4 h-14">
+      <h2 className="text-section">New Warehouse </h2>
+      <button className="bg-ifOrange w-24 text-white" type={"submit"} onClick={handleSubmitButton}>
         Submit
       </button>
     </div>
     <div className="flex w-full justify-around gap-4">
-      <div className="flex w-1/2 flex-col gap-1">
+      <div className="flex w-1/2 flex-col gap-1 content-start">
         <ItemDetailsInput
 
           handleInput={handleNameInput}

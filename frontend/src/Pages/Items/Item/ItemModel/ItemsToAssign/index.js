@@ -68,14 +68,14 @@ const ItemsToAssign = ({itemModelID}) => {
 
     return (
         <div className="flex flex-col w-full">
-            <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
-                <p>
+            <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-14">
+                <p className="text-section">
                     Assign Items to this model
                 </p>
                 <div className="flex p-0 items-center gap-4">
                     {
                         showItemsAssigned ?
-                            <button className="p-0 items-center bg-ifOrange w-60 text-white"
+                            <button className="items-center bg-ifOrange w-48 text-white"
                                     onClick={handleAssignToModel}>
                                 {clickedAssignToModel ?
                                     "" :

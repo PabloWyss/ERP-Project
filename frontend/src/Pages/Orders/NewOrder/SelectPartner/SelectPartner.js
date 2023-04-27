@@ -114,7 +114,7 @@ function SelectPartner() {
             <div className="m-2">
               <button
                 onClick={handleChangePartner}
-                className="float-right text-buttonGrey border-2 border-buttonGrey"
+                className="float-right text-buttonGrey border-2 border-buttonGrey w-24"
               >
                 Change
               </button>
@@ -127,7 +127,7 @@ function SelectPartner() {
       <div>
         {isPartnerSelected ? (
           <div>
-            <h2 className=" bg-backgroundGrey text-section px-4 mt-4">Items</h2>
+            <h2 className=" bg-backgroundGrey text-section px-4 py-2 mt-4">Items</h2>
             <OrderSelectItem />
           </div>
         ) : (
