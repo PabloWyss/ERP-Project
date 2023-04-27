@@ -32,49 +32,45 @@ const WarehouseTable = ({ tableData }) => {
     );
   }
 
-  //create columns model
-  const columns = [
-    {
-      Header: "Name",
-      accessor: "name",
-    },
-    {
-      Header: "Address",
-      accessor: "address",
-    },
-    {
-      Header: "E-Mail",
-      accessor: "email",
-    },
-    {
-      Header: "Phone",
-      accessor: "phone",
-    },
-    {
-      Header: "Total Stock",
-      accessor: "stock_level_total_current",
-      Cell: (props) => {
-        const number = commify(props.value);
-        return <span className="flex justify-start">{number}</span>;
-      },
-    },
-    {
-      Header: "Total Purchase Value",
-      accessor: "stock_level_total_purchase_value_current",
-      Cell: (props) => {
-        const number = commifyCurrency(props.value);
-        return <span className="flex justify-start">{number}</span>;
-      },
-    },
-    {
-      Header: "Total Sale Value",
-      accessor: "stock_level_total_sale_value_current",
-      Cell: (props) => {
-        const number = commifyCurrency(props.value);
-        return <span className="flex justify-start">{number}</span>;
-      },
-    },
-  ];
+    //create columns model
+    const columns = [
+        {
+            Header: "Name",
+            accessor: "name",
+        },
+        {
+            Header: "Address",
+            accessor: "address",
+        },
+         {
+            Header: "Phone",
+            accessor: "phone",
+        },
+        {
+            Header: "Total Stock",
+            accessor: "stock_level_total_current",
+            Cell: (props) => {
+                const number = commify(props.value)
+                return <span className="flex justify-start">{number}</span>
+            }
+        },
+        {
+            Header: "Total Purchase Value",
+            accessor: "stock_level_total_purchase_value_current",
+            Cell: (props) => {
+                const number = commifyCurrency(props.value)
+                return <span className="flex justify-start">{number}</span>
+            }
+        },
+        {
+            Header: "Total Sale Value",
+            accessor: "stock_level_total_sale_value_current",
+            Cell: (props) => {
+                const number = commifyCurrency(props.value)
+                return <span className="flex justify-start">{number}</span>
+            }
+        },
+    ];
 
   const handleCreateButton = (e) => {
     e.preventDefault();

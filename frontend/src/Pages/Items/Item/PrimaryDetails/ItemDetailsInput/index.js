@@ -1,7 +1,7 @@
 import React from "react";
 import ItemDetailsChoicesInput from "./ItemDetailsChoicesInput";
 
-const ItemDetailsInput = ({value, disableInput, handleInput, description, choicesEnabeled, choices, type,}) => {
+const ItemDetailsInput = ({value, disableInput, handleInput, description, choicesEnabeled, choices, type,step}) => {
   return (
     <div className="flex items-center justify-between">
       <label className="w-3/5" htmlFor="item_input">
@@ -42,6 +42,7 @@ const ItemDetailsInput = ({value, disableInput, handleInput, description, choice
             disabled={disableInput}
             onChange={handleInput}
             type={type}
+            step={step}
             checked={value ? value : ""}
           />
         )

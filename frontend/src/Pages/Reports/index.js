@@ -3,13 +3,13 @@ import callAPI from "../../Axios/callAPI";
 import WarehouseRepTable from "./WarehouseRepTable";
 import MyResponsiveLine from "./Graphs/LineGraph";
 import MyResponsiveBar from "./Graphs/BarGraph";
-import PDFView from "../../Components/CreatePdf";
 
 function Reports() {
 
     //define const
     const [inventoryLedgers, setInventoryLedgers] = useState([])
     const [warehouseList, setWarehouseList] = useState([])
+    const [warehouseStockLevel, setWarehouseStockLevel] = useState([])
 
     // fetch data
     const obtainModelsInfo = async () => {
@@ -42,10 +42,26 @@ function Reports() {
         }
     }
 
+    const obtainWarehouseStockLevels = async () => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            };
+
+            const response = await callAPI.get(`/inventory_ledgers/stock_current_daily_warehouse/`, config)
+            setWarehouseStockLevel(response.data.dataLine)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 
     useEffect(() => {
         obtainModelsInfo()
         obtainWarehouseList()
+        obtainWarehouseStockLevels()
     }, [])
 
 
@@ -280,9 +296,6 @@ function Reports() {
         }
     ]
 
-
-
-
     return (
         <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center py-6 px-8">
             <div className="flex flex-col h-full w-full rounded-ifRadius py-6 px-8 bg-white  overflow-y-auto scrollbar-thin scrollbar-track-transparent
@@ -307,6 +320,9 @@ function Reports() {
                                     </h2>
                                     <MyResponsiveLine data={dataLine}/>
                                 </div>
+                                {/*<div>*/}
+                                {/*    <LineChart/>*/}
+                                {/*</div>*/}
                             </div>
                         </div>
                     </div>
