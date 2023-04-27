@@ -37,10 +37,10 @@ function ListTable(props) {
           }}
           // placeholder={`Search ${count} records...`}
           // placeholder={`Search...`}
-          className="float-left w-full mb-2"
+          className="float-left w-full mb-2 pl-6 text-textGrey focus:outline-buttonGrey"
         />
         <img
-          className="cursor-pointer relative left-2 bottom-8"
+          className="relative left-2 bottom-8"
           src={Lens}
           alt={"Search..."}
         />
@@ -166,7 +166,7 @@ return (
                     )} /*handle sorting*/
                     className="flex items-center"
                   >
-                    <div className="float-left pt-2 pr-2 text-buttonGrey">
+                    <div className="float-left pt-2 pr-2 text-buttonGrey font-normal">
                       {column.render("Header")}
                     </div>
                     <div className="pt-3 h-7">
