@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 const MyDocument = ({qrcode, number}) => {
 
         let array = []
-        for (let i = 0; i <= number; i++) {
+        for (let i = 0; i < number; i++) {
             array.push(i)
         }
 
@@ -30,13 +30,11 @@ const MyDocument = ({qrcode, number}) => {
         return (
             <Document>
                 <Page size="A4" style={styles.page}>
-                    <View style={styles.section}>
                         {
                             array.map(() => {
                                 return <Image style={{height: 90, width: 90, border: "1px black solid"}} src={qrcode}/>
                             })
                         }
-                    </View>
                 </Page>
             </Document>
         )
