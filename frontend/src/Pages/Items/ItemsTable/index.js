@@ -32,6 +32,26 @@ const ItemsTable = ({tableData}) => {
     //create columns model
     const columns = [
         {
+            Header: "Image",
+            accessor: "item_model.images[0].image",
+            Cell: (props) => {
+
+                if (props.row.original.item_model) {
+                    if(props.row.original.item_model.images[0]){
+                        return <img
+                        className="flex justify-center items-center"
+                        src={props.row.original.item_model.images[0].image}
+                        width={60}
+                        alt='Player'
+                    />
+                    }
+                    else {
+                        return <span>No Images assigned to Model</span>
+                    }
+                }
+            }
+        },
+        {
             Header: "Name",
             accessor: "name",
         },
@@ -67,11 +87,6 @@ const ItemsTable = ({tableData}) => {
                 return <span>{number}</span>
             }
         },
-        {
-            Header: "Size",
-            accessor: "item_specifications[0].size",
-        },
-
     ];
 
     //Handle Buttons
