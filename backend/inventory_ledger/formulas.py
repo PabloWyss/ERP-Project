@@ -75,7 +75,6 @@ def get_daily_stock_levels_by_warehouse(merchant):
     return list(stock_level_data.values())
 
 
-
 def get_daily_stock_levels_by_warehouse_filtered_by_item(item):
     stock_levels = (
         InventoryLedger.objects
