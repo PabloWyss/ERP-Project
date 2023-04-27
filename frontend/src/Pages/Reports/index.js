@@ -3,7 +3,6 @@ import callAPI from "../../Axios/callAPI";
 import WarehouseRepTable from "./WarehouseRepTable";
 import MyResponsiveLine from "./Graphs/LineGraph";
 import MyResponsiveBar from "./Graphs/BarGraph";
-import LineChart from "./GraphsChartsJs/lineChart";
 
 function Reports() {
 
@@ -316,7 +315,7 @@ function Reports() {
                                     <h2 className="text-title">
                                         Inventory per Warehouse
                                     </h2>
-                                    <MyResponsiveLine data={warehouseStockLevel}/>
+                                    <MyResponsiveLine data={dataLine}/>
                                 </div>
                                 {/*<div>*/}
                                 {/*    <LineChart/>*/}
