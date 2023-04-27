@@ -200,6 +200,7 @@ return (
                 choicesEnabeled={true}
                 choices={["Active",'No restock']}/>
               <ItemDetailsInput
+               disableInput={disableInput}
                 value={contact}
                 type="text"
                 handleInput={handleContactInput}

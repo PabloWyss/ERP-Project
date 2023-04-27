@@ -34,6 +34,14 @@ const WarehouseTable = ({tableData}) => {
             Header: "Address",
             accessor: "address",
         },
+          {
+            Header: "E-Mail",
+            accessor: "email",
+        },
+         {
+            Header: "Phone",
+            accessor: "phone",
+        },
         {
             Header: "Total Stock",
             accessor: "stock_level_total_current",

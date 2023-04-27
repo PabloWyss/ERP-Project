@@ -46,7 +46,7 @@ const SideBar = () => {
               <img src={logo} alt="Invenflow Logo" className="w-8 h-8 mr-1"/>
               <h1 className="text-white text-xl font-bold">InvenFlow</h1>
             </div>
-            <div className="mt-10">
+            <div className="mt-10 overflow-x-hidden">
                 <NavLink to="/merchants/me">
                 {({isActive}) => (
                     <button
@@ -112,7 +112,7 @@ const SideBar = () => {
               </NavLink>
 
             </div>
-            <div className='absolute bottom-10 left-0'>
+            <div className='absolute bottom-10 left-0 overflow-x-hidden w-full'>
               <NavLink to="/profile">
                 {({isActive}) => (
                     <button
