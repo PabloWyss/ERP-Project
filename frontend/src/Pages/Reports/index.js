@@ -9,10 +9,9 @@ function Reports() {
     //define const
     const [inventoryLedgers, setInventoryLedgers] = useState([])
     const [warehouseList, setWarehouseList] = useState([])
-    const [warehouseStockLevel, setWarehouseStockLevel] = useState([])
 
     // fetch data
-    const obtainModelsInfo = async () => {
+    const obtainLedgersInfo = async () => {
         try {
             const config = {
                 headers: {
@@ -42,26 +41,12 @@ function Reports() {
         }
     }
 
-    const obtainWarehouseStockLevels = async () => {
-        try {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
-            };
-
-            const response = await callAPI.get(`/inventory_ledgers/stock_current_daily_warehouse/`, config)
-            setWarehouseStockLevel(response.data.dataLine)
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
 
     useEffect(() => {
-        obtainModelsInfo()
+        obtainLedgersInfo()
         obtainWarehouseList()
-        obtainWarehouseStockLevels()
+
     }, [])
 
 
@@ -75,37 +60,37 @@ function Reports() {
         data1.push(warehouseObject)
     })
 
-    let listData1 = []
-    let wareHouses = []
-    let listData2 = []
+    // let listData1 = []
+    // let wareHouses = []
+    // let listData2 = []
 
-    inventoryLedgers.forEach((inventoryLedger) => {
-
-        if (!wareHouses.includes(inventoryLedger.warehouse.name)) {
-            wareHouses.push(inventoryLedger.warehouse.name)
-            listData2.push({
-                "id": inventoryLedger.warehouse.name,
-                "data": [
-
-                    {
-                        "x": 0,
-                        "y": 0
-                    },
-                    {
-                        "x": inventoryLedger.event_date.slice(0, 10),
-                        "y": inventoryLedger.stock_level_final
-                    }
-                ]
-            })
-        } else {
-            let index = wareHouses.indexOf(inventoryLedger.warehouse.name)
-            listData2[index].data.splice(1, 0, {
-                "x": inventoryLedger.event_date.slice(0, 10),
-                "y": inventoryLedger.stock_level_final
-            })
-        }
-
-    })
+    // inventoryLedgers.forEach((inventoryLedger) => {
+    //
+    //     if (!wareHouses.includes(inventoryLedger.warehouse.name)) {
+    //         wareHouses.push(inventoryLedger.warehouse.name)
+    //         listData2.push({
+    //             "id": inventoryLedger.warehouse.name,
+    //             "data": [
+    //
+    //                 {
+    //                     "x": 0,
+    //                     "y": 0
+    //                 },
+    //                 {
+    //                     "x": inventoryLedger.event_date.slice(0, 10),
+    //                     "y": inventoryLedger.stock_level_final
+    //                 }
+    //             ]
+    //         })
+    //     } else {
+    //         let index = wareHouses.indexOf(inventoryLedger.warehouse.name)
+    //         listData2[index].data.splice(1, 0, {
+    //             "x": inventoryLedger.event_date.slice(0, 10),
+    //             "y": inventoryLedger.stock_level_final
+    //         })
+    //     }
+    //
+    // })
 
 
     // const data = [{
