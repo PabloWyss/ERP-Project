@@ -19,8 +19,6 @@ function Orders() {
 
       const response = await callAPI.get(`/orders/`, config);
       setOrderList(response.data);
-      //TODO remove print
-console.log(orderList[0].items[0])
     } catch (error) {
       console.log(error);
     }
