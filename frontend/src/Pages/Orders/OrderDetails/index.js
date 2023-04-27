@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import ListTable from "../../../Components/ListTable/ListTable";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import OrderPrimaryDetails from "./OrderPrimaryDetails";
 import callAPI from "../../../Axios/callAPI";
 import { useEffect } from "react";
+import arrow_left_image from "../../../Assets/Icons/arrow_left_orange.svg";
 
 function OrderDetails() {
   //fetch order data
@@ -68,6 +69,12 @@ function OrderDetails() {
     },
   ];
 
+  const navigate = useNavigate();
+  const handleClickGoBack = (e) => {
+    e.preventDefault();
+    navigate(`/orders`);
+  };
+
   return (
     <div
       className="h-screen w-screen py-6 px-8 justify-center
@@ -80,9 +87,19 @@ function OrderDetails() {
         overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey"
       >
-        <h1 className="text-title mb-4">Order # {orderData.order_number}</h1>
+        <div className="flex w-full content-start items-center gap-4 px-4 mb-4">
+          <div>
+            <img
+              className="cursor-pointer"
+              src={arrow_left_image}
+              alt={"go back"}
+              onClick={handleClickGoBack}
+            />
+          </div>
+          <h1 className="text-title">Order # {orderData.order_number}</h1>
+        </div>
         <OrderPrimaryDetails order={orderData} />
-        <div className="flex items-center justify-between bg-backgroundGrey px-4 mb-2">
+        <div className="flex items-center justify-between bg-backgroundGrey px-4 mb-2 h-10">
           <h2 className="text-section">Items</h2>
         </div>
         <ListTable data={[orderData]} columns={columns}></ListTable>

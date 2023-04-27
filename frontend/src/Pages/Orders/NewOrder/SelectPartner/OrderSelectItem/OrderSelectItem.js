@@ -140,7 +140,7 @@ function OrderSelectItem() {
             <div className="m-2">
               <button
                 onClick={handleChangeItem}
-                className="float-right text-buttonGrey border-2 border-buttonGrey"
+                className="float-right text-buttonGrey border-2 border-buttonGrey w-24"
               >
                 Change
               </button>
@@ -153,7 +153,7 @@ function OrderSelectItem() {
       <div>
         {isItemSelected ? (
           <div>
-            <h2 className=" bg-backgroundGrey text-section px-4 mt-4">
+            <h2 className=" bg-backgroundGrey text-section py-2 px-4 mt-4">
               Quantity & Warehouse
             </h2>
             <OrderSelectWarehouse />

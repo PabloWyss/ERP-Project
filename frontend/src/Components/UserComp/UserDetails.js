@@ -123,9 +123,9 @@ const handleProfilePictureChange = async (event) => {
 
     return (
       <div className="flex flex-col w-full justify-between gap-4">
-        <div className="flex items-center justify-between bg-backgroundGrey px-4">
-          <h2 className="text-xl">User Details </h2>
-          <button onClick={handleEditButton}>
+        <div className="flex items-center justify-between bg-backgroundGrey px-4 h-14">
+          <h2 className="text-section">User Details </h2>
+          <button onClick={handleEditButton} className="bg-ifOrange text-white w-20">
             {editClicked ? "Save" : "Edit"}
           </button>
         </div>

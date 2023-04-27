@@ -40,15 +40,15 @@ const CreateItemVariant = () => {
 
     return (
         <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center p-5">
-            <div className="flex flex-col h-full w-full rounded-ifRadius p-5 bg-white  overflow-y-scroll">
-                <div className="flex  h-10 rounded-ifRadius bg-white gap-4 justify-center items-center">
-                    <div className="flex w-full content-start items-center gap-4 bg-backgroundGrey px-4">
+            <div className="flex flex-col h-full w-full rounded-ifRadius py-6 px-4 bg-white  overflow-y-scroll">
+                <div className="flex h-10 rounded-ifRadius bg-white gap-4 justify-center items-center">
+                    <div className="flex w-full content-start items-center gap-4 px-4">
                         <div>
                             <img className="cursor-pointer" src={arrow_left_image} alt={"go back"}
                                  onClick={handleClickGoBack}/>
                         </div>
                         <h1 className="text-title">
-                            {`Create  New Item Specifications for ${item.name}`}
+                            {`Create New Item Specifications for ${item.name}`}
                         </h1>
                     </div>
                 </div>

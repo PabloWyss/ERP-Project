@@ -19,10 +19,10 @@ function Profile() {
         overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey"
       >
-      <div className="flex flex-col h-screen w-11/12 pt-10 pb-10 gap-4">
+      <div className="flex flex-col h-screen gap-4">
           <div className="flex justify-start w-2/5">
               <div className="flex items-center justify-between w-full">
-                  <h1 className="text-2xl">
+                  <h1 className="text-title">
                       Profile
                   </h1>
               </div>

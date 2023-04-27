@@ -226,14 +226,14 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
 
     return (
         <form className="flex flex-col w-full justify-between gap-4" onSubmit={handleSubmitButton}>
-            <div className="flex items-center justify-between bg-backgroundGrey px-4 h-10">
-                <h2 className="text-title">
+            <div className="flex items-center justify-between bg-backgroundGrey px-4 h-14">
+                <h2 className="text-section">
                     Primary Details
                 </h2>
                 {
                     (fromCreate || fromQRCode) ?
                         "" :
-                        <button className="p-0 bg-ifOrange w-20 text-white" onClick={handleEditButton}>
+                        <button className="bg-ifOrange w-20 text-white" onClick={handleEditButton}>
                             {
                                 editClicked ?
                                     "Save" :
@@ -324,13 +324,13 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
                 {
                     (fromCreate) ?
                         <div>
-                            <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"}>
+                            <button className="bg-ifOrange w-24 text-white" type={"submit"}>
                                 Submit
                             </button>
                         </div> :
                         <div className="flex flex-col w-full gap-4">
-                            <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
-                                <div className="text-xl">
+                            <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-14">
+                                <div className="text-section">
                                     QR- and Barcodes
                                 </div>
                                 <div className="items-center flex gap-4 justify-items-center">
@@ -359,7 +359,7 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
                                             "" :
                                             [<div className="flex justify-between gap-8 items-center">
                                                 <img alt={"QrCode"} src={qrcode}/>
-                                                <button className="p-0 bg-ifOrange w-40 text-white"
+                                                <button className="bg-ifOrange w-40 text-white"
                                                         onClick={handleCreatePDF}> Create PDF
                                                 </button>
                                             </div>,
@@ -370,7 +370,7 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
                                                          jsbarcode-textmargin="0"
                                                          jsbarcode-fontoptions="bold">
                                                     </svg>
-                                                    <button className="p-0 bg-ifOrange w-40 text-white"
+                                                    <button className="bg-ifOrange w-40 text-white"
                                                         onClick={handleCreatePDF}> Create PDF
                                                     </button>
                                                 </div>]

@@ -52,7 +52,7 @@ const WarehouseRepTable = ({tableData}) => {
 
         <div className="flex flex-col w-full h-full">
             <div className="flex gap-10">
-                <h1 className="text-title mb-2">Inventory Ledgers</h1>
+                <h1 className="text-section mb-2">Inventory Ledger</h1>
             </div>
             {
                 tableData?.length > 0 ?

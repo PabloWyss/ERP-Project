@@ -301,7 +301,7 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
             <div className="flex w-full justify-center">
                 {
                     (fromCreate || comesFromUpdate) ?
-                        <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"}>
+                        <button className="bg-ifOrange w-24 text-white" type={"submit"}>
                             Submit
                         </button> :
                         ""
