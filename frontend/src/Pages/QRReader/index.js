@@ -87,7 +87,7 @@ const QRReader = () => {
                                     onClick={handleGoToItemButton}> Go to Item
                             </button>
                             <button className="m-4 bg-ifOrange w-60 text-white"
-                                    onClick={handleAddToWarehouseButton}> Add to Warehouse </button>,
+                                    onClick={handleAddToWarehouseButton}> Add to Warehouse </button>
 
                         </div>
                         <div>
