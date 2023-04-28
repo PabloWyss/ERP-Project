@@ -282,13 +282,16 @@ function Reports() {
 
     return (
             <div>
-            {loading? (
-    <div className="loading fixed top-0 left-0 w-full h-full flex justify-center items-center">
-  <div className="text-center">
-    <ClimbingBoxLoader size={150} color="#36d7b7" />
-  </div>
-</div>
-      ) : (
+          {loading ? (
+            <div className="loading fixed top-0 left-0  w-full h-full flex flex-col items-center justify-center">
+              <div className= "mb-10">
+                <ClimbingBoxLoader size={20} color="#48505E" />
+                  </div>
+              <div className="text-title text-center mt-10" style={{ color: "#48505E" }}>
+                Your packages are loading...
+              </div>
+            </div>
+          ) : (
         <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center py-6 px-8">
             <div className="flex flex-col h-full w-full rounded-ifRadius py-6 px-8 bg-white  overflow-y-auto scrollbar-thin scrollbar-track-transparent
             scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey">
