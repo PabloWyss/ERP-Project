@@ -3,109 +3,93 @@ import callAPI from "../../Axios/callAPI";
 import WarehouseRepTable from "./WarehouseRepTable";
 import MyResponsiveLine from "./Graphs/LineGraph";
 import MyResponsiveBar from "./Graphs/BarGraph";
+import { ClimbingBoxLoader } from 'react-spinners';
 
 function Reports() {
+  const [inventoryLedgers, setInventoryLedgers] = useState([]);
+  const [warehouseList, setWarehouseList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    //define const
-    const [inventoryLedgers, setInventoryLedgers] = useState([])
-    const [warehouseList, setWarehouseList] = useState([])
-    const [warehouseStockLevel, setWarehouseStockLevel] = useState([])
+  const obtainLedgersInfo = async () => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      };
 
-    // fetch data
-    const obtainModelsInfo = async () => {
-        try {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
-            };
-
-            const response = await callAPI.get(`/inventory_ledgers/`, config)
-            setInventoryLedgers(response.data)
-        } catch (error) {
-            console.log(error);
-        }
+      const response = await callAPI.get('/inventory_ledgers/', config);
+      setInventoryLedgers(response.data);
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-    const obtainWarehouseList = async () => {
-        try {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
-            };
+  const obtainWarehouseList = async () => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      };
 
-            const response = await callAPI.get(`/warehouses/`, config)
-            setWarehouseList(response.data)
-        } catch (error) {
-            console.log(error);
-        }
+      const response = await callAPI.get('/warehouses/', config);
+      setWarehouseList(response.data);
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-    const obtainWarehouseStockLevels = async () => {
-        try {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
-            };
+  useEffect(() => {
+    setLoading(true);
+    Promise.all([obtainLedgersInfo(), obtainWarehouseList()]).then(() => {
+      setLoading(false);
+    });
+  }, []);
 
-            const response = await callAPI.get(`/inventory_ledgers/stock_current_daily_warehouse/`, config)
-            setWarehouseStockLevel(response.data.dataLine)
-        } catch (error) {
-            console.log(error);
-        }
-    }
+  let data1 = [];
 
+  warehouseList.forEach((warehouse) => {
+    let warehouseObject = {
+      'Warehouse Name': warehouse.name,
+      'Stock level': warehouse.stock_level_total_current,
+    };
+    data1.push(warehouseObject);
+  });
 
-    useEffect(() => {
-        obtainModelsInfo()
-        obtainWarehouseList()
-        obtainWarehouseStockLevels()
-    }, [])
+    // let listData1 = []
+    // let wareHouses = []
+    // let listData2 = []
 
-
-    let data1 = []
-
-    warehouseList.forEach((warehouse) => {
-        let warehouseObject = {
-            "Warehouse Name": warehouse.name,
-            "Stock level": warehouse.stock_level_total_current,
-        }
-        data1.push(warehouseObject)
-    })
-
-    let listData1 = []
-    let wareHouses = []
-    let listData2 = []
-
-    inventoryLedgers.forEach((inventoryLedger) => {
-
-        if (!wareHouses.includes(inventoryLedger.warehouse.name)) {
-            wareHouses.push(inventoryLedger.warehouse.name)
-            listData2.push({
-                "id": inventoryLedger.warehouse.name,
-                "data": [
-
-                    {
-                        "x": 0,
-                        "y": 0
-                    },
-                    {
-                        "x": inventoryLedger.event_date.slice(0, 10),
-                        "y": inventoryLedger.stock_level_final
-                    }
-                ]
-            })
-        } else {
-            let index = wareHouses.indexOf(inventoryLedger.warehouse.name)
-            listData2[index].data.splice(1, 0, {
-                "x": inventoryLedger.event_date.slice(0, 10),
-                "y": inventoryLedger.stock_level_final
-            })
-        }
-
-    })
+    // inventoryLedgers.forEach((inventoryLedger) => {
+    //
+    //     if (!wareHouses.includes(inventoryLedger.warehouse.name)) {
+    //         wareHouses.push(inventoryLedger.warehouse.name)
+    //         listData2.push({
+    //             "id": inventoryLedger.warehouse.name,
+    //             "data": [
+    //
+    //                 {
+    //                     "x": 0,
+    //                     "y": 0
+    //                 },
+    //                 {
+    //                     "x": inventoryLedger.event_date.slice(0, 10),
+    //                     "y": inventoryLedger.stock_level_final
+    //                 }
+    //             ]
+    //         })
+    //     } else {
+    //         let index = wareHouses.indexOf(inventoryLedger.warehouse.name)
+    //         listData2[index].data.splice(1, 0, {
+    //             "x": inventoryLedger.event_date.slice(0, 10),
+    //             "y": inventoryLedger.stock_level_final
+    //         })
+    //     }
+    //
+    // })
 
 
     // const data = [{
@@ -297,6 +281,14 @@ function Reports() {
     ]
 
     return (
+            <div>
+            {loading? (
+    <div className="loading fixed top-0 left-0 w-full h-full flex justify-center items-center">
+  <div className="text-center">
+    <ClimbingBoxLoader size={150} color="#36d7b7" />
+  </div>
+</div>
+      ) : (
         <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center py-6 px-8">
             <div className="flex flex-col h-full w-full rounded-ifRadius py-6 px-8 bg-white  overflow-y-auto scrollbar-thin scrollbar-track-transparent
             scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey">
@@ -328,8 +320,9 @@ function Reports() {
                     </div>
                 </div>
             </div>
-        </div>
-    )
+         </div>
+      )}
+    </div>
+  );
 }
-
 export default Reports;
