@@ -1,68 +1,67 @@
 import ListTable from "../ListTable/ListTable";
 import ListTableIfEmpty from "../ListTableIfEmpty/ListTable";
-import moment from 'moment';
+import moment from "moment";
 
-const InventoryLedgerTable = ({tableData}) => {
+const InventoryLedgerTable = ({ tableData }) => {
+  //create columns model
+  const columns = [
+    {
+      Header: "Event Date",
+      accessor: "event_date",
+      Cell: (props) => {
+        const custom_date = moment(props.value).format(
+          "dddd, MMMM Do YYYY, h:mm:ss a"
+        );
+        return <span>{custom_date}</span>;
+      },
+    },
+    {
+      Header: "Type",
+      accessor: "event_type",
+    },
+    {
+      Header: "Warehouse",
+      accessor: "warehouse.name",
+    },
+    {
+      Header: "Initial Stock Level",
+      accessor: "stock_level_initial",
+    },
+    {
+      Header: "Quantity Altered",
+      accessor: "quantity_altered",
+    },
+    {
+      Header: "Final Stock Level",
+      accessor: "stock_level_final",
+    },
+  ];
 
-    //create columns model
-    const columns = [
-        {
-            Header: "Event Date",
-            accessor: "event_date",
-            Cell : (props)=>{
-            const custom_date = moment(props.value).format("dddd, MMMM Do YYYY, h:mm:ss a")
-            return <span>{custom_date}</span>
-        }
-        },
-        {
-            Header: "Type",
-            accessor: "event_type",
-        },
-        {
-            Header: "Warehouse",
-            accessor: "warehouse.name",
-        },
-        {
-            Header: "Quantity Altered",
-            accessor: "quantity_altered",
-        },
-        {
-            Header: "Initial Sock Level",
-            accessor: "stock_level_initial",
-        },
-        {
-            Header: "Final Sock Level",
-            accessor: "stock_level_final",
-        },
-    ];
+  //table data if empy in order to avoid rendering problems
+  const data_if_empty = [
+    {
+      name: "",
+    },
+  ];
 
-    //table data if empy in order to avoid rendering problems
-    const data_if_empty = [{
-        name: ""
-    }]
-
-    return (
-        <div
-            className="flex h-full w-full py-6 px-6 justify-between
-    bg-backgroundGrey"
-        >
-            <div
-                className="w-full h-full py-6 px-8
+  return (
+    <div
+      className="w-full h-full py-6 px-8
         flex flex-col
       bg-white rounded-ifRadius
         overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey"
-            >
-                {
-                    tableData?.length > 0 ?
-                        <ListTable data={tableData} columns={columns}></ListTable> :
-                        <ListTableIfEmpty data={data_if_empty} columns={columns}></ListTableIfEmpty>
-                }
+    >
+      {tableData?.length > 0 ? (
+        <ListTable data={tableData} columns={columns}></ListTable>
+      ) : (
+        <ListTableIfEmpty
+          data={data_if_empty}
+          columns={columns}
+        ></ListTableIfEmpty>
+      )}
+    </div>
+  );
+};
 
-            </div>
-
-        </div>
-    );
-}
-
-export default InventoryLedgerTable
+export default InventoryLedgerTable;

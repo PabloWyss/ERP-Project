@@ -12,6 +12,7 @@ import {
   FaChevronRight,
   FaChevronUp,
 } from "react-icons/fa";
+import Lens from "../../../../../..//Assets/Icons/search.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { forwardRef } from "react";
 import { useRef } from "react";
@@ -28,15 +29,22 @@ function SelectItemTable(props) {
   function TextFilter({ column: { filterValue, preFilteredRows, setFilter } }) {
     // const count = preFilteredRows.length;
     return (
-      <input
-        value={filterValue || ""}
-        onChange={(e) => {
-          setFilter(e.target.value || undefined);
-        }}
-        // placeholder={`Search ${count} records...`}
-        placeholder={`Search...`}
-        className="float-left w-full mb-2"
-      />
+      <div className="h-2">
+        <input
+          value={filterValue || ""}
+          onChange={(e) => {
+            setFilter(e.target.value || undefined);
+          }}
+          // placeholder={`Search ${count} records...`}
+          // placeholder={`Search...`}
+          className="float-left w-full mb-2 pl-6 text-textGrey focus:outline-buttonGrey"
+        />
+        <img
+          className="relative left-2 bottom-8"
+          src={Lens}
+          alt={"Search..."}
+        />
+      </div>
     );
   }
 
@@ -103,12 +111,12 @@ function SelectItemTable(props) {
           // The header can use the table's getToggleAllRowsSelectedProps method
           // to render a checkbox
           // Header: ({ getToggleAllRowsSelectedProps }) => (
-          Header: ({ getToggleAllPageRowsSelectedProps }) => (
-            <div>
-              {/* <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} /> */}
-              <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
-            </div>
-          ),
+          // Header: ({ getToggleAllPageRowsSelectedProps }) => (
+          //   <div>
+          //     {/* <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} /> */}
+          //     <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
+          //   </div>
+          // ),
           // The cell can use the individual row's getToggleRowSelectedProps method
           // to the render a checkbox
           Cell: ({ row }) => (
@@ -150,14 +158,15 @@ function SelectItemTable(props) {
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
-                  <th className="px-2">
+                  <th className="px-2 align-bottom">
                     {/* putting a key={uuidv4()} inside <th> makes the filter lose focus after each keystroke*/}
                     <div
                       {...column.getHeaderProps(
                         column.getSortByToggleProps()
                       )} /*handle sorting*/
+                      className="flex items-center"
                     >
-                      <div className="float-left pt-2 pr-2 text-buttonGrey">
+                      <div className="float-left pt-2 pr-2 text-buttonGrey font-normal">
                         {column.render("Header")}
                       </div>
                       <div className="pt-3 h-7">
@@ -172,7 +181,7 @@ function SelectItemTable(props) {
                         )}
                       </div>
                     </div>
-                    <div className="w-full py-3">
+                    <div className="w-full py-3 font-normal">
                       {column.canFilter ? column.render("Filter") : null}
                     </div>
                   </th>
@@ -203,32 +212,36 @@ function SelectItemTable(props) {
             })}
           </tbody>
         </table>
-      </div>
-      <div className="flex flex-row my-2 pb-6">
-        <div>
-          <button
-            onClick={() => previousPage()}
-            disabled={!canPreviousPage}
-            className="px-4 py-2 border-2 rounded-ifRadius border-buttonGrey bg-white"
-          >
-            <FaChevronLeft className="text-buttonGrey" />
-          </button>
-        </div>
-        <div className="text-buttonGrey pt-2 px-2">
-          Page{" "}
-          <span>
-            {pageIndex + 1} of {pageOptions.length}
-          </span>
-        </div>
-        <div>
-          <button
-            onClick={() => nextPage()}
-            disabled={!canNextPage}
-            className="px-4 py-2 border-2 rounded-ifRadius border-buttonGrey bg-white"
-          >
-            <FaChevronRight className="text-buttonGrey" />
-          </button>
-        </div>
+        {pageOptions.length !== 1 ? (
+          <div className="flex flex-row my-2 pb-6">
+            <div>
+              <button
+                onClick={() => previousPage()}
+                disabled={!canPreviousPage}
+                className="px-4 py-2 border-2 rounded-ifRadius border-drawGrey bg-white"
+              >
+                <FaChevronLeft className="text-drawGrey" />
+              </button>
+            </div>
+            <div className="text-drawGrey pt-2 px-2">
+              Page{" "}
+              <span>
+                {pageIndex + 1} of {pageOptions.length}
+              </span>
+            </div>
+            <div>
+              <button
+                onClick={() => nextPage()}
+                disabled={!canNextPage}
+                className="px-4 py-2 border-2 rounded-ifRadius border-drawGrey bg-white"
+              >
+                <FaChevronRight className="text-drawGrey" />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div></div>
+        )}
       </div>
     </div>
   );

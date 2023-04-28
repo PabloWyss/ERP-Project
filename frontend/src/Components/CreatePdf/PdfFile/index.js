@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#E4E4E4',
         flexWrap: 'wrap'
 
+
     },
     section: {
         margin: 10,
@@ -19,20 +20,20 @@ const styles = StyleSheet.create({
 // Create Document Component
 const MyDocument = ({qrcode, number}) => {
 
-    let array= [1,2,3,4,5]
-    for(let i=0; i<=number; i++){
-        array.push(i)
-    }
+        let array = []
+        for (let i = 0; i < number; i++) {
+            array.push(i)
+        }
 
 
         return (
             <Document>
                 <Page size="A4" style={styles.page}>
-                    {
-                        array.map(()=>{
-                            return <Image style={{height:"90", width:"90", border:"1px black solid"}} src={qrcode}/>
-                        })
-                    }
+                        {
+                            array.map(() => {
+                                return <Image style={{height: 90, width: 90, border: "1px black solid"}} src={qrcode}/>
+                            })
+                        }
                 </Page>
             </Document>
         )

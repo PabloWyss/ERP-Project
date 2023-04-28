@@ -37,10 +37,10 @@ function ListTable(props) {
           }}
           // placeholder={`Search ${count} records...`}
           // placeholder={`Search...`}
-          className="float-left w-full mb-2"
+          className="float-left w-full mb-2 pl-6 text-textGrey focus:outline-buttonGrey"
         />
         <img
-          className="cursor-pointer relative left-2 bottom-8"
+          className="relative left-2 bottom-8"
           src={Lens}
           alt={"Search..."}
         />
@@ -112,7 +112,7 @@ function ListTable(props) {
           // to render a checkbox
           // Header: ({ getToggleAllRowsSelectedProps }) => (
           Header: ({ getToggleAllPageRowsSelectedProps }) => (
-            <div>
+            <div className="absolute bottom-[12px]">
               {/* <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} /> */}
               <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
             </div>
@@ -149,7 +149,7 @@ function ListTable(props) {
   return (
     <div className="max-h-full">
       <div
-        className="max-h-full overflow-y-scroll 
+        className="max-h-full overflow-y-scroll
       scrollbar-thin scrollbar-track-transparent scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey
       bg-white"
       >
@@ -158,12 +158,13 @@ function ListTable(props) {
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
-                  <th className="px-2">
+                  <th className="px-2 align-bottom">
                     {/* putting a key={uuidv4()} inside <th> makes the filter lose focus after each keystroke*/}
                     <div
                       {...column.getHeaderProps(
                         column.getSortByToggleProps()
                       )} /*handle sorting*/
+                      className="flex items-center"
                     >
                       <div className="float-left pt-2 pr-2 text-buttonGrey font-normal">
                         {column.render("Header")}
@@ -211,35 +212,38 @@ function ListTable(props) {
             })}
           </tbody>
         </table>
-      </div>
-      <div className="flex flex-row my-2 pb-6">
-        <div>
-          <button
-            onClick={() => previousPage()}
-            disabled={!canPreviousPage}
-            className="px-4 py-2 border-2 rounded-ifRadius border-drawGrey bg-white"
-          >
-            <FaChevronLeft className="text-drawGrey" />
-          </button>
-        </div>
-        <div className="text-drawGrey pt-2 px-2">
-          Page{" "}
-          <span>
-            {pageIndex + 1} of {pageOptions.length}
-          </span>
-        </div>
-        <div>
-          <button
-            onClick={() => nextPage()}
-            disabled={!canNextPage}
-            className="px-4 py-2 border-2 rounded-ifRadius border-drawGrey bg-white"
-          >
-            <FaChevronRight className="text-drawGrey" />
-          </button>
-        </div>
+        {pageOptions.length !== 1 ? (
+          <div className="flex flex-row my-2 pb-6">
+            <div>
+              <button
+                onClick={() => previousPage()}
+                disabled={!canPreviousPage}
+                className="px-4 py-2 border-2 rounded-ifRadius border-drawGrey bg-white"
+              >
+                <FaChevronLeft className="text-drawGrey" />
+              </button>
+            </div>
+            <div className="text-drawGrey pt-2 px-2">
+              Page{" "}
+              <span>
+                {pageIndex + 1} of {pageOptions.length}
+              </span>
+            </div>
+            <div>
+              <button
+                onClick={() => nextPage()}
+                disabled={!canNextPage}
+                className="px-4 py-2 border-2 rounded-ifRadius border-drawGrey bg-white"
+              >
+                <FaChevronRight className="text-drawGrey" />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div></div>
+        )}
       </div>
     </div>
   );
 }
-
 export default ListTable;

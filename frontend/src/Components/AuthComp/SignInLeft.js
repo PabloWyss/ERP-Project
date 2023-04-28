@@ -8,7 +8,7 @@ const SignInLeft = () => {
         <div className="flex flex-col items-center">
           <img src={logo} alt="Invenflow Logo" className="w-23 mb-2" />
           <p className="font-semibold text-4xl text-white">Invenflow</p>
-          <p className="opacity-60">Slogan</p>
+          <p className="opacity-60 text-title">Smart inventory solution</p>
         </div>
       </div>
     </div>

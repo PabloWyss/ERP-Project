@@ -1,8 +1,9 @@
 import callAPI from "../../../Axios/callAPI";
 import {useEffect, useState} from "react";
 import ShowItemInfo from "./showItemInfo";
+import {useParams} from "react-router-dom";
 
-const AddFromQRCode = ({fileResult}) => {
+const AddFromQRCode = ({itemID}) => {
     //define const
     const [item, setItem] = useState({})
 
@@ -16,7 +17,7 @@ const AddFromQRCode = ({fileResult}) => {
                 },
             };
 
-            const response = await callAPI.get(`/items/${fileResult.id}/`, config)
+            const response = await callAPI.get(`/items/${itemID}/`, config)
             setItem(response.data)
         } catch (error) {
             console.log(error);
@@ -26,7 +27,9 @@ const AddFromQRCode = ({fileResult}) => {
     useEffect(() => {
         obtainItemInfo()
 
-    }, [fileResult])
+    }, [itemID])
+
+    console.log(itemID)
 
     return (
         <div>

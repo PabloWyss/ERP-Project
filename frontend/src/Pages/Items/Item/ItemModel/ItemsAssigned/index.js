@@ -37,8 +37,8 @@ const ItemsAssigned = ({itemModelID}) => {
 
     return (
         <div className="flex flex-col w-full">
-            <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-10">
-                <p>
+            <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-14">
+                <p className="text-section">
                     Items Assigned to this model
                 </p>
                 <button className="p-0" onClick={handleShowItemsAssigned}>

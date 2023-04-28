@@ -5,6 +5,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import QRCode from "qrcode";
 import JsBarcode from "jsbarcode";
 import moment from "moment/moment";
+import {FaChevronDown, FaChevronUp} from "react-icons/fa";
 
 
 const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
@@ -22,8 +23,6 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
     const [UPC, setUPC] = useState("")
     const [AASIN, setAASIN] = useState("")
     const [AFNSKU, setAFNSKU] = useState("")
-    const [createQRCodeClicked, setCreateQRCodeClicked] = useState(false)
-    const [createBarcodeClicked, setCreateBarcodeClicked] = useState(false)
     const [creatQRCodeBarcodeClicked, setCreatQRCodeBarcodeClicked] = useState(false)
     const navigate = useNavigate()
     const {itemID} = useParams();
@@ -32,8 +31,7 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
     // QRCODE GENERATOR
 
     const [qrcode, setQrcode] = useState("")
-    const handleCreateQRCode = (e) => {
-        e.preventDefault()
+    const createQRCode = () => {
         const data = {
             id: item.id,
             amazon_asin: item.amazon_asin,
@@ -51,17 +49,12 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
             }
         }
         generateQR()
-        setCreateQRCodeClicked(!createQRCodeClicked)
+
     }
 
 
     //Barcode Generator
-
-    const handleCreateBarcode = (e) => {
-        e.preventDefault()
-        setCreateBarcodeClicked(!createBarcodeClicked)
-        JsBarcode(".barcode").init();
-    }
+    JsBarcode(".barcode").init();
 
     // handle input
 
@@ -120,6 +113,7 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
     const handleCreateQrCodeBarcodeButton = (e) => {
         e.preventDefault()
         setCreatQRCodeBarcodeClicked(!creatQRCodeBarcodeClicked)
+        createQRCode()
     }
 
     const handleCreatePDF = (e) => {
@@ -227,19 +221,19 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
         const numberPart = parts[0];
         const decimalPart = parts[1];
         const thousands = /\B(?=(\d{3})+(?!\d))/g;
-        return numberPart.replace(thousands, "’") + (decimalPart ? "." + decimalPart : " " + "EUR");
+        return "EUR " + numberPart.replace(thousands, "’") + (decimalPart ? "." + decimalPart : " ");
     }
 
     return (
         <form className="flex flex-col w-full justify-between gap-4" onSubmit={handleSubmitButton}>
-            <div className="flex items-center justify-between bg-backgroundGrey px-4 h-10">
-                <h2 className="text-title">
+            <div className="flex items-center justify-between bg-backgroundGrey px-4 h-14">
+                <h2 className="text-section">
                     Primary Details
                 </h2>
                 {
                     (fromCreate || fromQRCode) ?
                         "" :
-                        <button className="p-0 bg-ifOrange w-20 text-white" onClick={handleEditButton}>
+                        <button className="bg-ifOrange w-20 text-white" onClick={handleEditButton}>
                             {
                                 editClicked ?
                                     "Save" :
@@ -330,17 +324,23 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
                 {
                     (fromCreate) ?
                         <div>
-                            <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"}>
+                            <button className="bg-ifOrange w-24 text-white" type={"submit"}>
                                 Submit
                             </button>
                         </div> :
-                        <div className="flex justify-center items-center px-4 h-10">
-                            <button className="text-xl p-0 bg-ifOrange w-96 text-white"
-                                    onClick={handleCreateQrCodeBarcodeButton}>
-                                Create QRcode / Barcode
-                            </button>
+                        <div className="flex flex-col w-full gap-4">
+                            <div className="flex justify-between items-center  bg-backgroundGrey px-4 h-14">
+                                <div className="text-section">
+                                    QR- and Barcodes
+                                </div>
+                                <div className="items-center flex gap-4 justify-items-center">
+                                    <button className="p-0" onClick={handleCreateQrCodeBarcodeButton}>
+                                        {creatQRCodeBarcodeClicked ? <FaChevronUp className="h-6 w-6"/> :
+                                            <FaChevronDown className="h-6 w-6"/>}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-
                 }
             </div>
             {
@@ -357,29 +357,22 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
                                     {
                                         fromQRCode ?
                                             "" :
-                                            [<div className="flex flex-col items-center">
-                                                <button className="p-0 bg-ifOrange w-40 text-white"
-                                                        onClick={handleCreateQRCode}> Create QRCode
+                                            [<div className="flex justify-between gap-8 items-center">
+                                                <img alt={"QrCode"} src={qrcode}/>
+                                                <button className="bg-ifOrange w-40 text-white"
+                                                        onClick={handleCreatePDF}> Create PDF
                                                 </button>
-                                                {
-                                                    createQRCodeClicked ?
-                                                        [<img alt={"QrCode"} src={qrcode}/>,
-                                                        <button className="p-0 bg-ifOrange w-40 text-white"
-                                                                onClick={handleCreatePDF}> Create PDF
-                                                        </button>]:
-                                                    ""
-                                                }
                                             </div>,
-                                                <div className="flex flex-col items-center">
-                                                    <button className="p-0 bg-ifOrange w-40 text-white"
-                                                            onClick={handleCreateBarcode}> Create Barcode
-                                                    </button>
+                                                <div className="flex justify-between gap-8 items-center">
                                                     <svg className="barcode"
                                                         //jsbarcode-format="EAN13"
                                                          jsbarcode-value={item.ean}
                                                          jsbarcode-textmargin="0"
                                                          jsbarcode-fontoptions="bold">
                                                     </svg>
+                                                    <button className="bg-ifOrange w-40 text-white"
+                                                        onClick={handleCreatePDF}> Create PDF
+                                                    </button>
                                                 </div>]
                                     }
                                 </div>

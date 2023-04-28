@@ -137,7 +137,6 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
     }
 
     const updateItemVariant = async () => {
-
         if (!localStorage.getItem('token')) {
             return;
         }
@@ -212,6 +211,23 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
         date = moment(itemVariant.valid_from).format("dddd, MMMM Do YYYY")
     }
 
+    function commify(n) {
+        let parts = n.toString().split(".");
+        const numberPart = parts[0];
+        const decimalPart = parts[1];
+        const thousands = /\B(?=(\d{3})+(?!\d))/g;
+        return numberPart.replace(thousands, ",") + (decimalPart ? "." + decimalPart : "");
+    }
+
+    function commifyCurrency(n = 0) {
+        let parts = n.toString().split(".");
+        const numberPart = parts[0];
+        const decimalPart = parts[1];
+        const thousands = /\B(?=(\d{3})+(?!\d{2}))/g;
+        return "EUR " + numberPart.replace(thousands, "’") + (decimalPart ? "." + decimalPart : " ");
+    }
+
+
     return (
         <form className="flex flex-col gap-4 " onSubmit={handleOnSubmit}>
             <div className="flex w-full gap-10 justify-around">
@@ -228,12 +244,12 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
                                                   handleInput={handleInitialDateInput}/>]
                     }
 
-                    <ItemDetailsInput description={"Purchase Price [eur]:"}
-                                      value={purchasePrice}
+                    <ItemDetailsInput description={"Purchase Price:"}
+                                      value={(fromCreate || fromUpdate) ? purchasePrice : commifyCurrency(purchasePrice)}
                                       disableInput={!comesFromUpdate & !fromCreate}
                                       handleInput={handlePurchasePriceInput}/>
-                    <ItemDetailsInput description={"Sale Price [eur]:"}
-                                      value={salePrice}
+                    <ItemDetailsInput description={"Sale Price:"}
+                                      value={(fromCreate || fromUpdate) ? salePrice : commifyCurrency(salePrice)}
                                       handleInput={handleSalePriceInput}
                                       disableInput={!comesFromUpdate & !fromCreate}/>
                     <ItemDetailsInput description={"Stock level minimum [qty]:"}
@@ -285,7 +301,7 @@ const ItemVariant = ({itemVariant, fromCreate, fromUpdate, itemID}) => {
             <div className="flex w-full justify-center">
                 {
                     (fromCreate || comesFromUpdate) ?
-                        <button className="text-xl p-0 bg-ifOrange w-20 text-white" type={"submit"}>
+                        <button className="bg-ifOrange w-24 text-white" type={"submit"}>
                             Submit
                         </button> :
                         ""

@@ -1,87 +1,79 @@
-import React from "react";
+import React, { useState } from "react";
 import ListTable from "../../../Components/ListTable/ListTable";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import OrderPrimaryDetails from "./OrderPrimaryDetails";
+import callAPI from "../../../Axios/callAPI";
+import { useEffect } from "react";
+import arrow_left_image from "../../../Assets/Icons/arrow_left_orange.svg";
 
 function OrderDetails() {
   //fetch order data
-  //read id of the order to fetch from the URL
-  const location = useLocation();
-  const orderId = location.pathname.slice(8); //remove "/order/" from the path
+  //read id of the order to fetch
+  const orderId = useParams().orderID;
+
+  const [orderData, setOrderData] = useState({});
 
   //TODO fetch order -> endpoint missing?
-  //fake order for testing
-  const order = {
-    id: orderId,
-    partner: "Darren Daniels",
-    is_merchant_supplier: false,
-    is_refund: true,
-    address: "882 Hide A Way Road, Anaktuvuk Pass, AK 99721",
-    order_date: "07/07/2020",
-    shipment_date: "08/07/2020",
-    order_number: "22906126785176",
-    warehouse: "Amazon Warehouse",
-    quantity: 12,
+  const getOrderById = async () => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
+
+      const response = await callAPI.get(`/orders/${orderId}`, config);
+      setOrderData(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  //TODO fetch data of the item(s) in the order? or is it already in the order data?
-
-  
-  //fake data for table testing
-  const items = [
-    {
-      model_name: "Espadrilla",
-      item_name: "Formentera Yellow",
-      size: "38",
-      quantity: 4,
-      price: 12.58,
-      total: 50.32,
-    },
-    {
-      model_name: "Espadrilla",
-      item_name: "Lanzarote Feta",
-      size: "40",
-      quantity: 2,
-      price: 11.22,
-      total: 22.44,
-    },
-    {
-      model_name: "Bandana",
-      item_name: "Gaucho Vino",
-      size: "XL",
-      quantity: 30,
-      price: 7.05,
-      total: 211.5,
-    },
-  ];
+  useEffect(() => {
+    getOrderById();
+  }, []);
 
   //create columns model
   const columns = [
     {
-      Header: "Category",
-      accessor: "model_name",
-    },
-    {
-      Header: "Model",
-      accessor: "item_name",
+      Header: "Name",
+      accessor: "items[0].name",
     },
     {
       Header: "Size",
-      accessor: "size",
+      accessor: "items[0].item_specifications[0].size",
     },
     {
-      Header: "Qty.",
-      accessor: "quantity",
+      Header: "SKU",
+      accessor: "items[0].sku",
+    },
+    {
+      Header: "EAN",
+      accessor: "items[0].ean",
+    },
+    {
+      Header: "UPC",
+      accessor: "items[0].upc",
+    },
+    {
+      Header: "Stock",
+      accessor: "items[0].stock_level_total_current",
+    },
+    {
+      Header: "Cost",
+      accessor: "items[0].item_specifications[0].purchase_price_net_eur",
     },
     {
       Header: "Price",
-      accessor: "price",
-    },
-    {
-      Header: "Total",
-      accessor: "total",
+      accessor: "items[0].item_specifications[0].sale_price_net_eur",
     },
   ];
+
+  const navigate = useNavigate();
+  const handleClickGoBack = (e) => {
+    e.preventDefault();
+    navigate(`/orders`);
+  };
 
   return (
     <div
@@ -95,12 +87,22 @@ function OrderDetails() {
         overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey"
       >
-        <h1 className="text-title mb-4">Order # {order.order_number}</h1>
-        <OrderPrimaryDetails order={order} />
-        <div className="flex items-center justify-between bg-backgroundGrey px-4 mb-2">
+        <div className="flex w-full content-start items-center gap-4 px-4 mb-4">
+          <div>
+            <img
+              className="cursor-pointer"
+              src={arrow_left_image}
+              alt={"go back"}
+              onClick={handleClickGoBack}
+            />
+          </div>
+          <h1 className="text-title">Order # {orderData.order_number}</h1>
+        </div>
+        <OrderPrimaryDetails order={orderData} />
+        <div className="flex items-center justify-between bg-backgroundGrey px-4 mb-2 h-10">
           <h2 className="text-section">Items</h2>
         </div>
-        <ListTable data={items} columns={columns}></ListTable>
+        <ListTable data={[orderData]} columns={columns}></ListTable>
       </div>
     </div>
   );

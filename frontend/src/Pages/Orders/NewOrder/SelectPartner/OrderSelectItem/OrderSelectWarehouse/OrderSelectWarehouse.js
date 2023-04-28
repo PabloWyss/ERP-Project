@@ -239,8 +239,8 @@ function OrderSelectWarehouse() {
         <button
           className={
             allSelected
-              ? "bg-ifOrange text-white float-right"
-              : "border-2 border-drawGrey text-drawGrey cursor-default float-right"
+              ? "bg-ifOrange text-white float-right w-20"
+              : "border-2 border-drawGrey text-drawGrey cursor-default float-right w-20"
           }
           onClick={allSelected ? handleSave : () => {}}
         >
