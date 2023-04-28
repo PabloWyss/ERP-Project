@@ -6,7 +6,6 @@ import ListTableIfEmpty from "../../../Components/ListTableIfEmpty/ListTable";
 
 const WarehouseTable = ({ tableData }) => {
   const navigate = useNavigate();
-  console.log(tableData);
 
   function commifyCurrency(n = 0) {
     let parts = n.toString().split(".");
