@@ -83,10 +83,10 @@ const QRReader = () => {
                 <div className="flex h-screen w-full justify-center">
                     <div className="w-full">
                         <div className="flex w-full justify-start items-center">
-                            <button className="m-4 text-xl p-0 bg-ifOrange w-40 text-white"
+                            <button className="m-4 bg-ifOrange w-40 text-white"
                                     onClick={handleGoToItemButton}> Go to Item
                             </button>
-                            <button className="m-4 text-xl p-0 bg-ifOrange w-60 text-white"
+                            <button className="m-4 bg-ifOrange w-60 text-white"
                                     onClick={handleAddToWarehouseButton}> Add to Warehouse </button>,
 
                         </div>
