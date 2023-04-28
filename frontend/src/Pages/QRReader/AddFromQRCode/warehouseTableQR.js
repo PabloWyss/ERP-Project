@@ -124,7 +124,7 @@ const WarehouseTableQR = ({tableData, itemID}) => {
                                               handleInput={handleInputQty}
                                               description={"Quantity: "}
                                               type={'number'}/>
-                            <button className="m-4 text-xl p-0 bg-ifOrange w-40 text-white" onClick={handleSubmit}>
+                            <button className="m-4 bg-ifOrange w-40 text-white" onClick={handleSubmit}>
                                 Submit
                             </button>
 

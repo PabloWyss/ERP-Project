@@ -24,15 +24,15 @@ const InventoryLedgerTable = ({ tableData }) => {
       accessor: "warehouse.name",
     },
     {
+      Header: "Initial Stock Level",
+      accessor: "stock_level_initial",
+    },
+    {
       Header: "Quantity Altered",
       accessor: "quantity_altered",
     },
     {
-      Header: "Initial Sock Level",
-      accessor: "stock_level_initial",
-    },
-    {
-      Header: "Final Sock Level",
+      Header: "Final Stock Level",
       accessor: "stock_level_final",
     },
   ];
