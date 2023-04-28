@@ -21,11 +21,11 @@ function CreatePartnerView() {
         overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey"
       >
-      <div className="flex flex-col h-screen w-11/12 pt-10 pb-10 gap-4">
-          <div className="flex justify-start w-1/4">
+      <div className="flex flex-col h-screen gap-4">
+          <div className="flex justify-start">
               <div className="flex items-center w-full">
               <img
-                  className="cursor-pointer mr-2"
+                  className="cursor-pointer mx-4"
                   src={arrow_left_image}
                   alt={"go back"}
                   onClick={handleClickGoBack}

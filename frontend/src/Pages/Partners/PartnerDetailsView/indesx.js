@@ -39,11 +39,11 @@ const getPartnerName = async () => {
   return (
     <div className="h-screen w-screen py-6 px-8 justify-center bg-backgroundGrey">
       <div className="w-full h-full py-6 px-8 flex flex-col bg-white rounded-ifRadius overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey">
-        <div className="flex flex-col h-screen w-11/12 pt-10 pb-10 gap-4">
-          <div className="flex justify-start w-1/4 ">
-            <div className="flex items-center  w-full">
+        <div className="flex flex-col h-screengap-4">
+          <div className="flex justify-start">
+            <div className="flex items-center w-full mb-4">
               <img
-                className="cursor-pointer mr-2"
+                className="cursor-pointer mx-4"
                 src={arrow_left_image}
                 alt={"go back"}
                 onClick={handleClickGoBack}
