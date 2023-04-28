@@ -111,12 +111,12 @@ function SelectPartnerTable(props) {
           // The header can use the table's getToggleAllRowsSelectedProps method
           // to render a checkbox
           // Header: ({ getToggleAllRowsSelectedProps }) => (
-          Header: ({ getToggleAllPageRowsSelectedProps }) => (
-            <div>
-              {/* <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} /> */}
-              <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
-            </div>
-          ),
+          // Header: ({ getToggleAllPageRowsSelectedProps }) => (
+          //   <div className="absolute bottom-[12px]">
+          //     {/* <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} /> */}
+          //     <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
+          //   </div>
+          // ),
           // The cell can use the individual row's getToggleRowSelectedProps method
           // to the render a checkbox
           Cell: ({ row }) => (
@@ -212,32 +212,36 @@ function SelectPartnerTable(props) {
             })}
           </tbody>
         </table>
-      </div>
-      <div className="flex flex-row my-2 pb-6">
-        <div>
-          <button
-            onClick={() => previousPage()}
-            disabled={!canPreviousPage}
-            className="px-4 py-2 border-2 rounded-ifRadius border-drawGrey bg-white"
-          >
-            <FaChevronLeft className="text-drawGrey" />
-          </button>
-        </div>
-        <div className="text-drawGrey pt-2 px-2">
-          Page{" "}
-          <span>
-            {pageIndex + 1} of {pageOptions.length}
-          </span>
-        </div>
-        <div>
-          <button
-            onClick={() => nextPage()}
-            disabled={!canNextPage}
-            className="px-4 py-2 border-2 rounded-ifRadius border-drawGrey bg-white"
-          >
-            <FaChevronRight className="text-drawGrey" />
-          </button>
-        </div>
+        {pageOptions.length !== 1 ? (
+          <div className="flex flex-row my-2 pb-6">
+            <div>
+              <button
+                onClick={() => previousPage()}
+                disabled={!canPreviousPage}
+                className="px-4 py-2 border-2 rounded-ifRadius border-drawGrey bg-white"
+              >
+                <FaChevronLeft className="text-drawGrey" />
+              </button>
+            </div>
+            <div className="text-drawGrey pt-2 px-2">
+              Page{" "}
+              <span>
+                {pageIndex + 1} of {pageOptions.length}
+              </span>
+            </div>
+            <div>
+              <button
+                onClick={() => nextPage()}
+                disabled={!canNextPage}
+                className="px-4 py-2 border-2 rounded-ifRadius border-drawGrey bg-white"
+              >
+                <FaChevronRight className="text-drawGrey" />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div></div>
+        )}
       </div>
     </div>
   );
