@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import callAPI from "../../Axios/callAPI";
 import ItemDetailsInput from "../../Pages/Items/Item/PrimaryDetails/ItemDetailsInput";
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const PartnerDetails = ({fromCreate}) => {
-  const navigate = useNavigate()
+const PartnerDetails = ({ fromCreate }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [partner, setPartner] = useState({});
   const [editClicked, setEditClicked] = useState(false);
@@ -61,10 +61,9 @@ const PartnerDetails = ({fromCreate}) => {
     setIsSupplier(e.target.checked);
   };
 
-  const handleIsCustomerInput= (e) => {
+  const handleIsCustomerInput = (e) => {
     setIsCustomer(e.target.checked);
   };
-
 
   const handleCreationDateInput = (e) => {
     setCreationDate(e.target.value);
@@ -90,7 +89,6 @@ const PartnerDetails = ({fromCreate}) => {
       setIsSupplier(response.data.merchant_partner_relationship[0].is_supplier);
       setIsCustomer(response.data.merchant_partner_relationship[0].is_customer);
       setCreationDate(response.data.creation_date);
-
     } catch (error) {
       console.log(error);
     }
@@ -119,100 +117,99 @@ const PartnerDetails = ({fromCreate}) => {
         },
       };
       await callAPI.patch(`/partners/${partnerID}/`, data, config);
-      navigate('/partners')
+      navigate("/partners");
     } catch (error) {
       console.log(error);
     }
   };
 
-let date = '';
+  let date = "";
 
-if (partner.creation_date) {
-  date = new Date(partner.creation_date).toString().slice(0, 15);
-}
+  if (partner.creation_date) {
+    date = new Date(partner.creation_date).toString().slice(0, 15);
+  }
 
   useEffect(() => {
     getPartnerByID();
   }, []);
 
-return (
-      <div className="flex flex-col w-full justify-between gap-4">
-        <div className="flex items-center justify-between bg-backgroundGrey px-4">
+  return (
+    <div className="flex flex-col w-full justify-between gap-4">
+      <div className="flex items-center justify-between bg-backgroundGrey px-4 h-14">
+        <h2 className="text-section">Partner Details</h2>
+        <button
+          className="bg-ifOrange text-white w-20"
+          onClick={handleEditButton}
+        >
+          {editClicked ? "Save" : "Edit"}
+        </button>
+      </div>
+      <div className="flex w-full justify-around gap-4">
+        <div className="flex w-1/2 flex-col gap-1">
+          <ItemDetailsInput
+            value={date}
+            disableInput={true}
+            description={"Creation Date:"}
+          />
+          <ItemDetailsInput
+            disableInput={disableInput}
+            handleInput={handleNameInput}
+            description={"Name"}
+            value={name}
+          />
+          <ItemDetailsInput
+            disableInput={disableInput}
+            handleInput={handleAddressInput}
+            description={"Address"}
+            value={address}
+          />
+          <ItemDetailsInput
+            disableInput={disableInput}
+            handleInput={handleCountryCodeInput}
+            description={"Country Code"}
+            value={countryCode}
+          />
 
-          <h2 className="text-xl">Partner Details</h2>
-          <button onClick={handleEditButton}>
-            {editClicked ? "Save" : "Edit"}
-          </button>
+          <ItemDetailsInput
+            type="checkbox"
+            disableInput={disableInput}
+            handleInput={handleIsSupplierInput}
+            description={"Is Supplier: "}
+            value={isSupplier}
+            checked={isSupplier}
+          />
         </div>
-          <div className="flex w-full justify-around gap-4">
-            <div className="flex w-1/2 flex-col gap-1">
-
-               <ItemDetailsInput value={date}
-               disableInput={true}
-               description={"Creation Date:"}/>
-              <ItemDetailsInput
-                disableInput={disableInput}
-                handleInput={handleNameInput}
-                description={"Name"}
-                value={name}
-              />
-              <ItemDetailsInput
-                disableInput={disableInput}
-                handleInput={handleAddressInput}
-                description={"Address"}
-                value={address}
-              />
-              <ItemDetailsInput
-                disableInput={disableInput}
-                handleInput={handleCountryCodeInput}
-                description={"Country Code"}
-                value={countryCode}
-              />
-
-              <ItemDetailsInput
-                type="checkbox"
-                disableInput={disableInput}
-                handleInput={handleIsSupplierInput}
-                description={"Is Supplier: "}
-                value={isSupplier}
-                checked={isSupplier}
-              />
-            </div>
-            <div className="flex w-1/2 flex-col gap-1">
-              <ItemDetailsInput
-                disableInput={disableInput}
-                handleInput={handlePhoneInput}
-                description={"Phone: "}
-                value={phone}
-              />
-              <ItemDetailsInput
-                disableInput={disableInput}
-                handleInput={handleEmailInput}
-                description={"Email: "}
-                value={email}
-              />
-              <ItemDetailsInput
-                value={contact}
-                type="text"
-                handleInput={handleContactInput}
-                description={"Contact: "}
-              />
-              <ItemDetailsInput
-                type="checkbox"
-                handleInput={handleIsCustomerInput}
-                disableInput={disableInput}
-                description={"Is Customer: "}
-                value={isCustomer}
-                checked={isCustomer}
-              />
-
-            </div>
-          </div>
-
-
-</div>
-);
-
-}
+        <div className="flex w-1/2 flex-col gap-1">
+          <ItemDetailsInput
+            disableInput={disableInput}
+            handleInput={handlePhoneInput}
+            description={"Phone: "}
+            value={phone}
+          />
+          <ItemDetailsInput
+            disableInput={disableInput}
+            handleInput={handleEmailInput}
+            description={"Email: "}
+            value={email}
+          />
+          <ItemDetailsInput
+            value={contact}
+            type="text"
+            handleInput={handleContactInput}
+            description={"Contact: "}
+          />
+          <ItemDetailsInput
+            type="checkbox"
+            handleInput={handleIsCustomerInput}
+            disableInput={disableInput}
+            description={"Is Customer: "}
+            value={isCustomer}
+            checked={isCustomer}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default PartnerDetails;
