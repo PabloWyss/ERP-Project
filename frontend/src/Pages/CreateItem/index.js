@@ -1,18 +1,28 @@
 import PrimaryDetails from "../Items/Item/PrimaryDetails";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import arrow_left_image from "../../Assets/Icons/arrow_left_orange.svg";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 
 const CreateItem = () => {
+
     // def const
     const navigate = useNavigate()
+    const location = useLocation()
+    const [createFromScan, setCreateFromScan] = useState(false)
+
+    useEffect(() => {
+        if (location) {
+            setCreateFromScan(true)
+        }
+
+    }, [location])
+
 
     //handle button
     const handleClickGoBack = (e) => {
         e.preventDefault()
         navigate(`/items`)
     }
-
 
 
     return (
@@ -31,7 +41,8 @@ const CreateItem = () => {
                 </div>
                 <div className="flex h-screen w-full justify-center">
                     <div className="flex flex-col h-full w-full p-4 gap-4">
-                        <PrimaryDetails fromCreate={true}/>
+                        <PrimaryDetails fromCreate={true} fromCreateScan={createFromScan}
+                                        scanedValue={location.state?.sku}/>
                     </div>
                 </div>
             </div>

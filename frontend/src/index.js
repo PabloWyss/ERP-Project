@@ -8,12 +8,9 @@ import store from './Redux/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    {/* Wrap your App component with the Provider component */}
     <Provider store={store}>
       <App />
     </Provider>
-  </React.StrictMode>
 );
 
 // If you want your app to work offline and load faster, you can change

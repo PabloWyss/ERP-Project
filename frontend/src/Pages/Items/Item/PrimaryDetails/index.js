@@ -8,7 +8,7 @@ import moment from "moment/moment";
 import {FaChevronDown, FaChevronUp} from "react-icons/fa";
 
 
-const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
+const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, itemFromItem, fromQRCode}) => {
 
     //define const
 
@@ -134,7 +134,11 @@ const PrimaryDetails = ({fromCreate, fromItem, itemFromItem, fromQRCode}) => {
             setAASIN(itemFromItem.amazon_asin)
             setAFNSKU(itemFromItem.amazon_fnsku)
         }
-    }, [itemFromItem])
+
+        if (fromCreateScan) {
+            setSKU(scanedValue)
+        }
+    }, [itemFromItem, fromCreateScan])
 
     //  fetch - Update Item - Create Item
     const updateItem = async () => {

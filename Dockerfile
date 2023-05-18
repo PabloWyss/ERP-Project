@@ -1,10 +1,11 @@
-FROM continuumio/miniconda3
+FROM continuumio/miniconda3:22.11.1
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
 RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install curl -y
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y nodejs
+RUN apt-get install -y build-essential
 
 RUN mkdir -p /backend
 RUN mkdir -p /scripts

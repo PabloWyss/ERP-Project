@@ -1,4 +1,3 @@
-import QrReader from "react-qr-reader"
 import React, {useEffect, useRef, useState} from "react";
 import AddFromQRCode from "./AddFromQRCode";
 import {useNavigate, useParams} from "react-router-dom";

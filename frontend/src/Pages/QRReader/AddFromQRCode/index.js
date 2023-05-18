@@ -29,8 +29,6 @@ const AddFromQRCode = ({itemID}) => {
 
     }, [itemID])
 
-    console.log(itemID)
-
     return (
         <div>
             <div>

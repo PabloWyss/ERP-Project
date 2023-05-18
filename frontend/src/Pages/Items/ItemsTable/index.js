@@ -6,11 +6,18 @@ import ListTableIfEmpty from "../../../Components/ListTableIfEmpty/ListTable";
 import {FaQrcode} from "react-icons/fa";
 import QRReader from "../../QRReader";
 import PopUpQRReader from "../../QRReader/AddFromQRCode/popUpQrCode";
+import {Html5QrcodeScanner} from "html5-qrcode";
 
 const ItemsTable = ({tableData}) => {
     const navigate = useNavigate()
     const [qrcodeClicked, setQrcodeClicked] = useState(false)
     const [opacity, setOpacity] = useState(1)
+    const [goBackClicked, setGoBackClicked] = useState(false)
+
+
+    useEffect(()=>{
+
+    },[])
 
     // change format of numbers
     function commifyCurrency(n = 0) {
@@ -37,15 +44,14 @@ const ItemsTable = ({tableData}) => {
             Cell: (props) => {
 
                 if (props.row.original.item_model) {
-                    if(props.row.original.item_model.images[0]){
+                    if (props.row.original.item_model.images[0]) {
                         return <img
-                        className="flex justify-center items-center"
-                        src={props.row.original.item_model.images[0].image}
-                        width={60}
-                        alt='Player'
-                    />
-                    }
-                    else {
+                            className="flex justify-center items-center"
+                            src={props.row.original.item_model.images[0].image}
+                            width={60}
+                            alt='Player'
+                        />
+                    } else {
                         return <span>No Images assigned to Model</span>
                     }
                 }
@@ -104,19 +110,7 @@ const ItemsTable = ({tableData}) => {
     const hanldeClickQrCode = (e) => {
         e.preventDefault()
         setQrcodeClicked(!qrcodeClicked)
-        if (qrcodeClicked) {
-            setOpacity(1)
-        } else {
-            setOpacity(.2)
-        }
-        setQrcodeClicked(!qrcodeClicked)
-        // navigate(`/readqr`)
-    }
-
-    const hanldeClickGoBack = (e) =>{
-        e.preventDefault()
-        setQrcodeClicked(!qrcodeClicked)
-        setOpacity(1)
+        setOpacity(.2)
     }
 
     //table data if empy in order to avoid rendering problems
@@ -124,9 +118,8 @@ const ItemsTable = ({tableData}) => {
         name: ""
     }]
 
-    useEffect(() => {
 
-    }, [opacity])
+
 
 
     return (
@@ -168,15 +161,10 @@ const ItemsTable = ({tableData}) => {
                         opacity: 1
                     }}
                          className="fixed top-56 left-1/3">
-                        <div className="flex flex-col gap-10 justify-center items-center">
+                        <div className="flex flex-col gap-10 justify-center items-center w-100">
                             <PopUpQRReader/>
-                            <button className="p-0 p-0 bg-ifOrange w-40 h-8 text-white"
-                                onClick={hanldeClickGoBack}>
-                                Go Back
-                            </button>
                         </div>
-                    </div> :
-                    ""
+                    </div> : ""
             }
         </div>
     );

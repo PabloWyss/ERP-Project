@@ -81,6 +81,29 @@ class SearchItemView(ListAPIView):
             )
         return queryset_filtered
 
+class SearchItemSKUView(ListAPIView):
+
+    """
+    get:
+    Search for a specific item
+
+    # subtitle
+    Search for a specific item of the merchant
+    """
+
+    serializer_class = ItemSerializer
+
+    def get_queryset(self):
+        merchant = self.request.user.merchant
+        queryset = Item.objects.filter(merchant__id=merchant.id)
+        search_value = self.request.query_params.get('search_string')
+        if search_value is not None:
+            queryset_filtered = queryset.filter(
+                sku__icontains=search_value
+            )
+        return queryset_filtered
+
+
 
 class RetrieveUpdateDestroyItemView(RetrieveUpdateDestroyAPIView):
     """
