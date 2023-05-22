@@ -30,7 +30,6 @@ import NewOrder from "./Pages/Orders/NewOrder";
 import QRReader from "./Pages/QRReader";
 import Variants from "./Pages/Variants";
 import PDFCreate from "./Components/CreatePdf";
-import PdfShow from "./Components/CreatePdf/pdfcreate";
 
 
 function App() {
@@ -67,7 +66,7 @@ function App() {
                     <Route path="/verification" element={<Verification/>}/>
                     <Route path="/items/models" element={<Models/>}/>
                     <Route path="/items/models/:modelID" element={<ModelPage/>}/>
-                    <Route path="/readqr/:itemID/" element={<QRReader/>}/>
+                    <Route path="/readqr/:itemID" element={<QRReader/>}/>
                     <Route
                         path="/items/models/create/"
                         element={<CreateItemModel/>}
@@ -80,7 +79,7 @@ function App() {
                         path="/items/itemVariant/create/:itemID"
                         element={<CreateItemVariant/>}
                     />
-                    <Route path="/createPdf/:itemID/" element={<PdfShow/>}/>
+                    <Route path="/createPdf/" element={<PDFCreate/>}/>
 
                     <Route path="/orders" element={<Orders/>}/>
                     <Route path="/orders/:orderID" element={<OrderDetails/>}/>

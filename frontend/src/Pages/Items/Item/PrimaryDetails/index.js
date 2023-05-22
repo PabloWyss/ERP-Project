@@ -116,11 +116,15 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
         createQRCode()
     }
 
-    const handleCreatePDF = (e) => {
+    const handleCreatePDFQRCode = (e) => {
         e.preventDefault()
-        navigate(`/createPdf/${itemID}/`)
+        navigate(`/createPdf/`, {state: {sku: SKU, item: item, origin: "QRCode"}})
     }
 
+    const handleCreatePDFBarcode = (e) => {
+        e.preventDefault()
+        navigate(`/createPdf/`, {state: {sku: SKU, item: item, origin: "Barcode"}})
+    }
 
     useEffect(() => {
         if (fromItem) {
@@ -227,6 +231,37 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
         const thousands = /\B(?=(\d{3})+(?!\d))/g;
         return "EUR " + numberPart.replace(thousands, "’") + (decimalPart ? "." + decimalPart : " ");
     }
+
+        // const svg = document.getElementsByClassName('barcode');
+        //
+        // let clonedSvgElement = svg.cloneNode(true);
+        //
+        // let outerHTML = clonedSvgElement.outerHTML,
+        //     blob = new Blob([outerHTML], {type: 'image/svg+xml;charset=utf-8'});
+        //
+        //
+        // let URL = window.URL || window.webkitURL || window;
+        // let blobURL = URL.createObjectURL(blob);
+        //
+        // let image = new Image();
+        // image.onload = () => {
+        //
+        //     let canvas = document.createElement('canvas');
+        //
+        //     canvas.widht = 10;
+        //
+        //     canvas.height = 10;
+        //     let context = canvas.getContext('2d');
+        //     // draw image in canvas starting left-0 , top - 0
+        //     context.drawImage(image, 0, 0, 10, 10);
+        //     //  downloadImage(canvas); need to implement
+        // };
+        // image.src = blobURL;
+        //
+        //
+        //
+        // console.log(image)
+
 
     return (
         <form className="flex flex-col w-full justify-between gap-4" onSubmit={handleSubmitButton}>
@@ -364,7 +399,7 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
                                             [<div className="flex justify-between gap-8 items-center">
                                                 <img alt={"QrCode"} src={qrcode}/>
                                                 <button className="bg-ifOrange w-40 text-white"
-                                                        onClick={handleCreatePDF}> Create PDF
+                                                        onClick={handleCreatePDFQRCode}> Create PDF
                                                 </button>
                                             </div>,
                                                 <div className="flex justify-between gap-8 items-center">
@@ -375,7 +410,7 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
                                                          jsbarcode-fontoptions="bold">
                                                     </svg>
                                                     <button className="bg-ifOrange w-40 text-white"
-                                                        onClick={handleCreatePDF}> Create PDF
+                                                            onClick={handleCreatePDFBarcode}> Create PDF
                                                     </button>
                                                 </div>]
                                     }

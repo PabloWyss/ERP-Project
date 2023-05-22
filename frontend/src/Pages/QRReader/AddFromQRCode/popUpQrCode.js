@@ -1,5 +1,4 @@
 import {Html5QrcodeScanner} from "html5-qrcode";
-import {Html5Qrcode} from "html5-qrcode";
 import React, {useEffect, useState} from "react";
 import callAPI from "../../../Axios/callAPI";
 import {useNavigate} from "react-router-dom";
@@ -80,7 +79,7 @@ const PopUpQRReader = ({qrcodeClicked}) => {
             {
                 itemFound ?
                     "":
-                    <div>
+                    <div className="flex flex-col gap-4 items-center justify-center">
                         <p>
                             Item Not Found, would you like to create an item with this SKU?
                         </p>
