@@ -26,6 +26,28 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
     const [creatQRCodeBarcodeClicked, setCreatQRCodeBarcodeClicked] = useState(false)
     const navigate = useNavigate()
     const {itemID} = useParams();
+    const [radioSelected, setRadioSelect] = useState("EAN")
+    const [refesh, setRefresh] = useState(false)
+
+    useEffect(() => {
+        if (fromItem) {
+            setItem(itemFromItem)
+            setName(itemFromItem.name)
+            setStatus(itemFromItem.status)
+            setSeries(itemFromItem.series)
+            setSKU(itemFromItem.sku)
+            setEAN(itemFromItem.ean)
+            setUPC(itemFromItem.upc)
+            setAASIN(itemFromItem.amazon_asin)
+            setAFNSKU(itemFromItem.amazon_fnsku)
+        }
+
+        if (fromCreateScan) {
+            setSKU(scanedValue)
+        }
+
+    }, [itemFromItem, fromCreateScan, radioSelected])
+
 
 
     // QRCODE GENERATOR
@@ -51,7 +73,6 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
         generateQR()
 
     }
-
 
     //Barcode Generator
     JsBarcode(".barcode").init();
@@ -118,35 +139,22 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
 
     const handleCreatePDFQRCode = (e) => {
         e.preventDefault()
-        navigate(`/createPdf/`, {state: {sku: SKU, item: item, origin: "QRCode"}})
+        navigate(`/createPdf/`, {state: {selection: radioSelected, sku: SKU, item: item, origin: "QRCode"}})
     }
 
     const handleCreatePDFBarcode = (e) => {
         e.preventDefault()
-        navigate(`/createPdf/`, {state: {sku: SKU, item: item, origin: "Barcode"}})
+        navigate(`/createPdf/`, {state: {selection: radioSelected, sku: SKU, item: item, origin: "Barcode"}})
     }
 
-    useEffect(() => {
-        if (fromItem) {
-            setItem(itemFromItem)
-            setName(itemFromItem.name)
-            setStatus(itemFromItem.status)
-            setSeries(itemFromItem.series)
-            setSKU(itemFromItem.sku)
-            setEAN(itemFromItem.ean)
-            setUPC(itemFromItem.upc)
-            setAASIN(itemFromItem.amazon_asin)
-            setAFNSKU(itemFromItem.amazon_fnsku)
-        }
+    const hanldeRadioSelect = (e) => {
+        setRadioSelect(e.target.value)
+    }
 
-        if (fromCreateScan) {
-            setSKU(scanedValue)
-        }
-    }, [itemFromItem, fromCreateScan])
 
     //  fetch - Update Item - Create Item
     const updateItem = async () => {
-
+        setRefresh(!refesh)
         if (!localStorage.getItem('token')) {
             return;
         }
@@ -231,37 +239,6 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
         const thousands = /\B(?=(\d{3})+(?!\d))/g;
         return "EUR " + numberPart.replace(thousands, "’") + (decimalPart ? "." + decimalPart : " ");
     }
-
-        // const svg = document.getElementsByClassName('barcode');
-        //
-        // let clonedSvgElement = svg.cloneNode(true);
-        //
-        // let outerHTML = clonedSvgElement.outerHTML,
-        //     blob = new Blob([outerHTML], {type: 'image/svg+xml;charset=utf-8'});
-        //
-        //
-        // let URL = window.URL || window.webkitURL || window;
-        // let blobURL = URL.createObjectURL(blob);
-        //
-        // let image = new Image();
-        // image.onload = () => {
-        //
-        //     let canvas = document.createElement('canvas');
-        //
-        //     canvas.widht = 10;
-        //
-        //     canvas.height = 10;
-        //     let context = canvas.getContext('2d');
-        //     // draw image in canvas starting left-0 , top - 0
-        //     context.drawImage(image, 0, 0, 10, 10);
-        //     //  downloadImage(canvas); need to implement
-        // };
-        // image.src = blobURL;
-        //
-        //
-        //
-        // console.log(image)
-
 
     return (
         <form className="flex flex-col w-full justify-between gap-4" onSubmit={handleSubmitButton}>
@@ -372,10 +349,14 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
                                 <div className="text-section">
                                     QR- and Barcodes
                                 </div>
+                                <div>
+
+                                </div>
                                 <div className="items-center flex gap-4 justify-items-center">
                                     <button className="p-0" onClick={handleCreateQrCodeBarcodeButton}>
                                         {creatQRCodeBarcodeClicked ? <FaChevronUp className="h-6 w-6"/> :
-                                            <FaChevronDown className="h-6 w-6"/>}
+                                            <FaChevronDown className="h-6 w-6"/>
+                                        }
                                     </button>
                                 </div>
                             </div>
@@ -403,12 +384,25 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
                                                 </button>
                                             </div>,
                                                 <div className="flex justify-between gap-8 items-center">
-                                                    <svg className="barcode"
-                                                        //jsbarcode-format="EAN13"
-                                                         jsbarcode-value={item.ean}
-                                                         jsbarcode-textmargin="0"
-                                                         jsbarcode-fontoptions="bold">
-                                                    </svg>
+
+                                                    <div className="flex items-center justify-center flex-col">
+                                                        <div className="flex items-center gap-2">
+                                                            <input type="radio" value={"SKU"} name="inputFromCode"
+                                                                   checked={radioSelected == "SKU"}
+                                                                   onChange={hanldeRadioSelect}/> SKU
+                                                            <input type="radio" value={"EAN"} name="inputFromCode"
+                                                                   checked={radioSelected == "EAN"}
+                                                                   onChange={hanldeRadioSelect}/> EAN
+                                                        </div>
+                                                        <svg className="barcode"
+                                                             jsbarcode-format={radioSelected == "EAN" ? "EAN13" : "auto"}
+                                                             jsbarcode-value={radioSelected == "EAN" ? item.ean : item.sku}
+                                                             jsbarcode-textmargin="0"
+                                                             jsbarcode-fontoptions="bold">
+                                                        </svg>
+                                                    </div>
+
+
                                                     <button className="bg-ifOrange w-40 text-white"
                                                             onClick={handleCreatePDFBarcode}> Create PDF
                                                     </button>

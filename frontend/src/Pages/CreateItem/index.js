@@ -14,7 +14,6 @@ const CreateItem = () => {
         if (location) {
             setCreateFromScan(true)
         }
-
     }, [location])
 
 

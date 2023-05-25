@@ -4,9 +4,6 @@ import MerchDetails from "../../Components/MerchComp/MerchDetails";
 
 function Merchant() {
 
-
-
-
   return (
           <div
       className="h-screen w-screen py-6 px-8 justify-center

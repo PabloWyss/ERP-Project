@@ -6,26 +6,43 @@ import {useLocation} from "react-router-dom";
 
 const PDFCreate = () => {
 
-    const [nubmerOf, setNumberOf] = useState(0)
-    const location = useLocation()
+        const [nubmerOf, setNumberOf] = useState(0)
+        const [isStandard, setIsStandard] = useState(true)
+        const location = useLocation()
 
 
-    const handeleInputNumber = (e) =>{
-        e.preventDefault()
-        setNumberOf(e.target.value)
-    }
+        const handeleInputNumber = (e) => {
+            e.preventDefault()
+            setNumberOf(e.target.value)
+        }
+        const handeleInputDefault = (e) => {
+            e.preventDefault()
+            setIsStandard(e.target.checked);
+        }
 
         return (
             <div className="flex flex-col w-full">
                 <div className="flex w-1/3 justify-start m-4">
+
+                    <ItemDetailsInput
+                        type={"checkbox"}
+                        disableInput={false}
+                        description={"Standard View"}
+                        value={isStandard}
+                        checked={isStandard}
+                        handleInput={handeleInputDefault}
+                    />
+                    {isStandard ?
+                        "":
                     <ItemDetailsInput className="flex justify-center w-full"
-                                  value={nubmerOf}
-                                          disableInput={false}
-                                          handleInput={handeleInputNumber}
-                                          description={'Number of Codes'}/>
+                                      value={nubmerOf}
+                                      disableInput={false}
+                                      handleInput={handeleInputNumber}
+                                      description={'Number of Codes'}/>}
                 </div>
                 <PDFViewer className="w-full h-screen">
-                    <MyDocument origin={location.state.origin} item={location.state?.item} number={nubmerOf}/>
+                    <MyDocument origin={location.state.origin} item={location.state?.item} number={nubmerOf}
+                                isStandard={isStandard} selection={location.state.selection}/>
                 </PDFViewer>
             </div>
 

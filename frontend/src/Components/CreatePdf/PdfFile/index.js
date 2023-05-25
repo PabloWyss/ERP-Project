@@ -12,17 +12,26 @@ const styles = StyleSheet.create({
 
 
     },
-    section: {
-        margin: 10,
-        padding: 10,
-        flexGrow: 1
+    viewQrcode: {
+        width: "20%",
+        aspectRatio: 1 / 1,
+        border: "1px black solid",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "white",
+    },
+    text: {
+        backgroundColor: "white",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
     }
 });
 
 // Create Document Component
-const MyDocument = ({origin, item, number}) => {
+const MyDocument = ({origin, item, number, selection}) => {
 
-        console.log(origin)
 
         // QRCODE GENERATOR
         const [qrcode, setQrcode] = useState("")
@@ -53,34 +62,36 @@ const MyDocument = ({origin, item, number}) => {
             array.push(i)
         }
 
-        let image = ""
-
-        //Barcode Generator
-        // JsBarcode(".barcode", "1234", {
-        //     format: "pharmacode",
-        //     lineColor: "#0aa",
-        //     width: 4,
-        //     height: 40,
-        //     displayValue: false
-        // });
-
         //Barcode Generator
 
         let canvas;
         canvas = document.createElement('canvas');
-        JsBarcode(canvas, item.ean);
+        if (selection == "EAN") {
+            JsBarcode(canvas, item.ean, {
+                format: "EAN13",
+            });
+        } else {
+            JsBarcode(canvas, item.sku);
+        }
+
         const barcode = canvas.toDataURL();
 
 
         return (
             <Document>
                 <Page size="A4" style={styles.page}>
-                    { origin == "Barcode" ?
-                        array.map(() => {
-                            return <Image style={{height: 90, width: 90, border: "1px black solid"}} src={barcode}/>
-                        }):
-                        array.map(() => {
-                            return <Image style={{height: 90, width: 90, border: "1px black solid"}} src={qrcode}/>
+                    {origin == "Barcode" ?
+                        array.map((value, index) => {
+                            return <Image style={{height: 100, width: 100, border: "1px black solid"}} key={index}
+                                          src={barcode}/>
+                        }) :
+                        array.map((value, index) => {
+                            return (
+                                <View style={styles.viewQrcode}>
+                                    <Image key={index} src={qrcode}/>
+                                    <Text style={styles.text}>{item.ean}</Text>
+                                </View>
+                            )
                         })
                     }
                 </Page>
