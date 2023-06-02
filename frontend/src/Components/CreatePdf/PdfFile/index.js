@@ -82,7 +82,7 @@ const MyDocument = ({origin, item, number, selection}) => {
                 <Page size="A4" style={styles.page}>
                     {origin == "Barcode" ?
                         array.map((value, index) => {
-                            return <Image style={{height: 100, width: 100, border: "1px black solid"}} key={index}
+                            return <Image style={{height: "29.7mm", width: "42mm", border: "1px black solid"}} key={index}
                                           src={barcode}/>
                         }) :
                         array.map((value, index) => {

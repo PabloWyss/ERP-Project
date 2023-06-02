@@ -27,7 +27,6 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
     const navigate = useNavigate()
     const {itemID} = useParams();
     const [radioSelected, setRadioSelect] = useState("EAN")
-    const [refesh, setRefresh] = useState(false)
 
     useEffect(() => {
         if (fromItem) {
@@ -47,7 +46,6 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
         }
 
     }, [itemFromItem, fromCreateScan, radioSelected])
-
 
 
     // QRCODE GENERATOR
@@ -116,8 +114,6 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
     const handleEditButton = (e) => {
         e.preventDefault()
         if (editClicked) {
-            setEditClicked(!editClicked)
-            setDisableInput(!disableInput)
             updateItem()
         } else {
             setEditClicked(!editClicked)
@@ -151,34 +147,55 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
         setRadioSelect(e.target.value)
     }
 
+    // review wether input is valid
+
+    const isEANValid = (number) => {
+        let checkSum = number.split('').reduce(function (p, v, i) {
+            return i % 2 == 0 ? p + 1 * v : p + 3 * v;
+        }, 0);
+        if (checkSum % 10 != 0) {
+            return false
+        } else {
+            return true
+        }
+    }
+
 
     //  fetch - Update Item - Create Item
     const updateItem = async () => {
-        setRefresh(!refesh)
+
         if (!localStorage.getItem('token')) {
             return;
         }
-        try {
-            const data = {
-                name: name,
-                status: status,
-                series: series,
-                sku: SKU,
-                ean: EAN,
-                upc: UPC,
-                amazon_asin: AASIN,
-                amazon_fnsku: AFNSKU
+
+        if (isEANValid(EAN)) {
+            try {
+                const data = {
+                    name: name,
+                    status: status,
+                    series: series,
+                    sku: SKU,
+                    ean: EAN,
+                    upc: UPC,
+                    amazon_asin: AASIN,
+                    amazon_fnsku: AFNSKU
+                }
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    },
+                };
+                const response = await callAPI.patch(`/items/${itemID}/`, data, config)
+                setEditClicked(!editClicked)
+                setDisableInput(!disableInput)
+            } catch (error) {
+                console.log(error)
             }
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
-            };
-            const response = await callAPI.patch(`/items/${itemID}/`, data, config)
-        } catch (error) {
-            console.log(error)
+        } else {
+            alert("please enter a valid ean number")
         }
+
     }
 
     const createItem = async () => {
@@ -373,7 +390,7 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
                                         Submit
                                     </button>
                                 </div> :
-                                <div className="flex w-full justify-around">
+                                <div className="flex w-2/3 justify-between">
                                     {
                                         fromQRCode ?
                                             "" :
@@ -394,12 +411,14 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
                                                                    checked={radioSelected == "EAN"}
                                                                    onChange={hanldeRadioSelect}/> EAN
                                                         </div>
-                                                        <svg className="barcode"
-                                                             jsbarcode-format={radioSelected == "EAN" ? "EAN13" : "auto"}
-                                                             jsbarcode-value={radioSelected == "EAN" ? item.ean : item.sku}
-                                                             jsbarcode-textmargin="0"
-                                                             jsbarcode-fontoptions="bold">
-                                                        </svg>
+                                                        <div className="flex items-center justify-center">
+                                                            <svg className="barcode"
+                                                                 jsbarcode-format={radioSelected == "EAN" ? "EAN13" : "auto"}
+                                                                 jsbarcode-value={radioSelected == "EAN" ? item.ean : item.sku}
+                                                                 jsbarcode-textmargin="0"
+                                                                 jsbarcode-fontoptions="bold">
+                                                            </svg>
+                                                        </div>
                                                     </div>
 
 
