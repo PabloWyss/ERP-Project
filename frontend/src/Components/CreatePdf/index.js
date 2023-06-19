@@ -125,8 +125,6 @@ const PDFCreate = () => {
                                     disableInput={false}
                                     handleInput={handeleInputTopMargin}
                                     description={'Top/Down (mm)'}/>
-
-
                             </div>
                             <div className="flex-col justify-between w-2/6">
                                 <ItemDetailsInput

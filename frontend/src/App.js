@@ -56,7 +56,7 @@ function App() {
     }, [currentUser]);
 
     return (
-        <Router>
+        <Router className="min-h-screen min-w-screen">
             <div className="flex">
                 <SideBar/>
                 <Routes>

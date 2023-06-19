@@ -124,7 +124,7 @@ const ItemsTable = ({tableData}) => {
 
     return (
         <div
-            className='flex h-full w-full py-6 px-8 justify-center
+            className='h-screen w-screen py-6 px-8 justify-center
     bg-backgroundGrey'
         >
             <div
@@ -132,9 +132,8 @@ const ItemsTable = ({tableData}) => {
                     opacity: opacity
                 }}
                 className='w-full h-full py-6 px-8
-        flex flex-col
-        bg-white
-           rounded-ifRadius
+        flex flex-col space-around
+      bg-white rounded-ifRadius
         overflow-y-auto scrollbar-thin scrollbar-track-transparent
         scrollbar-thumb-drawGrey hover:scrollbar-thumb-buttonGrey'
             >
@@ -145,11 +144,7 @@ const ItemsTable = ({tableData}) => {
                     </button>
                     <FaQrcode className="mt-2 w-8 h-8 cursor-pointer" onClick={hanldeClickQrCode}/>
                 </div>
-                {
-                    tableData?.length > 0 ?
-                        <ListTable data={tableData} columns={columns}></ListTable> :
-                        <ListTableIfEmpty data={data_if_empty} columns={columns}></ListTableIfEmpty>
-                }
+                    <ListTable data={tableData} columns={columns}></ListTable>
                 <div>
                     <img className="cursor-pointer absolute bottom-10 right-12" src={addButton} alt={"create new item"}
                          onClick={handleCreateButton}/>

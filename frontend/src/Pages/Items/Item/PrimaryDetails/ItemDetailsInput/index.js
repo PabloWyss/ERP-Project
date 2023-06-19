@@ -3,13 +3,13 @@ import ItemDetailsChoicesInput from "./ItemDetailsChoicesInput";
 
 const ItemDetailsInput = ({value, disableInput, handleInput, description, choicesEnabeled, choices, type,step}) => {
   return (
-    <div className="flex items-center justify-between">
-      <label className="w-3/5" htmlFor="item_input">
+    <div className="flex items-center justify-between gap-7">
+      <label className="w-3/12" htmlFor="item_input">
         {description}
       </label>
       {choicesEnabeled ? (
         <select
-          className="w-2/5"
+          className="flex-auto"
           id="item_input"
           name="item_input"
           disabled={disableInput}
@@ -35,7 +35,7 @@ const ItemDetailsInput = ({value, disableInput, handleInput, description, choice
           </div>
         ) : (
           <input
-            className="w-2/5"
+            className="flex-auto"
             id="item_input"
             name="item_input"
             value={value ? value : ""}

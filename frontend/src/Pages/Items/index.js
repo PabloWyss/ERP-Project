@@ -3,10 +3,15 @@ import callAPI from "../../Axios/callAPI";
 import ItemsTable from "./ItemsTable";
 
 const Items = () => {
+
     // Define Const
     const [itemList, setItemList] = useState([])
 
-    // Fetch items list info
+    useEffect(() => {
+        obtainItemsInfo()
+    }, [])
+
+    // Fetch items list information
     const obtainItemsInfo = async () => {
         try {
             const config = {
@@ -22,14 +27,10 @@ const Items = () => {
             console.log(error);
         }
     }
-    useEffect(() => {
-        obtainItemsInfo()
-    }, [])
+
 
     return (
-        <div className="flex w-full">
-            <ItemsTable tableData={itemList}/>
-        </div>
+        <ItemsTable tableData={itemList}/>
     );
 }
 

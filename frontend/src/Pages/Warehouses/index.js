@@ -29,9 +29,7 @@ const Warehouse = () => {
       name: ""
     }]
   return (
-    <div className="flex w-full">
-        <WarehouseTable tableData={warehouseList}/>
-    </div>
+      <WarehouseTable tableData={warehouseList}/>
   );
 }
 

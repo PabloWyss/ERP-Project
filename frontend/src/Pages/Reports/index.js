@@ -281,7 +281,7 @@ function Reports() {
     ]
 
     return (
-            <div>
+        <>
           {loading ? (
             <div className="loading fixed top-0 left-0  w-full h-full flex flex-col items-center justify-center">
               <div className= "mb-10">
@@ -325,7 +325,7 @@ function Reports() {
             </div>
          </div>
       )}
-    </div>
+    </>
   );
 }
 export default Reports;

@@ -147,7 +147,7 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
         setRadioSelect(e.target.value)
     }
 
-    // review wether input is valid
+    // review weather input is valid
 
     const isEANValid = (number) => {
         let checkSum = number.split('').reduce(function (p, v, i) {
@@ -400,32 +400,32 @@ const PrimaryDetails = ({fromCreate, fromCreateScan, scanedValue, fromItem, item
                                                         onClick={handleCreatePDFQRCode}> Create PDF
                                                 </button>
                                             </div>,
-                                                <div className="flex justify-between gap-8 items-center">
+                                            <div className="flex justify-between gap-8 items-center">
 
-                                                    <div className="flex items-center justify-center flex-col">
-                                                        <div className="flex items-center gap-2">
-                                                            <input type="radio" value={"SKU"} name="inputFromCode"
-                                                                   checked={radioSelected == "SKU"}
-                                                                   onChange={hanldeRadioSelect}/> SKU
-                                                            <input type="radio" value={"EAN"} name="inputFromCode"
-                                                                   checked={radioSelected == "EAN"}
-                                                                   onChange={hanldeRadioSelect}/> EAN
-                                                        </div>
-                                                        <div className="flex items-center justify-center">
-                                                            <svg className="barcode"
-                                                                 jsbarcode-format={radioSelected == "EAN" ? "EAN13" : "auto"}
-                                                                 jsbarcode-value={radioSelected == "EAN" ? item.ean : item.sku}
-                                                                 jsbarcode-textmargin="0"
-                                                                 jsbarcode-fontoptions="bold">
-                                                            </svg>
-                                                        </div>
+                                                <div className="flex items-center justify-center flex-col">
+                                                    <div className="flex items-center gap-2">
+                                                        <input type="radio" value={"SKU"} name="inputFromCode"
+                                                               checked={radioSelected == "SKU"}
+                                                               onChange={hanldeRadioSelect}/> SKU
+                                                        <input type="radio" value={"EAN"} name="inputFromCode"
+                                                               checked={radioSelected == "EAN"}
+                                                               onChange={hanldeRadioSelect}/> EAN
                                                     </div>
+                                                    <div className="flex items-center justify-center">
+                                                        <svg className="barcode"
+                                                             jsbarcode-format={radioSelected == "EAN" ? "EAN13" : "auto"}
+                                                             jsbarcode-value={radioSelected == "EAN" ? item.ean : item.sku}
+                                                             jsbarcode-textmargin="0"
+                                                             jsbarcode-fontoptions="bold">
+                                                        </svg>
+                                                    </div>
+                                                </div>
 
 
-                                                    <button className="bg-ifOrange w-40 text-white"
-                                                            onClick={handleCreatePDFBarcode}> Create PDF
-                                                    </button>
-                                                </div>]
+                                                <button className="bg-ifOrange w-40 text-white"
+                                                        onClick={handleCreatePDFBarcode}> Create PDF
+                                                </button>
+                                            </div>]
                                     }
                                 </div>
                         }

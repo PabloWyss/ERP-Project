@@ -20,6 +20,11 @@ function Item() {
   const navigate = useNavigate();
   const { itemID } = useParams();
 
+  useEffect(() => {
+    obtainItemsCurrentVariantInfo();
+    obtainItemInfo();
+  }, []);
+
   // Handle Inputs
 
   const handleShowVariantDetails = (e) => {
@@ -104,10 +109,7 @@ function Item() {
     }
   };
 
-  useEffect(() => {
-    obtainItemsCurrentVariantInfo();
-    obtainItemInfo();
-  }, []);
+
 
   return (
     <div className="flex h-screen w-screen justify-center bg-backgroundGrey items-center py-6 px-8">

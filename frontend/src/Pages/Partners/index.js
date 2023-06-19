@@ -29,9 +29,7 @@ const Partners = () => {
       name: ""
     }]
   return (
-    <div className="flex w-full">
-        <PartnerTable tableData={partnerList}/>
-    </div>
+      <PartnerTable tableData={partnerList}/>
   );
 }
 

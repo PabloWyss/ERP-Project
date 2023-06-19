@@ -83,7 +83,7 @@ const WarehouseTable = ({ tableData }) => {
   ];
 
   return (
-    <div className="flex h-full w-full py-6 px-8 justify-center bg-backgroundGrey">
+    <div className="h-screen w-screen py-6 px-8 justify-center bg-backgroundGrey">
       <div
         className="w-full h-full py-6 px-8 flex flex-col bg-white rounded-ifRadius
         overflow-y-auto scrollbar-thin scrollbar-track-transparent
