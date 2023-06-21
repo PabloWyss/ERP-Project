@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Docker Pull
-        run: docker pull "${{ secrets.CI_REGISTRY_IMAGE }}:latest"
-        continue-on-error: true
+      - run: docker pull "${{ secrets.CI_REGISTRY_IMAGE }}:latest"
+      - continue-on-error: true
 #
 #  build:
 #    runs-on: ubuntu-latest
