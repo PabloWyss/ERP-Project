@@ -2,11 +2,9 @@ name: learn-github-actions
 run-name: ${{ github.actor }} is learning GitHub Actions
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 env:
   CI_PIPELINE_ID: ${{ github.run_id }}
