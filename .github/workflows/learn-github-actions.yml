@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [main]
 
-env:
-  CI_PIPELINE_ID: ${{ github.run_id }}
-  CI_COMMIT_REF_NAME: ${{ github.ref }}
-
 jobs:
   pull:
     runs-on: ubuntu-latest
